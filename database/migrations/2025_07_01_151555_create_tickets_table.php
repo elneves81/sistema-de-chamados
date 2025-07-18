@@ -1,21 +1,19 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+
+class CreateTicketsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('title'); // Título do chamado
+            $table->string('local')->nullable(); // Local do chamado
             $table->text('description'); // Descrição detalhada
             $table->enum('status', ['open', 'in_progress', 'pending', 'resolved', 'closed'])->default('open');
             $table->enum('priority', ['low', 'normal', 'high', 'critical'])->default('normal');
@@ -30,7 +28,6 @@ return new class extends Migration
             $table->timestamp('closed_at')->nullable(); // Data de fechamento
             $table->json('attachments')->nullable(); // Anexos
             $table->timestamps();
-            
             // Índices para performance
             $table->index(['status', 'priority']);
             $table->index(['user_id', 'status']);
@@ -40,13 +37,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('tickets');
     }
-};
+}

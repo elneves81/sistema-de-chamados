@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('title'); // Título do chamado
+            $table->string('local')->nullable(); // Local do chamado
             $table->text('description'); // Descrição detalhada
             $table->enum('status', ['open', 'in_progress', 'pending', 'resolved', 'closed'])->default('open');
             $table->enum('priority', ['low', 'normal', 'high', 'critical'])->default('normal');

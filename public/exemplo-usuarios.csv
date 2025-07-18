@@ -1,0 +1,6 @@
+name,email,role,password,phone,department
+João Silva,joao.silva@email.com,customer,123456789,(11) 99999-1111,TI
+Maria Santos,maria.santos@email.com,technician,123456789,(11) 99999-2222,Suporte
+Pedro Costa,pedro.costa@email.com,customer,123456789,(11) 99999-3333,Vendas
+Ana Ferreira,ana.ferreira@email.com,customer,123456789,(11) 99999-4444,RH
+Carlos Oliveira,carlos.oliveira@email.com,technician,123456789,(11) 99999-5555,TI

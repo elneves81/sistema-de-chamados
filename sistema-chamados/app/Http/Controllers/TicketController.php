@@ -69,10 +69,12 @@ class TicketController extends Controller
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'priority' => 'required|in:low,medium,high,urgent',
+            'local' => 'nullable|string|max:255',
         ]);
 
         $ticket = Ticket::create([
             'title' => $request->title,
+            'local' => $request->local,
             'description' => $request->description,
             'category_id' => $request->category_id,
             'priority' => $request->priority,

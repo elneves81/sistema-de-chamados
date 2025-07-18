@@ -25,6 +25,13 @@
                     @csrf
 
                     <div class="mb-3">
+                    <div class="mb-3">
+                        <label for="local" class="form-label">Local</label>
+                        <input type="text" class="form-control @error('local') is-invalid @enderror" id="local" name="local" value="{{ old('local') }}" placeholder="Informe o local do chamado">
+                        @error('local')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                         <label for="title" class="form-label">Título <span class="text-danger">*</span></label>
                         <input type="text" 
                                class="form-control @error('title') is-invalid @enderror" 

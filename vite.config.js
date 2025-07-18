@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/css/dashboard.css',
                 'resources/js/app.js',
                 'resources/js/dashboard.js',
+                'resources/js/dashboard-modern.js',
             ],
             refresh: true,
         }),
