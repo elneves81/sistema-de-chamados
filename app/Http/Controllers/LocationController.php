@@ -74,9 +74,18 @@ class LocationController extends Controller
 
         $validated['is_active'] = $request->has('is_active');
 
+        // Evitar inserir NULL em colunas com default no banco (ex.: country)
+        if (!isset($validated['country']) || $validated['country'] === null || $validated['country'] === '') {
+            // Se o schema definir default('Brasil'), podemos setar explicitamente para manter consistência
+            $validated['country'] = 'Brasil';
+        }
+
+        // Remover somente valores nulos, preservando 0/false
+        $validated = array_filter($validated, function ($v) { return !is_null($v); });
+
         Location::create($validated);
 
-        return redirect()->route('locations.index')
+        return redirect()->route('admin.locations.index')
             ->with('success', 'Localização criada com sucesso!');
     }
 
@@ -119,9 +128,17 @@ class LocationController extends Controller
 
         $validated['is_active'] = $request->has('is_active');
 
+        // No update, se o campo 'country' vier vazio/nulo, não sobrescrever o valor existente
+        if (array_key_exists('country', $validated) && ($validated['country'] === null || $validated['country'] === '')) {
+            unset($validated['country']);
+        }
+
+        // Remover somente valores nulos, preservando 0/false
+        $validated = array_filter($validated, function ($v) { return !is_null($v); });
+
         $location->update($validated);
 
-        return redirect()->route('locations.index')
+        return redirect()->route('admin.locations.index')
             ->with('success', 'Localização atualizada com sucesso!');
     }
 
@@ -131,14 +148,14 @@ class LocationController extends Controller
     public function destroy(Location $location)
     {
         // Verificar se há usuários ou ativos vinculados
-        if ($location->users()->count() > 0 || $location->assets()->count() > 0) {
-            return redirect()->route('locations.index')
-                ->with('error', 'Não é possível excluir esta localização pois há usuários ou ativos vinculados.');
+        if ($location->users()->count() > 0 || $location->tickets()->count() > 0) {
+            return redirect()->route('admin.locations.index')
+                ->with('error', 'Não é possível excluir esta localização pois há usuários ou tickets vinculados.');
         }
 
         $location->delete();
 
-        return redirect()->route('locations.index')
+        return redirect()->route('admin.locations.index')
             ->with('success', 'Localização excluída com sucesso!');
     }
 }

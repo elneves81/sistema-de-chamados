@@ -87,7 +87,7 @@
                                            id="phone" 
                                            name="phone" 
                                            value="{{ old('phone', $manufacturer->phone) }}"
-                                           placeholder="(11) 1234-5678">
+                                           placeholder="(42) 3142-1527">
                                     @error('phone')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

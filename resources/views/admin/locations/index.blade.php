@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Localizações</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <a href="{{ route('locations.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.locations.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Nova Localização
         </a>
     </div>
@@ -13,7 +13,7 @@
 <!-- Filtros -->
 <div class="card mb-4">
     <div class="card-body">
-        <form method="GET" action="{{ route('locations.index') }}">
+        <form method="GET" action="{{ route('admin.locations.index') }}">
             <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
@@ -118,13 +118,13 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="{{ route('locations.show', $location) }}" class="btn btn-outline-info" title="Visualizar">
+                                    <a href="{{ route('admin.locations.show', $location) }}" class="btn btn-outline-info" title="Visualizar">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('locations.edit', $location) }}" class="btn btn-outline-warning" title="Editar">
+                                    <a href="{{ route('admin.locations.edit', $location) }}" class="btn btn-outline-warning" title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('locations.destroy', $location) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('admin.locations.destroy', $location) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline-danger" title="Excluir"
@@ -149,7 +149,7 @@
                 <i class="bi bi-geo-alt" style="font-size: 3rem; color: #ccc;"></i>
                 <h5 class="mt-3 text-muted">Nenhuma localização encontrada</h5>
                 <p class="text-muted">Comece criando sua primeira localização.</p>
-                <a href="{{ route('locations.create') }}" class="btn btn-primary">
+                <a href="{{ route('admin.locations.create') }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i> Nova Localização
                 </a>
             </div>

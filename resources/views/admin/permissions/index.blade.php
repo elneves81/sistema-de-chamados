@@ -100,7 +100,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($user->is_active)
+                                            @if($user->deleted_at == null)
                                                 <span class="badge bg-success">Ativo</span>
                                             @else
                                                 <span class="badge bg-danger">Inativo</span>

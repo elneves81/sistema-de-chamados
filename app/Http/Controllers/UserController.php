@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::with('location');
 
         // Filtros
         if ($request->filled('search')) {
@@ -43,9 +43,20 @@ class UserController extends Controller
             }
         }
 
-        $users = $query->orderBy('created_at', 'desc')->paginate(15);
+        if ($request->filled('location')) {
+            if ($request->location === 'null') {
+                $query->whereNull('location_id');
+            } else {
+                $query->where('location_id', $request->location);
+            }
+        }
 
-        return view('admin.users.index', compact('users'));
+        $users = $query->orderBy('created_at', 'desc')->paginate(15);
+        
+        // Buscar todas as localizações para os filtros e modal
+        $locations = \App\Models\Location::orderBy('name')->get();
+
+        return view('admin.users.index', compact('users', 'locations'));
     }
 
     /**
@@ -273,5 +284,21 @@ class UserController extends Controller
         }
 
         return back()->with('success', $message);
+    }
+
+    /**
+     * Assign location to user
+     */
+    public function assignLocation(Request $request, User $user)
+    {
+        $request->validate([
+            'location_id' => 'required|exists:locations,id'
+        ]);
+
+        $user->update(['location_id' => $request->location_id]);
+
+        $location = \App\Models\Location::find($request->location_id);
+        
+        return back()->with('success', "Usuário {$user->name} foi vinculado à {$location->name}!");
     }
 }

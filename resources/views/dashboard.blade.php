@@ -448,34 +448,45 @@
                 </div>
                 <div class="widget-body">
                     <div class="ranking-list-modern">
-                        @foreach($ranking as $index => $user)
-                        <div class="ranking-item-modern">
-                            <div class="ranking-position">
-                                @if($index === 0)
-                                    <i class="bi bi-trophy-fill text-warning"></i>
-                                @elseif($index === 1)
-                                    <i class="bi bi-award-fill text-secondary"></i>
-                                @elseif($index === 2)
-                                    <i class="bi bi-award-fill text-warning"></i>
-                                @else
-                                    <span class="position-number">{{ $index + 1 }}</span>
-                                @endif
-                            </div>
-                            <div class="ranking-avatar-modern">
-                                {{ strtoupper(mb_substr($user->name, 0, 1)) }}
-                            </div>
-                            <div class="ranking-info">
-                                <div class="ranking-name">{{ $user->name }}</div>
-                                <div class="ranking-stats">{{ $user->score }} chamados resolvidos</div>
-                            </div>
-                            <div class="ranking-score-modern">
-                                <span class="score-value">{{ $user->score }}</span>
-                                <div class="score-bar">
-                                    <div class="score-fill" style="width: {{ ($user->score / max($ranking->pluck('score')->toArray())) * 100 }}%"></div>
+                        @if($ranking->count() > 0)
+                            @foreach($ranking as $index => $user)
+                            <div class="ranking-item-modern">
+                                <div class="ranking-position">
+                                    @if($index === 0)
+                                        <i class="bi bi-trophy-fill text-warning"></i>
+                                    @elseif($index === 1)
+                                        <i class="bi bi-award-fill text-secondary"></i>
+                                    @elseif($index === 2)
+                                        <i class="bi bi-award-fill text-warning"></i>
+                                    @else
+                                        <span class="position-number">{{ $index + 1 }}</span>
+                                    @endif
+                                </div>
+                                <div class="ranking-avatar-modern">
+                                    {{ strtoupper(mb_substr($user->name, 0, 1)) }}
+                                </div>
+                                <div class="ranking-info">
+                                    <div class="ranking-name">{{ $user->name }}</div>
+                                    <div class="ranking-stats">{{ $user->score }} chamados resolvidos</div>
+                                </div>
+                                <div class="ranking-score-modern">
+                                    <span class="score-value">{{ $user->score }}</span>
+                                    <div class="score-bar">
+                                        @php
+                                            $maxScore = max($ranking->pluck('score')->toArray());
+                                            $percentage = $maxScore > 0 ? ($user->score / $maxScore) * 100 : 0;
+                                        @endphp
+                                        <div class="score-fill" style="width: {{ $percentage }}%"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        @endforeach
+                            @endforeach
+                        @else
+                            <div class="text-center p-4 text-muted">
+                                <i class="bi bi-info-circle mb-2" style="font-size: 2rem;"></i>
+                                <p>Nenhum técnico com chamados resolvidos ainda.</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

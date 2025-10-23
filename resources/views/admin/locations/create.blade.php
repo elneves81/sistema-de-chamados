@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Nova Localização</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <a href="{{ route('locations.index') }}" class="btn btn-secondary">
+        <a href="{{ route('admin.locations.index') }}" class="btn btn-secondary">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>
     </div>
@@ -17,7 +17,7 @@
                 <h5 class="card-title mb-0">Informações da Localização</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('locations.store') }}" method="POST">
+                <form action="{{ route('admin.locations.store') }}" method="POST">
                     @csrf
                     
                     <div class="row">
@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ route('locations.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <a href="{{ route('admin.locations.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-lg"></i> Salvar Localização
                         </button>

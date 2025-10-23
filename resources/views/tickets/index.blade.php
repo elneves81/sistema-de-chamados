@@ -23,8 +23,26 @@
 
 <!-- Filtros -->
 <div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0">
+            <i class="bi bi-funnel"></i> Filtros Avançados
+            <small class="text-muted">({{ $tickets->total() }} {{ $tickets->total() === 1 ? 'chamado encontrado' : 'chamados encontrados' }})</small>
+        </h6>
+    </div>
     <div class="card-body">
         <form method="GET" action="{{ route('tickets.index') }}" class="row g-3">
+            <!-- Busca Textual -->
+            <div class="col-md-6">
+                <label for="search" class="form-label">Buscar</label>
+                <input type="text" 
+                       name="search" 
+                       id="search" 
+                       class="form-control" 
+                       placeholder="Título, descrição, ID, usuário, categoria ou tag..."
+                       value="{{ request('search') }}">
+            </div>
+            
+            <!-- Status -->
             <div class="col-md-3">
                 <label for="status" class="form-label">Status</label>
                 <select name="status" id="status" class="form-select">
@@ -36,6 +54,8 @@
                     <option value="closed" {{ request('status') === 'closed' ? 'selected' : '' }}>Fechado</option>
                 </select>
             </div>
+            
+            <!-- Prioridade -->
             <div class="col-md-3">
                 <label for="priority" class="form-label">Prioridade</label>
                 <select name="priority" id="priority" class="form-select">
@@ -46,7 +66,9 @@
                     <option value="urgent" {{ request('priority') === 'urgent' ? 'selected' : '' }}>Urgente</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            
+            <!-- Categoria -->
+            <div class="col-md-4">
                 <label for="category_id" class="form-label">Categoria</label>
                 <select name="category_id" id="category_id" class="form-select">
                     <option value="">Todas as Categorias</option>
@@ -57,13 +79,55 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-outline-primary me-2">
-                    <i class="bi bi-search"></i> Filtrar
-                </button>
-                <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-x-circle"></i> Limpar
-                </a>
+            
+            <!-- Tags -->
+            <div class="col-md-4">
+                <label for="tag_id" class="form-label">Tag</label>
+                <select name="tag_id" id="tag_id" class="form-select">
+                    <option value="">Todas as Tags</option>
+                    @foreach($tags as $tag)
+                    <option value="{{ $tag->id }}" {{ request('tag_id') == $tag->id ? 'selected' : '' }}>
+                        {{ $tag->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <!-- Período -->
+            <div class="col-md-4">
+                <label for="date_range" class="form-label">Período</label>
+                <select name="date_range" id="date_range" class="form-select">
+                    <option value="">Qualquer período</option>
+                    <option value="today" {{ request('date_range') === 'today' ? 'selected' : '' }}>Hoje</option>
+                    <option value="week" {{ request('date_range') === 'week' ? 'selected' : '' }}>Esta semana</option>
+                    <option value="month" {{ request('date_range') === 'month' ? 'selected' : '' }}>Este mês</option>
+                    <option value="overdue" {{ request('date_range') === 'overdue' ? 'selected' : '' }}>Atrasados</option>
+                </select>
+            </div>
+            
+            <!-- Botões -->
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i> Filtrar
+                    </button>
+                    <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Limpar
+                    </a>
+                </div>
+                
+                <!-- Estatísticas Rápidas -->
+                <div class="d-flex gap-3">
+                    <small class="text-muted">
+                        <i class="bi bi-ticket-perforated text-primary"></i> Total: <strong>{{ $stats['total'] ?? 0 }}</strong>
+                    </small>
+                    <small class="text-muted">
+                        <i class="bi bi-hourglass-split text-warning"></i> Abertos: <strong>{{ $stats['open'] ?? 0 }}</strong>
+                    </small>
+                    <small class="text-muted">
+                        <i class="bi bi-exclamation-triangle text-danger"></i> Atrasados: <strong>{{ $stats['overdue'] ?? 0 }}</strong>
+                    </small>
+                </div>
             </div>
         </form>
     </div>
@@ -73,10 +137,59 @@
 <div class="card">
     <div class="card-body">
         @if($tickets->count() > 0)
+            <!-- Barra de Ações em Lote -->
+            @if(auth()->user()->role !== 'customer')
+            <div class="mb-3 p-3 bg-light rounded" id="bulk-actions-bar" style="display: none;">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <div class="fw-bold">
+                            <span id="selected-count">0</span> chamado(s) selecionado(s)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <select id="bulk-action" class="form-select form-select-sm">
+                                    <option value="">Selecionar ação...</option>
+                                    <option value="change_status">Alterar Status</option>
+                                    <option value="change_priority">Alterar Prioridade</option>
+                                    <option value="assign">Atribuir Técnico</option>
+                                    <option value="close">Fechar</option>
+                                    <option value="resolve">Resolver</option>
+                                    <option value="reopen">Reabrir</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="bulk-value" class="form-select form-select-sm" style="display: none;">
+                                    <!-- Preenchido dinamicamente via JavaScript -->
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" id="execute-bulk-action" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-play-fill"></i> Executar
+                                </button>
+                                <button type="button" id="clear-selection" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-x"></i> Limpar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" id="bulk-comment" class="form-control form-control-sm" placeholder="Comentário opcional..." maxlength="1000">
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
+                            @if(auth()->user()->role !== 'customer')
+                            <th width="50">
+                                <input type="checkbox" id="select-all" class="form-check-input">
+                            </th>
+                            @endif
                             <th width="80">#</th>
                             <th>Título</th>
                             <th width="150">Categoria</th>
@@ -88,6 +201,7 @@
                             @if(auth()->user()->role === 'admin')
                             <th width="150">Atribuído</th>
                             @endif
+                            <th width="120">Localização</th>
                             <th width="120">Criado em</th>
                             <th width="100">Ações</th>
                         </tr>
@@ -95,6 +209,12 @@
                     <tbody>
                         @foreach($tickets as $ticket)
                         <tr>
+                            @if(auth()->user()->role !== 'customer')
+                            <td>
+                                <input type="checkbox" class="form-check-input ticket-checkbox" 
+                                       value="{{ $ticket->id }}" data-ticket-id="{{ $ticket->id }}">
+                            </td>
+                            @endif
                             <td>
                                 <a href="{{ route('tickets.show', $ticket) }}" class="fw-bold text-decoration-none">
                                     #{{ $ticket->id }}
@@ -137,6 +257,20 @@
                             </td>
                             @endif
                             <td>
+                                <small>
+                                    @if($ticket->location)
+                                        <i class="bi bi-geo-alt"></i> {{ Str::limit($ticket->location->name, 15) }}
+                                        @if($ticket->local) 
+                                            <br><span class="text-muted">{{ Str::limit($ticket->local, 20) }}</span>
+                                        @endif
+                                    @elseif($ticket->local)
+                                        <span class="text-muted">{{ Str::limit($ticket->local, 20) }}</span>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </small>
+                            </td>
+                            <td>
                                 <small>{{ $ticket->created_at->format('d/m/Y') }}</small>
                             </td>
                             <td>
@@ -158,11 +292,13 @@
             </div>
 
             <!-- Paginação -->
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <div>
+            <!-- Pagination Wrapper -->
+            <div class="pagination-wrapper">
+                <div class="pagination-info">
                     <small class="text-muted">
-                        Mostrando {{ $tickets->firstItem() ?? 0 }} a {{ $tickets->lastItem() ?? 0 }} 
-                        de {{ $tickets->total() }} chamados
+                        Mostrando <span class="fw-semibold">{{ $tickets->firstItem() ?? 0 }}</span> a 
+                        <span class="fw-semibold">{{ $tickets->lastItem() ?? 0 }}</span> 
+                        de <span class="fw-semibold">{{ $tickets->total() }}</span> chamados
                     </small>
                 </div>
                 <div>
@@ -190,4 +326,207 @@
         @endif
     </div>
 </div>
+
+@if(auth()->user()->role !== 'customer')
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAllCheckbox = document.getElementById('select-all');
+    const ticketCheckboxes = document.querySelectorAll('.ticket-checkbox');
+    const bulkActionsBar = document.getElementById('bulk-actions-bar');
+    const selectedCountSpan = document.getElementById('selected-count');
+    const bulkActionSelect = document.getElementById('bulk-action');
+    const bulkValueSelect = document.getElementById('bulk-value');
+    const executeBulkActionBtn = document.getElementById('execute-bulk-action');
+    const clearSelectionBtn = document.getElementById('clear-selection');
+
+    // Configurar opções para diferentes ações
+    const actionOptions = {
+        'change_status': [
+            { value: 'open', text: 'Aberto' },
+            { value: 'in_progress', text: 'Em Progresso' },
+            { value: 'waiting_customer', text: 'Aguardando Cliente' },
+            { value: 'resolved', text: 'Resolvido' },
+            { value: 'closed', text: 'Fechado' },
+            { value: 'reopened', text: 'Reaberto' }
+        ],
+        'change_priority': [
+            { value: 'low', text: 'Baixa' },
+            { value: 'medium', text: 'Média' },
+            { value: 'high', text: 'Alta' },
+            { value: 'urgent', text: 'Urgente' }
+        ],
+        'assign': [
+            @foreach($bulkUsers as $user)
+                { value: '{{ $user->id }}', text: '{{ $user->name }}' }{{ !$loop->last ? ',' : '' }}
+            @endforeach
+        ]
+    };
+
+    // Selecionar/deselecionar todos
+    selectAllCheckbox?.addEventListener('change', function() {
+        ticketCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+        updateBulkActionsBar();
+    });
+
+    // Atualizar quando checkboxes individuais mudam
+    ticketCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateBulkActionsBar();
+            updateSelectAllState();
+        });
+    });
+
+    // Atualizar estado do "selecionar todos"
+    function updateSelectAllState() {
+        const totalCheckboxes = ticketCheckboxes.length;
+        const checkedCheckboxes = document.querySelectorAll('.ticket-checkbox:checked').length;
+        
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = checkedCheckboxes === totalCheckboxes;
+            selectAllCheckbox.indeterminate = checkedCheckboxes > 0 && checkedCheckboxes < totalCheckboxes;
+        }
+    }
+
+    // Mostrar/ocultar barra de ações em lote
+    function updateBulkActionsBar() {
+        const selectedTickets = document.querySelectorAll('.ticket-checkbox:checked');
+        const count = selectedTickets.length;
+        
+        if (selectedCountSpan) selectedCountSpan.textContent = count;
+        
+        if (bulkActionsBar) {
+            bulkActionsBar.style.display = count > 0 ? 'block' : 'none';
+        }
+    }
+
+    // Quando a ação muda, mostrar/ocultar select de valores
+    bulkActionSelect?.addEventListener('change', function() {
+        const action = this.value;
+        
+        if (bulkValueSelect) {
+            if (action === 'change_status' || action === 'change_priority' || action === 'assign') {
+                bulkValueSelect.style.display = 'block';
+                updateBulkValueOptions(action);
+            } else {
+                bulkValueSelect.style.display = 'none';
+            }
+        }
+    });
+
+    // Atualizar opções do select de valores
+    function updateBulkValueOptions(action) {
+        if (!bulkValueSelect) return;
+        
+        bulkValueSelect.innerHTML = '<option value="">Selecione...</option>';
+        
+        if (actionOptions[action]) {
+            actionOptions[action].forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.value || option.id;
+                optionElement.textContent = option.text || option.name;
+                bulkValueSelect.appendChild(optionElement);
+            });
+        }
+    }
+
+    // Executar ação em lote
+    executeBulkActionBtn?.addEventListener('click', function() {
+        const selectedTickets = Array.from(document.querySelectorAll('.ticket-checkbox:checked'))
+            .map(cb => cb.value);
+        
+        if (selectedTickets.length === 0) {
+            alert('Selecione pelo menos um chamado.');
+            return;
+        }
+
+        const action = bulkActionSelect.value;
+        if (!action) {
+            alert('Selecione uma ação.');
+            return;
+        }
+
+        // Verificar se precisa de valor adicional
+        let additionalValue = null;
+        if (['change_status', 'change_priority', 'assign'].includes(action)) {
+            additionalValue = bulkValueSelect.value;
+            if (!additionalValue) {
+                alert('Selecione um valor para a ação escolhida.');
+                return;
+            }
+        }
+
+        const comment = document.getElementById('bulk-comment')?.value || '';
+
+        // Confirmar ação
+        const actionNames = {
+            'close': 'fechar',
+            'resolve': 'resolver',
+            'reopen': 'reabrir',
+            'assign': 'atribuir técnico aos',
+            'change_status': 'alterar status dos',
+            'change_priority': 'alterar prioridade dos'
+        };
+
+        const actionName = actionNames[action] || action;
+        if (!confirm(`Tem certeza que deseja ${actionName} ${selectedTickets.length} chamado(s)?`)) {
+            return;
+        }
+
+        // Preparar dados
+        const formData = new FormData();
+        selectedTickets.forEach(id => formData.append('ticket_ids[]', id));
+        formData.append('action', action);
+        if (comment) formData.append('comment', comment);
+
+        if (action === 'assign') {
+            formData.append('assigned_user_id', additionalValue);
+        } else if (action === 'change_status') {
+            formData.append('new_status', additionalValue);
+        } else if (action === 'change_priority') {
+            formData.append('new_priority', additionalValue);
+        }
+
+        // Enviar requisição
+        fetch('{{ route("tickets.bulk-action") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload(); // Recarregar página para ver as mudanças
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao executar ação em lote. Tente novamente.');
+        });
+    });
+
+    // Limpar seleção
+    clearSelectionBtn?.addEventListener('click', function() {
+        ticketCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = false;
+        }
+        updateBulkActionsBar();
+    });
+});
+</script>
+@endpush
+@endif
+
 @endsection

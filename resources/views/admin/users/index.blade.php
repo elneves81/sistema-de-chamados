@@ -114,12 +114,24 @@
                         <option value="customer" {{ request('role') === 'customer' ? 'selected' : '' }}>Cliente</option>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select" id="status" name="status">
                         <option value="">Todos</option>
                         <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Ativos</option>
                         <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inativos</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="location" class="form-label">Localização</label>
+                    <select class="form-select" id="location" name="location">
+                        <option value="">Todas as UBSs</option>
+                        <option value="null" {{ request('location') === 'null' ? 'selected' : '' }}>Sem localização</option>
+                        @foreach($locations as $location)
+                            <option value="{{ $location->id }}" {{ request('location') == $location->id ? 'selected' : '' }}>
+                                {{ $location->name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-2">
@@ -176,6 +188,7 @@
                                 </th>
                                 <th>Usuário</th>
                                 <th>Função</th>
+                                <th>Localização</th>
                                 <th>Contato</th>
                                 <th>Tickets</th>
                                 <th>Cadastro</th>
@@ -212,6 +225,24 @@
                                             <i class="bi bi-person"></i> Cliente
                                         @endif
                                     </span>
+                                </td>
+                                <td>
+                                    @if($user->location)
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-geo-alt text-primary me-2"></i>
+                                            <div>
+                                                <small class="fw-bold">{{ $user->location->short_name }}</small><br>
+                                                <small class="text-muted">{{ $user->location->name }}</small>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-sm btn-outline-warning" 
+                                                    onclick="assignLocation({{ $user->id }})" title="Atribuir Localização">
+                                                <i class="bi bi-geo-alt"></i> Definir UBS
+                                            </button>
+                                        </div>
+                                    @endif
                                 </td>
                                 <td>
                                     <div>
@@ -334,12 +365,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const userCheckboxes = document.querySelectorAll('.user-checkbox');
     const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
 
-    selectAll.addEventListener('change', function() {
-        userCheckboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
+    // Verificar se os elementos existem antes de adicionar eventos
+    if (selectAll) {
+        selectAll.addEventListener('change', function() {
+            userCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateBulkButtons();
         });
-        updateBulkButtons();
-    });
+    }
 
     userCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', updateBulkButtons);
@@ -347,15 +381,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateBulkButtons() {
         const checkedBoxes = document.querySelectorAll('.user-checkbox:checked');
-        bulkDeleteBtn.disabled = checkedBoxes.length === 0;
+        if (bulkDeleteBtn) {
+            bulkDeleteBtn.disabled = checkedBoxes.length === 0;
+        }
     }
 
     // Bulk delete
-    bulkDeleteBtn.addEventListener('click', function() {
-        if (confirm('Tem certeza que deseja excluir os usuários selecionados?')) {
-            bulkAction('delete');
-        }
-    });
+    if (bulkDeleteBtn) {
+        bulkDeleteBtn.addEventListener('click', function() {
+            if (confirm('Tem certeza que deseja excluir os usuários selecionados?')) {
+                bulkAction('delete');
+            }
+        });
+    }
 });
 
 function bulkAction(action, role = null) {
@@ -366,11 +404,19 @@ function bulkAction(action, role = null) {
     }
 
     if (confirm(`Tem certeza que deseja executar esta ação em ${checkedBoxes.length} usuário(s)?`)) {
-        document.getElementById('bulkAction').value = action;
-        if (role) {
-            document.getElementById('bulkRole').value = role;
+        const bulkActionElement = document.getElementById('bulkAction');
+        const bulkRoleElement = document.getElementById('bulkRole');
+        const bulkActionForm = document.getElementById('bulkActionForm');
+        
+        if (bulkActionElement) {
+            bulkActionElement.value = action;
         }
-        document.getElementById('bulkActionForm').submit();
+        if (role && bulkRoleElement) {
+            bulkRoleElement.value = role;
+        }
+        if (bulkActionForm) {
+            bulkActionForm.submit();
+        }
     }
 }
 
@@ -387,5 +433,66 @@ function deleteUser(userId) {
         form.submit();
     }
 }
+
+function assignLocation(userId) {
+    const modal = new bootstrap.Modal(document.getElementById('assignLocationModal'));
+    document.getElementById('assignLocationUserId').value = userId;
+    modal.show();
+}
+
+function saveUserLocation() {
+    const userId = document.getElementById('assignLocationUserId').value;
+    const locationId = document.getElementById('assignLocationSelect').value;
+    
+    if (!locationId) {
+        alert('Selecione uma UBS');
+        return;
+    }
+    
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/admin/users/${userId}/assign-location`;
+    form.innerHTML = `
+        @csrf
+        <input type="hidden" name="location_id" value="${locationId}">
+    `;
+    document.body.appendChild(form);
+    form.submit();
+}
 </script>
+
+<!-- Modal para atribuir localização -->
+<div class="modal fade" id="assignLocationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-geo-alt"></i> Atribuir UBS ao Usuário
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="assignLocationForm">
+                    <input type="hidden" id="assignLocationUserId">
+                    <div class="mb-3">
+                        <label for="assignLocationSelect" class="form-label">Selecione a UBS:</label>
+                        <select class="form-select" id="assignLocationSelect" required>
+                            <option value="">Escolha uma UBS...</option>
+                            @foreach($locations as $location)
+                                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="saveUserLocation()">
+                    <i class="bi bi-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection

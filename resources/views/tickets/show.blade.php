@@ -155,6 +155,19 @@
                     <div class="col-sm-5"><strong>Solicitante:</strong></div>
                     <div class="col-sm-7">{{ $ticket->user->name }}</div>
                 </div>
+                @if($ticket->location || $ticket->local)
+                <div class="row mb-3">
+                    <div class="col-sm-5"><strong>Localização:</strong></div>
+                    <div class="col-sm-7">
+                        @if($ticket->location)
+                            <i class="bi bi-geo-alt"></i> {{ $ticket->location->name }}
+                            @if($ticket->local) - {{ $ticket->local }} @endif
+                        @else
+                            {{ $ticket->local }}
+                        @endif
+                    </div>
+                </div>
+                @endif
                 @if($ticket->assignedUser)
                 <div class="row mb-3">
                     <div class="col-sm-5"><strong>Atribuído:</strong></div>

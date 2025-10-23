@@ -1187,11 +1187,11 @@ $(document).ready(function() {
     
     // Event handlers para botões de exportação
     $(document).on('click', '#exportMetricsPDF', function() {
-        window.open("{{ route('api.tickets.metrics.export') }}", '_blank');
+        window.openReport("{{ route('api.tickets.metrics.export') }}");
     });
 
     $(document).on('click', '#exportDashboardPDF', function() {
-        window.open("{{ route('api.tickets.dashboard.export') }}", '_blank');
+        window.openReport("{{ route('api.tickets.dashboard.export') }}");
     });
 
     $(document).on('click', '#refreshDashboard', function() {
@@ -2119,7 +2119,7 @@ function loadDashboard() {
             });
             
             $('#exportDashboardPDF').off('click').on('click', function() {
-                window.open("{{ route('api.tickets.dashboard.export') }}", '_blank');
+                window.openReport("{{ route('api.tickets.dashboard.export') }}");
             });
         },
         error: function(xhr, status, error) {
@@ -2303,14 +2303,14 @@ function updateDashboard() {
 // Função para exportar dashboard
 function exportDashboardPDF() {
     $('#exportDashboardPDF').off('click').on('click', function() {
-        window.open("{{ route('api.tickets.dashboard.export') }}", '_blank');
+        window.openReport("{{ route('api.tickets.dashboard.export') }}");
     });
 }
 
 // Event handlers para botões de exportação
 function setupExportHandlers() {
     $('#exportMetricsPDF').off('click').on('click', function() {
-        window.open("{{ route('api.tickets.metrics.export') }}", '_blank');
+        window.openReport("{{ route('api.tickets.metrics.export') }}");
     });
 }
 
@@ -2466,7 +2466,7 @@ function loadMetrics() {
             
             // Adicionar event handler para exportação
             $('#exportMetricsPDF').off('click').on('click', function() {
-                window.open("{{ route('api.tickets.metrics.export') }}", '_blank');
+                window.openReport("{{ route('api.tickets.metrics.export') }}");
             });
         },
         error: function(xhr, status, error) {
@@ -2591,7 +2591,7 @@ function loadDashboard() {
             });
             
             $('#exportDashboardPDF').off('click').on('click', function() {
-                window.open("{{ route('api.tickets.dashboard.export') }}", '_blank');
+                window.openReport("{{ route('api.tickets.dashboard.export') }}");
             });
         },
         error: function(xhr, status, error) {

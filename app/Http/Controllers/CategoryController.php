@@ -5,18 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware(function ($request, $next) {
-            if (Auth::user()->role !== 'admin') {
-                abort(403, 'Acesso negado. Apenas administradores podem gerenciar categorias.');
-            }
-            return $next($request);
-        });
+        // Middleware de permissão removido - já está nas rotas
     }
 
     /**

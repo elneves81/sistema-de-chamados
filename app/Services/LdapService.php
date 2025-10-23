@@ -437,6 +437,92 @@ class LdapService
     /**
      * Destrutor para fechar a conexão
      */
+    /**
+     * Busca usuários no LDAP com configuração customizada
+     */
+    public function searchUsers(array $customConfig, string $filter = null, int $limit = 100): array
+    {
+        $connection = null;
+        $users = [];
+
+        try {
+            // Criar conexão com configuração customizada
+            $connection = ldap_connect($customConfig['hosts'][0], $customConfig['port']);
+            
+            if (!$connection) {
+                throw new Exception('Não foi possível conectar ao servidor LDAP');
+            }
+
+            // Configurar opções
+            ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
+            ldap_set_option($connection, LDAP_OPT_REFERRALS, 0);
+            ldap_set_option($connection, LDAP_OPT_NETWORK_TIMEOUT, 10);
+
+            if ($customConfig['use_ssl']) {
+                ldap_start_tls($connection);
+            }
+
+            // Autenticar
+            $bind = ldap_bind($connection, $customConfig['username'], $customConfig['password']);
+            if (!$bind) {
+                throw new Exception('Falha na autenticação LDAP: ' . ldap_error($connection));
+            }
+
+            // Definir filtro padrão se não fornecido
+            if (!$filter) {
+                $filter = '(&(objectClass=user)(!(objectClass=computer)))';
+            }
+
+            // Atributos a buscar
+            $attributes = [
+                'dn',
+                'cn', 
+                'displayName',
+                'sAMAccountName',
+                'userPrincipalName',
+                'mail',
+                'department',
+                'title',
+                'userAccountControl'
+            ];
+
+            // Buscar usuários
+            $search = ldap_search($connection, $customConfig['base_dn'], $filter, $attributes, 0, $limit);
+            
+            if (!$search) {
+                throw new Exception('Erro na busca LDAP: ' . ldap_error($connection));
+            }
+
+            $entries = ldap_get_entries($connection, $search);
+
+            // Processar resultados
+            for ($i = 0; $i < $entries['count']; $i++) {
+                $entry = $entries[$i];
+                
+                $users[] = [
+                    'dn' => $entry['dn'] ?? '',
+                    'cn' => isset($entry['cn'][0]) ? $entry['cn'][0] : '',
+                    'displayName' => isset($entry['displayname'][0]) ? $entry['displayname'][0] : '',
+                    'sAMAccountName' => isset($entry['samaccountname'][0]) ? $entry['samaccountname'][0] : '',
+                    'userPrincipalName' => isset($entry['userprincipalname'][0]) ? $entry['userprincipalname'][0] : '',
+                    'mail' => isset($entry['mail'][0]) ? $entry['mail'][0] : '',
+                    'department' => isset($entry['department'][0]) ? $entry['department'][0] : '',
+                    'title' => isset($entry['title'][0]) ? $entry['title'][0] : '',
+                    'userAccountControl' => isset($entry['useraccountcontrol'][0]) ? intval($entry['useraccountcontrol'][0]) : 0
+                ];
+            }
+
+        } catch (Exception $e) {
+            throw new Exception('Erro na busca LDAP: ' . $e->getMessage());
+        } finally {
+            if ($connection) {
+                ldap_close($connection);
+            }
+        }
+
+        return $users;
+    }
+
     public function __destruct()
     {
         if ($this->connection) {

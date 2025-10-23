@@ -19,9 +19,13 @@ class Ticket extends Model
         'user_id',
         'assigned_to',
         'category_id',
+        'location_id',
+        'local',
         'due_date',
         'resolved_at',
+        'resolved_by',
         'closed_at',
+        'closed_by',
         'attachments'
     ];
 
@@ -54,9 +58,29 @@ class Ticket extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
+    public function resolvedBy()
+    {
+        return $this->belongsTo(User::class, 'resolved_by');
+    }
+
+    public function closedBy()
+    {
+        return $this->belongsTo(User::class, 'closed_by');
+    }
+
     public function comments()
     {
         return $this->hasMany(TicketComment::class)->orderBy('created_at');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(TicketTag::class, 'ticket_tag_pivot');
     }
 
     // Scopes

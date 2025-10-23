@@ -1,0 +1,225 @@
+/* Estilos para o sistema de gerenciamento de pop-ups */
+
+/* Notificações de pop-ups bloqueados */
+.popup-blocked-notification {
+    z-index: 10000 !important;
+}
+
+.popup-blocked-notification .alert {
+    border-left: 4px solid #fd7e14;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Status indicator para pop-ups */
+.popup-status-indicator {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 9998;
+    transition: all 0.3s ease;
+}
+
+.popup-status-indicator.allowed {
+    background: #28a745;
+    color: white;
+}
+
+.popup-status-indicator.blocked {
+    background: #dc3545;
+    color: white;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+    }
+}
+
+/* Melhorias para links que abrem pop-ups */
+[data-popup-url] {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+[data-popup-url]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tooltip para indicar que link abre pop-up */
+[data-popup-url]::after {
+    content: " 🔗";
+    font-size: 12px;
+    opacity: 0.6;
+    margin-left: 4px;
+}
+
+/* Estilo para botões que podem ser bloqueados */
+.popup-trigger-btn {
+    position: relative;
+}
+
+.popup-trigger-btn.popup-blocked::after {
+    content: "⚠️";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    animation: bounce 0.5s infinite alternate;
+}
+
+@keyframes bounce {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+
+/* Loading spinner para downloads */
+.download-loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 5px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Toast notifications */
+.popup-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #333;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 9999;
+    max-width: 300px;
+    animation: slideUp 0.3s ease-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.popup-toast.success {
+    background: #28a745;
+}
+
+.popup-toast.warning {
+    background: #ffc107;
+    color: #000;
+}
+
+.popup-toast.error {
+    background: #dc3545;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .popup-blocked-notification .alert {
+        margin: 10px;
+        font-size: 14px;
+    }
+    
+    .popup-status-indicator {
+        top: 5px;
+        right: 5px;
+        font-size: 10px;
+        padding: 6px 10px;
+    }
+    
+    .popup-toast {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    .popup-blocked-notification .alert,
+    .popup-status-indicator.blocked,
+    .popup-trigger-btn.popup-blocked::after,
+    .download-loading,
+    .popup-toast {
+        animation: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .popup-blocked-notification .alert {
+        border: 2px solid #000;
+    }
+    
+    .popup-status-indicator {
+        border: 1px solid #000;
+    }
+}
+
+/* Focus indicators for keyboard navigation */
+[data-popup-url]:focus,
+.popup-trigger-btn:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .popup-blocked-notification,
+    .popup-status-indicator,
+    .popup-toast {
+        display: none !important;
+    }
+}

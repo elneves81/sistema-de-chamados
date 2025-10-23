@@ -675,8 +675,8 @@
         forceTLS: true
     });
     if (window.top === window.self && !window.location.search.includes('noauto')) {
-        // Só abre em nova aba se não estiver em iframe ou popup
-        window.open(window.location.href + '?noauto=1', '_blank');
+        // Só abre em nova aba se não estiver em iframe ou popup - usando popup manager
+        window.popupManager.openUrl(window.location.href + '?noauto=1', '_blank');
         window.location.href = '/'; // Redireciona para home para evitar duplicidade
     }
     </script>
@@ -723,6 +723,47 @@
             </div>
         </div>
 
+        <!-- Location Statistics Panel -->
+        @if($locationStats->isNotEmpty())
+        <div class="location-stats-panel" style="margin: 20px; background: #232336; border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+            <h3 style="color: #ffffff; font-size: 1.5rem; font-weight: 700; margin-bottom: 15px;">
+                <i class="bi bi-geo-alt-fill"></i> Estatísticas por Localização
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                @foreach($locationStats as $location)
+                    <div style="background: #2a2a40; border-radius: 12px; padding: 15px; border-left: 4px solid #6366f1;">
+                        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 10px;">
+                            <h4 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin: 0;">
+                                {{ $location->name }}
+                                @if($location->short_name)
+                                    <span style="color: #9ca3af; font-size: 0.9rem;">({{ $location->short_name }})</span>
+                                @endif
+                            </h4>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 0.85rem;">
+                            <div style="text-align: center;">
+                                <div style="color: #6366f1; font-weight: 700; font-size: 1.2rem;">{{ $location->tickets_count }}</div>
+                                <div style="color: #9ca3af;">Total</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="color: #ef4444; font-weight: 700; font-size: 1.2rem;">{{ $location->open_tickets_count }}</div>
+                                <div style="color: #9ca3af;">Abertos</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="color: #f59e0b; font-weight: 700; font-size: 1.2rem;">{{ $location->in_progress_tickets_count }}</div>
+                                <div style="color: #9ca3af;">Em Andamento</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="color: #10b981; font-weight: 700; font-size: 1.2rem;">{{ $location->resolved_tickets_count }}</div>
+                                <div style="color: #9ca3af;">Resolvidos</div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         <hr class="horizontal-bar" id="priority-bar" style="z-index: 1000; position: relative;" />
 
         <div class="tickets-container">
@@ -745,9 +786,15 @@
                                 </div>
                                 <div class="ticket-meta">
                                     <span><i class="bi bi-person"></i> {{ $ticket->user->name ?? 'N/A' }}</span>
-                                    <span><i class="bi bi-geo-alt"></i> {{ $ticket->local ?? 'Local não informado' }}</span>
+                                    @if($ticket->user && $ticket->user->location)
+                                        <span><i class="bi bi-geo-alt-fill"></i> {{ $ticket->user->location->name }}</span>
+                                    @elseif($ticket->local)
+                                        <span><i class="bi bi-geo-alt"></i> {{ $ticket->local }}</span>
+                                    @else
+                                        <span><i class="bi bi-geo-alt"></i> Local não informado</span>
+                                    @endif
                                     <span><i class="bi bi-tag"></i> {{ $ticket->category->name ?? 'Sem categoria' }}</span>
-                                    <span><i class="bi bi-person-badge"></i> {{ $ticket->assignedTo->name ?? 'Não atribuído' }}</span>
+                                    <span><i class="bi bi-person-badge"></i> {{ $ticket->assignedUser->name ?? 'Não atribuído' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -898,8 +945,17 @@
     document.addEventListener('DOMContentLoaded', function() {
         updateUI();
         updateClock();
-        setInterval(updateClock, 1000);
-        setInterval(updateFooterCycling, 3000);
+        
+        // Usar timer manager para evitar múltiplos timers
+        if (window.timerManager) {
+            window.timerManager.setInterval('clock', updateClock, 1000);
+            window.timerManager.setInterval('footerCycling', updateFooterCycling, 3000);
+        } else {
+            // Fallback se timer manager não estiver disponível
+            setInterval(updateClock, 1000);
+            setInterval(updateFooterCycling, 3000);
+        }
+        
         updateFooterCycling();
         if (autoRefreshEnabled) {
             startAutoRefresh();
@@ -1108,7 +1164,13 @@
     // Inicia auto-refresh
     function startAutoRefresh() {
         if (refreshTimer) clearInterval(refreshTimer);
-        refreshTimer = setInterval(loadTickets, refreshInterval);
+        
+        // Usar timer manager se disponível
+        if (window.timerManager) {
+            window.timerManager.setInterval('autoRefresh', loadTickets, refreshInterval);
+        } else {
+            refreshTimer = setInterval(loadTickets, refreshInterval);
+        }
     }
 
     // Para auto-refresh
@@ -1239,6 +1301,28 @@
             }, 200); // Pequeno delay para garantir renderização
         }
     }
+    </script>
+    
+    <!-- Scripts otimizados para performance -->
+    <script src="{{ asset('js/timer-manager.js') }}"></script>
+    <script src="{{ asset('js/popup-manager-lite.js') }}"></script>
+    <script>
+        // Substituir setInterval por versão gerenciada
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.timerManager) {
+                // Limpar timers anteriores
+                window.timerManager.clearAll();
+                
+                console.log('Board-TV Enhanced: Timers otimizados carregados');
+            }
+        });
+        
+        // Limpeza ao sair
+        window.addEventListener('beforeunload', () => {
+            if (window.timerManager) {
+                window.timerManager.clearAll();
+            }
+        });
     </script>
 </body>
 </html>

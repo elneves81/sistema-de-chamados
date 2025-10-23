@@ -5,10 +5,10 @@
     <h1 class="h2">{{ $location->name }}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            <a href="{{ route('locations.index') }}" class="btn btn-secondary">
+            <a href="{{ route('admin.locations.index') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Voltar
             </a>
-            <a href="{{ route('locations.edit', $location) }}" class="btn btn-warning">
+            <a href="{{ route('admin.locations.edit', $location) }}" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> Editar
             </a>
         </div>
@@ -260,11 +260,11 @@
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <a href="{{ route('locations.edit', $location) }}" class="btn btn-warning">
+                    <a href="{{ route('admin.locations.edit', $location) }}" class="btn btn-warning">
                         <i class="bi bi-pencil"></i> Editar Localização
                     </a>
                     @if($location->users->count() == 0 && $location->assets->count() == 0)
-                        <form action="{{ route('locations.destroy', $location) }}" method="POST" 
+                        <form action="{{ route('admin.locations.destroy', $location) }}" method="POST" 
                               onsubmit="return confirm('⚠️ ATENÇÃO!\n\nTem certeza que deseja EXCLUIR esta localização?\n\nEsta ação não pode ser desfeita!')">
                             @csrf
                             @method('DELETE')

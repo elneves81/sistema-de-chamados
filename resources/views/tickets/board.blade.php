@@ -277,7 +277,7 @@ $(document).ready(function() {
     // Click no ticket para abrir
     $(document).on('click', '.ticket-card', function() {
         let ticketId = $(this).data('ticket-id');
-        window.open(`/tickets/${ticketId}`, '_blank');
+        window.openTicket(ticketId);
     });
 });
 

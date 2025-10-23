@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserMessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,5 +32,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tickets/dashboard/export', [\App\Http\Controllers\TicketController::class, 'apiExportDashboard'])->name('api.tickets.dashboard.export');
 });
 
+// Sistema de Mensagens API (usando autenticação web para funcionar com sessões)
+Route::middleware(['auth', 'web'])->group(function () {
+    Route::get('/messages/recent', [\App\Http\Controllers\UserMessageController::class, 'recent'])->name('api.messages.recent');
+    Route::get('/messages/unread-count', [\App\Http\Controllers\UserMessageController::class, 'unreadCount'])->name('api.messages.unread-count');
+});
+
 // ROTA PÚBLICA para painel TV/dashboard (sem autenticação)
 Route::get('/tickets/dashboard', [\App\Http\Controllers\TicketController::class, 'apiDashboard'])->name('api.tickets.dashboard');
+Route::get('/tickets/realtime', [\App\Http\Controllers\DashboardController::class, 'realtimeTickets'])->name('api.tickets.realtime');
+
+// Rotas de IA - Inteligência Artificial (públicas para facilitar uso)
+Route::post('/ai/chatbot', [\App\Http\Controllers\AiController::class, 'chatbot'])->name('api.ai.chatbot');
+Route::post('/ai/classify', [\App\Http\Controllers\AiController::class, 'classifyTicket'])->name('api.ai.classify');
+Route::post('/ai/create-ticket', [\App\Http\Controllers\AiController::class, 'createTicketViaAi'])->name('api.ai.create-ticket');
+Route::get('/ai/predict', [\App\Http\Controllers\AiController::class, 'predictDemand'])->name('api.ai.predict');
+Route::get('/ai/dashboard', [\App\Http\Controllers\AiController::class, 'dashboard'])->name('api.ai.dashboard');
+Route::post('/ai/suggest', [\App\Http\Controllers\AiController::class, 'autoSuggest'])->name('api.ai.suggest');
+
+// Nova funcionalidade: Criação de chamado via IA (requer autenticação)
+Route::middleware('auth')->group(function () {
+    Route::post('/ai/create-ticket', [\App\Http\Controllers\AiController::class, 'createTicketViaAi'])->name('api.ai.create-ticket');
+});

@@ -8,12 +8,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['realtimeTickets']);
     }
 
     public function index()
@@ -63,6 +64,14 @@ class DashboardController extends Controller
             $data['totalCategories'] = Category::where('active', true)->count();
             $data['urgentTickets'] = Ticket::where('priority', 'urgent')
                 ->whereIn('status', ['open', 'in_progress'])->count();
+            
+            // Métricas avançadas
+            $data['avgResolutionTime'] = $this->getAvgResolutionTimeHours();
+            $data['slaCompliance'] = $this->getSLACompliance();
+            $data['customerSatisfaction'] = $this->getCustomerSatisfaction();
+            $data['overdueTickets'] = $this->getOverdueTickets();
+            $data['ticketsThisMonth'] = $this->getTicketsThisMonth();
+            $data['recentGrowth'] = $this->getRecentGrowth();
         }
         
         return $data;
@@ -195,49 +204,182 @@ class DashboardController extends Controller
     }
 
     /**
-     * API para dados em tempo real
+     * API para dados em tempo real do painel TV inteligente
      */
     public function realtimeTickets()
     {
-        // Verificar se é admin
-        if (auth()->user()->role !== 'admin') {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        try {
+            // Buscar todos os tickets ativos com informações completas
+            $tickets = Ticket::with(['user.location', 'category', 'assignedUser'])
+                ->whereNotIn('status', ['closed'])
+                ->orderByRaw("
+                    CASE priority 
+                        WHEN 'urgent' THEN 1 
+                        WHEN 'high' THEN 2 
+                        WHEN 'medium' THEN 3 
+                        WHEN 'low' THEN 4 
+                        ELSE 5 
+                    END, created_at DESC
+                ")
+                ->get();
 
-        $lastTicketId = request('last_ticket_id', 0);
-        
-        // Buscar novos tickets
-        $newTickets = Ticket::with(['user', 'category'])
-                           ->where('id', '>', $lastTicketId)
-                           ->orderBy('created_at', 'desc')
-                           ->get();
+            // Estatísticas gerais
+            $stats = [
+                'total_tickets' => $tickets->count(),
+                'urgent_tickets' => $tickets->where('priority', 'urgent')->count(),
+                'high_tickets' => $tickets->where('priority', 'high')->count(),
+                'open_tickets' => $tickets->where('status', 'open')->count(),
+                'in_progress_tickets' => $tickets->where('status', 'in_progress')->count(),
+                'active_ubs' => $tickets->pluck('user.location.id')->filter()->unique()->count()
+            ];
 
-        $data = [
-            'new_tickets' => $newTickets->map(function($ticket) {
+            // Estatísticas por UBS
+            $ubsStats = \App\Models\Location::with(['users.tickets' => function($query) {
+                    $query->whereNotIn('status', ['closed']);
+                }])
+                ->get()
+                ->map(function($location) {
+                    $allTickets = $location->users->flatMap->tickets;
+                    $urgentTickets = $allTickets->where('priority', 'urgent')->count();
+                    $openTickets = $allTickets->where('status', 'open')->count();
+                    
+                    return [
+                        'id' => $location->id,
+                        'name' => $location->name,
+                        'total_tickets' => $allTickets->count(),
+                        'open_tickets' => $openTickets,
+                        'urgent_tickets' => $urgentTickets,
+                        'in_progress_tickets' => $allTickets->where('status', 'in_progress')->count(),
+                        'has_urgent' => $urgentTickets > 0,
+                        'has_tickets' => $allTickets->count() > 0
+                    ];
+                })
+                ->filter(function($ubs) {
+                    return $ubs['total_tickets'] > 0 || $ubs['has_tickets'];
+                })
+                ->values();
+
+            // Formatar tickets para o frontend
+            $formattedTickets = $tickets->map(function($ticket) {
                 return [
                     'id' => $ticket->id,
                     'title' => $ticket->title,
-                    'user_name' => $ticket->user->name,
-                    'category' => $ticket->category->name,
+                    'description' => substr($ticket->description, 0, 100) . '...',
                     'priority' => $ticket->priority,
-                    'priority_label' => $ticket->priority_label,
                     'status' => $ticket->status,
-                    'status_label' => $ticket->status_label,
-                    'created_at' => $ticket->created_at->format('d/m/Y H:i'),
-                    'url' => route('tickets.show', $ticket)
+                    'user_name' => $ticket->user->name ?? 'N/A',
+                    'ubs_name' => $ticket->user->location->name ?? null,
+                    'category_name' => $ticket->category->name ?? 'Sem categoria',
+                    'assigned_to' => $ticket->assignedUser->name ?? null,
+                    'created_at' => $ticket->created_at->toISOString(),
+                    'updated_at' => $ticket->updated_at->toISOString(),
+                    'age_hours' => $ticket->created_at->diffInHours(now()),
+                    'age_text' => $this->formatTicketAge($ticket->created_at)
                 ];
-            }),
-            'stats' => [
-                'total' => Ticket::count(),
-                'open' => Ticket::where('status', 'open')->count(),
-                'urgent' => Ticket::where('priority', 'urgent')->count(),
-                'overdue' => Ticket::whereDate('due_date', '<', now())
-                                  ->whereNotIn('status', ['resolved', 'closed'])
-                                  ->count(),
-            ],
-            'last_ticket_id' => $newTickets->first()->id ?? $lastTicketId
-        ];
+            });
 
-        return response()->json($data);
+            return response()->json([
+                'success' => true,
+                'stats' => $stats,
+                'tickets' => $formattedTickets,
+                'ubs_stats' => $ubsStats,
+                'last_updated' => now()->toISOString()
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Erro na API realtimeTickets: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'error' => 'Erro interno do servidor',
+                'stats' => [
+                    'total_tickets' => 0,
+                    'urgent_tickets' => 0,
+                    'active_ubs' => 0
+                ],
+                'tickets' => [],
+                'ubs_stats' => []
+            ], 500);
+        }
+    }
+
+    /**
+     * Formatar idade do ticket de forma legível
+     */
+    private function formatTicketAge($createdAt)
+    {
+        $hours = $createdAt->diffInHours(now());
+        $minutes = $createdAt->diffInMinutes(now());
+        
+        if ($hours >= 24) {
+            $days = floor($hours / 24);
+            return $days . 'd';
+        } elseif ($hours >= 1) {
+            return $hours . 'h';
+        } else {
+            return $minutes . 'min';
+        }
+    }
+
+    /**
+     * Métricas Avançadas
+     */
+    private function getAvgResolutionTimeHours()
+    {
+        $avgHours = DB::table('tickets')
+            ->whereNotNull('closed_at')
+            ->whereNotNull('created_at')
+            ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, closed_at)) as avg_hours')
+            ->value('avg_hours');
+
+        return round($avgHours ?? 0, 1);
+    }
+
+    private function getSLACompliance()
+    {
+        $totalResolved = Ticket::whereNotNull('closed_at')->count();
+        
+        if ($totalResolved == 0) return 0;
+        
+        $onTime = Ticket::whereNotNull('closed_at')
+            ->whereColumn('closed_at', '<=', 'due_date')
+            ->count();
+
+        return round(($onTime / $totalResolved) * 100, 1);
+    }
+
+    private function getCustomerSatisfaction()
+    {
+        // Simulado - implementar quando tiver sistema de avaliação
+        return 4.2; // Nota média de 1-5
+    }
+
+    private function getOverdueTickets()
+    {
+        return Ticket::whereDate('due_date', '<', now())
+            ->whereNotIn('status', ['resolved', 'closed'])
+            ->count();
+    }
+
+    private function getTicketsThisMonth()
+    {
+        return Ticket::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+    }
+
+    private function getRecentGrowth()
+    {
+        $thisMonth = Ticket::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+            
+        $lastMonth = Ticket::whereMonth('created_at', now()->subMonth()->month)
+            ->whereYear('created_at', now()->subMonth()->year)
+            ->count();
+
+        if ($lastMonth == 0) return 100;
+        
+        return round((($thisMonth - $lastMonth) / $lastMonth) * 100, 1);
     }
 }

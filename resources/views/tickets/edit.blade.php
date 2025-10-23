@@ -113,6 +113,44 @@
                         </div>
                     </div>
 
+                    <!-- Localização -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="location_id" class="form-label">Localização Principal</label>
+                                <select class="form-select @error('location_id') is-invalid @enderror" 
+                                        id="location_id" 
+                                        name="location_id">
+                                    <option value="">Selecione uma localização</option>
+                                    @foreach($locations as $location)
+                                    <option value="{{ $location->id }}" 
+                                            {{ old('location_id', $ticket->location_id) == $location->id ? 'selected' : '' }}>
+                                        {{ $location->name }}
+                                        @if($location->short_name) ({{ $location->short_name }}) @endif
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('location_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="local" class="form-label">Local Específico</label>
+                                <input type="text" 
+                                       class="form-control @error('local') is-invalid @enderror" 
+                                       id="local" 
+                                       name="local" 
+                                       value="{{ old('local', $ticket->local) }}" 
+                                       placeholder="Ex: Sala 101, Andar 2, Setor A">
+                                @error('local')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">

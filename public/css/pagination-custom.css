@@ -1,0 +1,150 @@
+/* Custom Pagination Styles for Sistema de Chamados */
+
+/* General pagination improvements */
+.pagination {
+    margin-bottom: 0;
+}
+
+.pagination .page-link {
+    border-radius: 8px !important;
+    margin: 0 2px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination .page-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+
+.pagination .page-item.disabled .page-link:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Custom pagination for tickets and other lists */
+.pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid #e9ecef;
+}
+
+.pagination-info {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.pagination-info .fw-semibold {
+    color: #495057;
+    font-weight: 600;
+}
+
+/* Icon-specific styles for pagination arrows */
+.pagination .page-link i.bi {
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* Responsive pagination */
+@media (max-width: 768px) {
+    .pagination-wrapper {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .pagination .page-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    .pagination-info {
+        order: 2;
+    }
+}
+
+@media (max-width: 576px) {
+    .pagination .page-link {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+        margin: 0 1px;
+    }
+    
+    .pagination .page-link i.bi {
+        font-size: 10px;
+    }
+}
+
+/* Special styling for ticket list pagination */
+.tickets-pagination {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+}
+
+.tickets-pagination .pagination {
+    justify-content: center;
+}
+
+.tickets-pagination .pagination-info {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+/* Loading state for pagination */
+.pagination-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.pagination-loading .page-link {
+    cursor: not-allowed;
+}
+
+/* Hover effects for better UX */
+.pagination .page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Dark mode support (if needed) */
+@media (prefers-color-scheme: dark) {
+    .pagination .page-link {
+        background-color: #343a40;
+        border-color: #495057;
+        color: #f8f9fa;
+    }
+    
+    .pagination .page-link:hover {
+        background-color: #495057;
+        border-color: #6c757d;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    
+    .pagination .page-item.disabled .page-link {
+        background-color: #212529;
+        border-color: #343a40;
+        color: #6c757d;
+    }
+}

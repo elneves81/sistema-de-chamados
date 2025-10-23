@@ -155,7 +155,7 @@ class KnowledgeBaseSeeder extends Seeder
                 </ol>
                 
                 <h3>Dispositivos móveis</h3>
-                <p>Para configuração em smartphones e tablets, consulte o setor de TI.</p>',
+                <p>Para configuração em smartphones e tablets, consulte o DITIS - Departamento de Informação, Tecnologia e Inovação em Saúde.</p>',
                 'excerpt' => 'Guia para configuração da rede Wi-Fi corporativa.',
                 'category_id' => 3, // Rede
                 'author_id' => $admin->id,

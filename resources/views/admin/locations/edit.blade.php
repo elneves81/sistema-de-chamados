@@ -4,10 +4,10 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Editar Localização: {{ $location->name }}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <a href="{{ route('locations.index') }}" class="btn btn-secondary me-2">
+        <a href="{{ route('admin.locations.index') }}" class="btn btn-secondary me-2">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>
-        <a href="{{ route('locations.show', $location) }}" class="btn btn-info">
+        <a href="{{ route('admin.locations.show', $location) }}" class="btn btn-info">
             <i class="bi bi-eye"></i> Visualizar
         </a>
     </div>
@@ -20,7 +20,7 @@
                 <h5 class="card-title mb-0">Informações da Localização</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('locations.update', $location) }}" method="POST">
+                <form action="{{ route('admin.locations.update', $location) }}" method="POST">
                     @csrf
                     @method('PUT')
                     
@@ -153,7 +153,7 @@
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ route('locations.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <a href="{{ route('admin.locations.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-lg"></i> Atualizar Localização
                         </button>
@@ -189,7 +189,7 @@
                 <h6 class="card-title mb-0">Ações Perigosas</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route('locations.destroy', $location) }}" method="POST" 
+                <form action="{{ route('admin.locations.destroy', $location) }}" method="POST" 
                       onsubmit="return confirm('⚠️ ATENÇÃO!\n\nTem certeza que deseja EXCLUIR esta localização?\n\nEsta ação não pode ser desfeita!')">
                     @csrf
                     @method('DELETE')

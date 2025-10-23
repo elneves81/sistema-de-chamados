@@ -30,6 +30,8 @@ class User extends Authenticatable
         'location_id', // Localização do usuário
         'employee_id', // ID do funcionário (para integração com AD)
         'ldap_dn', // Distinguished Name do LDAP/AD
+        'ldap_upn', // User Principal Name do LDAP/AD
+        'auth_via_ldap', // Autenticação via LDAP habilitada
         'is_active',
         'last_login_at'
     ];
@@ -53,6 +55,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
         'is_super_admin' => 'boolean',
+        'auth_via_ldap' => 'boolean',
         'last_login_at' => 'datetime'
     ];
 
