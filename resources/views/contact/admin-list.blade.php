@@ -5,8 +5,14 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">
             <i class="bi bi-chat-dots"></i> Mensagens de Contato
-            @if($messages->where('status', 'pendente')->count() > 0)
-                <span class="badge bg-danger ms-2">{{ $messages->where('status', 'pendente')->count() }}</span>
+            @php
+                // Contar apenas mensagens pendentes (não respondidas)
+                $pendingUnreplied = $messages->filter(function($msg) {
+                    return $msg->status === 'pendente' && is_null($msg->responded_at);
+                })->count();
+            @endphp
+            @if($pendingUnreplied > 0)
+                <span class="badge bg-danger ms-2">{{ $pendingUnreplied }}</span>
             @endif
         </h1>
         <div class="btn-toolbar mb-2 mb-md-0">
@@ -31,7 +37,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select class="form-select" id="filterStatus">
                                 <option value="">Todos os Status</option>
                                 <option value="pendente">Pendente</option>
@@ -40,7 +46,14 @@
                                 <option value="arquivado">Arquivado</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <select class="form-select" id="filterReplied">
+                                <option value="">Todas</option>
+                                <option value="unreplied">🔴 Não Respondidas</option>
+                                <option value="replied">✅ Respondidas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
                             <select class="form-select" id="filterType">
                                 <option value="">Todos os Tipos</option>
                                 <option value="emergencia">🚨 Emergência</option>
@@ -84,14 +97,21 @@
                                 </thead>
                                 <tbody>
                                     @foreach($messages as $message)
-                                        <tr class="message-row" 
+                                        <tr class="message-row {{ $message->status === 'pendente' && is_null($message->responded_at) ? 'table-warning' : '' }}" 
                                             data-status="{{ $message->status }}" 
                                             data-type="{{ $message->type }}"
+                                            data-replied="{{ $message->responded_at ? 'true' : 'false' }}"
                                             data-search="{{ strtolower($message->name . ' ' . $message->email . ' ' . $message->subject) }}">
                                             <td>
-                                                <span class="badge bg-{{ $message->status === 'pendente' ? 'warning' : ($message->status === 'resolvido' ? 'success' : 'info') }}">
-                                                    {{ $message->getStatusLabel() }}
-                                                </span>
+                                                @if($message->responded_at)
+                                                    <span class="badge bg-{{ $message->status === 'resolvido' ? 'success' : 'info' }}">
+                                                        <i class="bi bi-check-circle"></i> {{ $message->getStatusLabel() }}
+                                                    </span>
+                                                @else
+                                                    <span class="badge bg-warning">
+                                                        <i class="bi bi-exclamation-circle"></i> {{ $message->getStatusLabel() }}
+                                                    </span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <span class="badge bg-{{ $message->priority_badge }}">
@@ -172,6 +192,7 @@
 function applyFilters() {
     const status = document.getElementById('filterStatus').value;
     const type = document.getElementById('filterType').value;
+    const replied = document.getElementById('filterReplied').value;
     const search = document.getElementById('searchInput').value.toLowerCase();
     
     const rows = document.querySelectorAll('.message-row');
@@ -186,6 +207,14 @@ function applyFilters() {
         
         // Filtro por tipo
         if (type && row.dataset.type !== type) {
+            show = false;
+        }
+        
+        // Filtro por respondidas/não respondidas
+        if (replied === 'unreplied' && row.dataset.replied === 'true') {
+            show = false;
+        }
+        if (replied === 'replied' && row.dataset.replied === 'false') {
             show = false;
         }
         
@@ -216,9 +245,10 @@ function quickResolve(messageId) {
     }
 }
 
-// Aplicar filtros em tempo real na busca
+// Aplicar filtros em tempo real
 document.getElementById('searchInput').addEventListener('input', applyFilters);
 document.getElementById('filterStatus').addEventListener('change', applyFilters);
 document.getElementById('filterType').addEventListener('change', applyFilters);
+document.getElementById('filterReplied').addEventListener('change', applyFilters);
 </script>
 @endsection

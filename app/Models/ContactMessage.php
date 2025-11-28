@@ -19,7 +19,9 @@ class ContactMessage extends Model
         'assigned_to',
         'user_id',
         'responded_at',
-        'admin_notes'
+        'admin_notes',
+        'admin_response',
+        'responded_by'
     ];
 
     protected $casts = [
@@ -42,6 +44,14 @@ class ContactMessage extends Model
     public function assignedTo()
     {
         return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    /**
+     * Relacionamento com quem respondeu
+     */
+    public function respondedBy()
+    {
+        return $this->belongsTo(User::class, 'responded_by');
     }
 
     /**

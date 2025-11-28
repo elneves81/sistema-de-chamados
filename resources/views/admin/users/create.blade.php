@@ -6,6 +6,21 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-8">
+            <!-- Mensagens de Erro Gerais -->
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h5 class="alert-heading">
+                        <i class="bi bi-exclamation-triangle"></i> Erro ao criar usuário
+                    </h5>
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <!-- Header -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>

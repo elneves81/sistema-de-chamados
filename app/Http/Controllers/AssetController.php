@@ -73,7 +73,7 @@ class AssetController extends Controller
         // Para os filtros
         $assetModels = AssetModel::with('manufacturer')->get();
         $manufacturers = Manufacturer::all();
-        $locations = Location::all();
+        $locations = Location::orderBy('name', 'asc')->get();
         $departments = Department::all();
         $users = User::where('role', '!=', 'customer')->get();
         $statuses = AssetStatus::where('is_active', true)->get();
@@ -100,7 +100,7 @@ class AssetController extends Controller
     {
         $assetModels = AssetModel::with('manufacturer')->get();
         $manufacturers = Manufacturer::all();
-        $locations = Location::all();
+        $locations = Location::orderBy('name', 'asc')->get();
         $departments = Department::all();
         $users = User::where('role', '!=', 'customer')->get();
         $statuses = AssetStatus::where('is_active', true)->get();
@@ -158,7 +158,7 @@ class AssetController extends Controller
     {
         $assetModels = AssetModel::with('manufacturer')->get();
         $manufacturers = Manufacturer::all();
-        $locations = Location::all();
+        $locations = Location::orderBy('name', 'asc')->get();
         $departments = Department::all();
         $users = User::where('role', '!=', 'customer')->get();
         $statuses = AssetStatus::where('is_active', true)->get();

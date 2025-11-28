@@ -18,6 +18,7 @@ class Ticket extends Model
         'priority',
         'user_id',
         'assigned_to',
+        'support_technician_id',
         'category_id',
         'location_id',
         'local',
@@ -26,6 +27,7 @@ class Ticket extends Model
         'resolved_by',
         'closed_at',
         'closed_by',
+        'resolution_time',
         'attachments'
     ];
 
@@ -33,8 +35,22 @@ class Ticket extends Model
         'due_date' => 'datetime',
         'resolved_at' => 'datetime',
         'closed_at' => 'datetime',
+        'resolution_time' => 'decimal:2',
         'attachments' => 'array'
     ];
+
+    /**
+     * Boot do modelo para calcular automaticamente o resolution_time
+     */
+    protected static function booted()
+    {
+        static::saving(function ($ticket) {
+            // Calcula o tempo de resolução quando o ticket for resolvido
+            if ($ticket->resolved_at && $ticket->isDirty('resolved_at')) {
+                $ticket->resolution_time = round($ticket->created_at->diffInHours($ticket->resolved_at, true), 2);
+            }
+        });
+    }
 
     // Relacionamentos
     public function user()
@@ -53,6 +69,20 @@ class Ticket extends Model
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
+    public function supportTechnician()
+    {
+        return $this->belongsTo(User::class, 'support_technician_id');
+    }
+
+    // Múltiplos técnicos de suporte (novo relacionamento)
+    public function supportTechnicians()
+    {
+        return $this->belongsToMany(User::class, 'ticket_support_technicians')
+                    ->withTimestamps()
+                    ->withPivot('assigned_at', 'assigned_by')
+                    ->orderBy('ticket_support_technicians.created_at');
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -61,6 +91,11 @@ class Ticket extends Model
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class);
     }
 
     public function resolvedBy()
@@ -76,6 +111,11 @@ class Ticket extends Model
     public function comments()
     {
         return $this->hasMany(TicketComment::class)->orderBy('created_at');
+    }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(TicketActivityLog::class)->orderBy('created_at', 'desc');
     }
 
     public function tags()

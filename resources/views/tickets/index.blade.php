@@ -200,6 +200,7 @@
                             @endif
                             @if(auth()->user()->role === 'admin')
                             <th width="150">Atribuído</th>
+                            <th width="200">Equipe de Suporte</th>
                             @endif
                             <th width="120">Localização</th>
                             <th width="120">Criado em</th>
@@ -252,6 +253,21 @@
                                         {{ $ticket->assignedUser->name }}
                                     @else
                                         <span class="text-muted">Não atribuído</span>
+                                    @endif
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    @if($ticket->supportTechnicians && $ticket->supportTechnicians->count() > 0)
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach($ticket->supportTechnicians as $supportTech)
+                                                <span class="badge bg-info text-white" style="font-size: 0.75rem;" title="{{ $supportTech->name }}">
+                                                    <i class="bi bi-person-plus"></i> {{ Str::limit($supportTech->name, 15) }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="text-muted">-</span>
                                     @endif
                                 </small>
                             </td>
@@ -528,5 +544,29 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 @endpush
 @endif
+
+@push('styles')
+<style>
+/* Estilos para badges de equipe de suporte */
+.badge.bg-info {
+    font-weight: 500;
+    padding: 0.35em 0.5em;
+}
+
+.badge.bg-info i {
+    font-size: 0.85em;
+}
+
+/* Ajustar gap entre badges */
+.gap-1 {
+    gap: 0.25rem !important;
+}
+
+/* Melhorar visualização em células pequenas */
+td small .d-flex {
+    line-height: 1.8;
+}
+</style>
+@endpush
 
 @endsection

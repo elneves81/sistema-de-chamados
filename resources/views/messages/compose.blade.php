@@ -25,24 +25,21 @@
                     <form action="{{ route('messages.send') }}" method="POST" id="composeForm">
                         @csrf
                         
-                        <!-- Destinatário -->
-                        <div class="mb-3">
-                            <label for="to_user_id" class="form-label">
+                        <!-- Destinatário (busca sob demanda para 5k+ usuários) -->
+                        <div class="mb-3 position-relative">
+                            <label for="composeUserSearch" class="form-label">
                                 <i class="bi bi-person"></i> Destinatário <span class="text-danger">*</span>
                             </label>
-                            <select class="form-select @error('to_user_id') is-invalid @enderror" 
-                                    id="to_user_id" name="to_user_id" required>
-                                <option value="">Selecione um usuário...</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" 
-                                            {{ (request('user') == $user->id || old('to_user_id') == $user->id) ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
-                                        @if($user->role)
-                                            - {{ ucfirst($user->role) }}
-                                        @endif
-                                    </option>
-                                @endforeach
-                            </select>
+                            <input type="text" class="form-control @error('to_user_id') is-invalid @enderror" id="composeUserSearch" placeholder="Digite o primeiro nome, nome, email ou usuário..." autocomplete="off">
+                            <input type="hidden" id="compose_to_user_id" name="to_user_id" value="{{ old('to_user_id') }}" required>
+                            <div id="composeUserResults" class="list-group position-absolute w-100 shadow" style="z-index: 2000; max-height: 240px; overflow-y: auto; display: none;"></div>
+                            @if(auth()->user()->role === 'customer')
+                                <div class="form-text text-info">
+                                    <i class="bi bi-info-circle"></i> Você pode enviar mensagens apenas para administradores e técnicos.
+                                </div>
+                            @else
+                                <div class="form-text">Digite pelo menos 2 letras do primeiro nome para buscar.</div>
+                            @endif
                             @error('to_user_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -179,8 +176,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('composeForm');
     const sendBtn = document.getElementById('sendBtn');
+    initUserSearch('composeUserSearch', 'compose_to_user_id', 'composeUserResults');
     
     form.addEventListener('submit', function(e) {
+        if (!document.getElementById('compose_to_user_id').value) {
+            e.preventDefault();
+            alert('Selecione um destinatário válido.');
+            return false;
+        }
         sendBtn.disabled = true;
         sendBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';
     });
@@ -223,12 +226,107 @@ document.getElementById('priority').addEventListener('change', function() {
 });
 
 // Validação de destinatário
-document.getElementById('to_user_id').addEventListener('change', function() {
-    if (this.value) {
-        const selectedOption = this.options[this.selectedIndex];
-        const userName = selectedOption.text.split(' (')[0];
-        document.getElementById('subject').placeholder = `Mensagem para ${userName}...`;
+// Atualizar placeholder de assunto ao escolher destinatário
+document.getElementById('composeUserSearch').addEventListener('change', function() {
+    const userText = this.value.split(' (')[0];
+    if (userText) {
+        document.getElementById('subject').placeholder = `Mensagem para ${userText}...`;
     }
 });
+
+// Reutiliza o mesmo buscador do index
+function initUserSearch(inputId, hiddenId, resultsId) {
+    const input = document.getElementById(inputId);
+    const hidden = document.getElementById(hiddenId);
+    const results = document.getElementById(resultsId);
+    if (!input || !hidden || !results) return;
+
+    // Pré-preencher a partir do query string ?user=ID
+    const urlParams = new URLSearchParams(window.location.search);
+    const preUser = urlParams.get('user');
+    if (preUser && !hidden.value) {
+        fetch(`/ajax/messages/users?q=${encodeURIComponent(preUser)}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
+            .then(r => r.json()).then(data => {
+                const found = data.users?.find(u => String(u.id) === String(preUser));
+                if (found) {
+                    hidden.value = found.id;
+                    input.value = `${found.name} ${found.email ? '('+found.email+')' : ''}`;
+                }
+            }).catch(()=>{});
+    }
+
+    let debounceTimer;
+    let lastQuery = '';
+
+    const hideResults = () => { results.style.display = 'none'; };
+    const showResults = () => { results.style.display = 'block'; };
+    const clearResults = () => { results.innerHTML = ''; };
+
+    input.addEventListener('input', function() {
+        const q = this.value.trim();
+        hidden.value = '';
+        if (q.length < 2) { clearResults(); hideResults(); return; }
+        if (q === lastQuery) return;
+        lastQuery = q;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => searchUsers(q), 250);
+    });
+
+    input.addEventListener('focus', function() {
+        if (results.children.length > 0) showResults();
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!results.contains(e.target) && e.target !== input) hideResults();
+    });
+
+    function searchUsers(q) {
+        fetch(`/ajax/messages/users?q=${encodeURIComponent(q)}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            clearResults();
+            if (!data.users || data.users.length === 0) { hideResults(); return; }
+            data.users.forEach(u => {
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                
+                // Nome e email
+                const username = u.username ? ` • ${u.username}` : '';
+                const email = u.email ? ` — ${u.email}` : '';
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = `${u.name}${username}${email}`;
+                
+                // Badge do tipo de usuário
+                const badge = document.createElement('span');
+                badge.className = 'badge';
+                if (u.role === 'admin') {
+                    badge.className += ' bg-danger';
+                    badge.innerHTML = '<i class="bi bi-shield-fill-check"></i> Admin';
+                } else if (u.role === 'technician') {
+                    badge.className += ' bg-primary';
+                    badge.innerHTML = '<i class="bi bi-tools"></i> Técnico';
+                } else {
+                    badge.className += ' bg-secondary';
+                    badge.innerHTML = '<i class="bi bi-person"></i> Usuário';
+                }
+                
+                item.appendChild(nameSpan);
+                item.appendChild(badge);
+                
+                item.addEventListener('click', () => {
+                    input.value = `${u.name} ${u.email ? '('+u.email+')' : ''}`;
+                    hidden.value = u.id;
+                    hideResults();
+                });
+                results.appendChild(item);
+            });
+            showResults();
+        })
+        .catch(err => { console.error('Busca de usuários falhou:', err); });
+    }
+}
 </script>
 @endsection

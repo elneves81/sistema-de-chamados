@@ -27,5 +27,11 @@ class AppServiceProvider extends ServiceProvider
         // Configure Bootstrap 5 for pagination
         Paginator::defaultView('pagination::bootstrap-5');
         Paginator::defaultSimpleView('pagination::simple-bootstrap-5');
+        
+        // Forçar URLs com porta 8083
+        if (config('app.env') === 'local') {
+            \URL::forceScheme('http');
+            \URL::forceRootUrl(config('app.url'));
+        }
     }
 }

@@ -103,6 +103,40 @@ class ContactController extends Controller
     }
 
     /**
+     * Responder mensagem de contato
+     */
+    public function respond(Request $request, ContactMessage $contactMessage)
+    {
+        if (!in_array(Auth::user()->role, ['admin', 'technician'])) {
+            abort(403, 'Acesso negado');
+        }
+
+        $request->validate([
+            'admin_response' => 'required|string|max:5000',
+            'status' => 'required|in:em_andamento,resolvido'
+        ]);
+
+        $contactMessage->update([
+            'admin_response' => $request->admin_response,
+            'status' => $request->status,
+            'responded_by' => Auth::id(),
+            'responded_at' => now()
+        ]);
+
+        // Enviar email com a resposta
+        try {
+            Mail::to($contactMessage->email)->send(new \App\Mail\ContactResponseMail($contactMessage));
+        } catch (\Exception $e) {
+            Log::warning('Erro ao enviar email de resposta de contato', [
+                'contact_message_id' => $contactMessage->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Resposta enviada com sucesso!');
+    }
+
+    /**
      * Atualizar status de mensagem
      */
     public function updateStatus(Request $request, ContactMessage $contactMessage)

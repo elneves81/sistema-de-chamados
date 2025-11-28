@@ -1,0 +1,1605 @@
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-10_18-00-01.sql.gz
+  Tamanho: 465.12 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-10_18-00-01.sql.gz
+Tamanho: 465.12 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-10_18-00-01.sql.gz
+---
+Tamanho total: 465.12 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-11_00-00-01.sql.gz
+  Tamanho: 465.12 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-11_00-00-01.sql.gz
+Tamanho: 465.12 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-11_00-00-01.sql.gz
+---
+Tamanho total: 465.12 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-11_03-00-02.sql.gz
+  Tamanho: 465.12 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-11_03-00-02.zip
+  Tamanho: 382.57 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-11_03-00-02.zip
+  Tamanho: 848.06 KB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+✓ Nenhum backup antigo para remover
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-11_03-00-02.sql.gz
+Tamanho: 465.12 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-11_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-11_03-00-02.zip
+Tamanho: 382.57 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-11_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-11_03-00-02.zip
+Tamanho: 848.06 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-11_03-00-02.zip
+---
+Tamanho total: 1.66 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-11_06-00-02.sql.gz
+  Tamanho: 465.12 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-11_06-00-02.sql.gz
+Tamanho: 465.12 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-11_06-00-02.sql.gz
+---
+Tamanho total: 465.12 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-11_12-00-01.sql.gz
+  Tamanho: 465.45 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-11_12-00-01.sql.gz
+Tamanho: 465.45 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-11_12-00-01.sql.gz
+---
+Tamanho total: 465.45 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-11_18-00-01.sql.gz
+  Tamanho: 466.01 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-11_18-00-01.sql.gz
+Tamanho: 466.01 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-11_18-00-01.sql.gz
+---
+Tamanho total: 466.01 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-12_00-00-02.sql.gz
+  Tamanho: 466 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-12_00-00-02.sql.gz
+Tamanho: 466 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-12_00-00-02.sql.gz
+---
+Tamanho total: 466 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-12_03-00-02.sql.gz
+  Tamanho: 466 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-12_03-00-02.zip
+  Tamanho: 382.57 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-12_03-00-02.zip
+  Tamanho: 848.95 KB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+✓ Nenhum backup antigo para remover
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-12_03-00-02.sql.gz
+Tamanho: 466 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-12_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-12_03-00-02.zip
+Tamanho: 382.57 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-12_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-12_03-00-02.zip
+Tamanho: 848.95 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-12_03-00-02.zip
+---
+Tamanho total: 1.66 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-12_06-00-02.sql.gz
+  Tamanho: 466 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-12_06-00-02.sql.gz
+Tamanho: 466 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-12_06-00-02.sql.gz
+---
+Tamanho total: 466 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-12_12-00-01.sql.gz
+  Tamanho: 467.42 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-12_12-00-01.sql.gz
+Tamanho: 467.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-12_12-00-01.sql.gz
+---
+Tamanho total: 467.42 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-12_18-00-02.sql.gz
+  Tamanho: 467.71 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-12_18-00-02.sql.gz
+Tamanho: 467.71 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-12_18-00-02.sql.gz
+---
+Tamanho total: 467.71 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-13_00-00-02.sql.gz
+  Tamanho: 467.72 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-13_00-00-02.sql.gz
+Tamanho: 467.72 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-13_00-00-02.sql.gz
+---
+Tamanho total: 467.72 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-13_03-00-01.sql.gz
+  Tamanho: 467.72 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-13_03-00-01.zip
+  Tamanho: 500.5 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-13_03-00-01.zip
+  Tamanho: 968.56 KB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+✓ Nenhum backup antigo para remover
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-13_03-00-01.sql.gz
+Tamanho: 467.72 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-13_03-00-01.sql.gz
+---
+Arquivo: files_2025-11-13_03-00-01.zip
+Tamanho: 500.5 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-13_03-00-01.zip
+---
+Arquivo: sistema-completo_2025-11-13_03-00-01.zip
+Tamanho: 968.56 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-13_03-00-01.zip
+---
+Tamanho total: 1.89 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-13_06-00-01.sql.gz
+  Tamanho: 467.72 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-13_06-00-01.sql.gz
+Tamanho: 467.72 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-13_06-00-01.sql.gz
+---
+Tamanho total: 467.72 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-13_12-00-02.sql.gz
+  Tamanho: 467.72 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-13_12-00-02.sql.gz
+Tamanho: 467.72 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-13_12-00-02.sql.gz
+---
+Tamanho total: 467.72 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-13_18-00-02.sql.gz
+  Tamanho: 468.2 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-13_18-00-02.sql.gz
+Tamanho: 468.2 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-13_18-00-02.sql.gz
+---
+Tamanho total: 468.2 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-14_00-00-01.sql.gz
+  Tamanho: 468.21 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-14_00-00-01.sql.gz
+Tamanho: 468.21 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-14_00-00-01.sql.gz
+---
+Tamanho total: 468.21 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-14_03-00-02.sql.gz
+  Tamanho: 468.21 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-14_03-00-02.zip
+  Tamanho: 608.76 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-14_03-00-02.zip
+  Tamanho: 1.05 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+✓ Nenhum backup antigo para remover
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-14_03-00-02.sql.gz
+Tamanho: 468.21 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-14_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-14_03-00-02.zip
+Tamanho: 608.76 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-14_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-14_03-00-02.zip
+Tamanho: 1.05 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-14_03-00-02.zip
+---
+Tamanho total: 2.1 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-14_06-00-03.sql.gz
+  Tamanho: 468.21 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-14_06-00-03.sql.gz
+Tamanho: 468.21 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-14_06-00-03.sql.gz
+---
+Tamanho total: 468.21 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-14_12-00-05.sql.gz
+  Tamanho: 468.26 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-14_12-00-05.sql.gz
+Tamanho: 468.26 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-14_12-00-05.sql.gz
+---
+Tamanho total: 468.26 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-14_18-00-02.sql.gz
+  Tamanho: 468.38 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-14_18-00-02.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-14_18-00-02.sql.gz
+---
+Tamanho total: 468.38 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-15_00-00-02.sql.gz
+  Tamanho: 468.38 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-15_00-00-02.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-15_00-00-02.sql.gz
+---
+Tamanho total: 468.38 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-15_03-00-02.sql.gz
+  Tamanho: 468.38 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-15_03-00-02.zip
+  Tamanho: 608.76 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-15_03-00-02.zip
+  Tamanho: 1.05 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+✓ Nenhum backup antigo para remover
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-15_03-00-02.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-15_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-15_03-00-02.zip
+Tamanho: 608.76 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-15_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-15_03-00-02.zip
+Tamanho: 1.05 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-15_03-00-02.zip
+---
+Tamanho total: 2.1 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-15_06-00-01.sql.gz
+  Tamanho: 468.38 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-15_06-00-01.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-15_06-00-01.sql.gz
+---
+Tamanho total: 468.38 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-15_12-00-02.sql.gz
+  Tamanho: 468.38 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-15_12-00-02.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-15_12-00-02.sql.gz
+---
+Tamanho total: 468.38 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-15_18-00-01.sql.gz
+  Tamanho: 468.38 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-15_18-00-01.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-15_18-00-01.sql.gz
+---
+Tamanho total: 468.38 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-16_00-00-02.sql.gz
+  Tamanho: 468.38 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-16_00-00-02.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-16_00-00-02.sql.gz
+---
+Tamanho total: 468.38 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-16_03-00-02.sql.gz
+  Tamanho: 468.38 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-16_03-00-02.zip
+  Tamanho: 608.76 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-16_03-00-02.zip
+  Tamanho: 1.05 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+✓ Nenhum backup antigo para remover
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-16_03-00-02.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-16_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-16_03-00-02.zip
+Tamanho: 608.76 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-16_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-16_03-00-02.zip
+Tamanho: 1.05 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-16_03-00-02.zip
+---
+Tamanho total: 2.1 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-16_06-00-02.sql.gz
+  Tamanho: 468.38 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-16_06-00-02.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-16_06-00-02.sql.gz
+---
+Tamanho total: 468.38 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-16_12-00-03.sql.gz
+  Tamanho: 468.38 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-16_12-00-03.sql.gz
+Tamanho: 468.38 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-16_12-00-03.sql.gz
+---
+Tamanho total: 468.38 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-16_18-00-02.sql.gz
+  Tamanho: 468.44 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-16_18-00-02.sql.gz
+Tamanho: 468.44 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-16_18-00-02.sql.gz
+---
+Tamanho total: 468.44 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-17_00-00-02.sql.gz
+  Tamanho: 468.44 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-17_00-00-02.sql.gz
+Tamanho: 468.44 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-17_00-00-02.sql.gz
+---
+Tamanho total: 468.44 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-17_03-00-02.sql.gz
+  Tamanho: 468.44 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-17_03-00-02.zip
+  Tamanho: 608.76 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-17_03-00-02.zip
+  Tamanho: 1.05 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+✓ Nenhum backup antigo para remover
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-17_03-00-02.sql.gz
+Tamanho: 468.44 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-17_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-17_03-00-02.zip
+Tamanho: 608.76 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-17_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-17_03-00-02.zip
+Tamanho: 1.05 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-17_03-00-02.zip
+---
+Tamanho total: 2.1 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-17_06-00-01.sql.gz
+  Tamanho: 468.44 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-17_06-00-01.sql.gz
+Tamanho: 468.44 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-17_06-00-01.sql.gz
+---
+Tamanho total: 468.44 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-17_12-00-02.sql.gz
+  Tamanho: 469.59 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-17_12-00-02.sql.gz
+Tamanho: 469.59 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-17_12-00-02.sql.gz
+---
+Tamanho total: 469.59 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-17_18-00-02.sql.gz
+  Tamanho: 491.35 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-17_18-00-02.sql.gz
+Tamanho: 491.35 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-17_18-00-02.sql.gz
+---
+Tamanho total: 491.35 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-18_00-00-04.sql.gz
+  Tamanho: 491.42 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-18_00-00-04.sql.gz
+Tamanho: 491.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-18_00-00-04.sql.gz
+---
+Tamanho total: 491.42 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-18_03-00-01.sql.gz
+  Tamanho: 491.42 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-18_03-00-01.zip
+  Tamanho: 608.76 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-18_03-00-01.zip
+  Tamanho: 1.07 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+✓ Nenhum backup antigo para remover
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-18_03-00-01.sql.gz
+Tamanho: 491.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-18_03-00-01.sql.gz
+---
+Arquivo: files_2025-11-18_03-00-01.zip
+Tamanho: 608.76 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-18_03-00-01.zip
+---
+Arquivo: sistema-completo_2025-11-18_03-00-01.zip
+Tamanho: 1.07 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-18_03-00-01.zip
+---
+Tamanho total: 2.15 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-18_06-00-02.sql.gz
+  Tamanho: 491.42 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-18_06-00-02.sql.gz
+Tamanho: 491.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-18_06-00-02.sql.gz
+---
+Tamanho total: 491.42 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-18_12-00-01.sql.gz
+  Tamanho: 491.67 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-18_12-00-01.sql.gz
+Tamanho: 491.67 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-18_12-00-01.sql.gz
+---
+Tamanho total: 491.67 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-18_18-00-01.sql.gz
+  Tamanho: 508.91 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-18_18-00-01.sql.gz
+Tamanho: 508.91 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-18_18-00-01.sql.gz
+---
+Tamanho total: 508.91 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-19_12-00-02.sql.gz
+  Tamanho: 547.8 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-19_12-00-02.sql.gz
+Tamanho: 547.8 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-19_12-00-02.sql.gz
+---
+Tamanho total: 547.8 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-19_18-00-02.sql.gz
+  Tamanho: 560.3 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-19_18-00-02.sql.gz
+Tamanho: 560.3 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-19_18-00-02.sql.gz
+---
+Tamanho total: 560.3 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-20_00-00-02.sql.gz
+  Tamanho: 560.3 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-20_00-00-02.sql.gz
+Tamanho: 560.3 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-20_00-00-02.sql.gz
+---
+Tamanho total: 560.3 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-20_03-00-02.sql.gz
+  Tamanho: 560.3 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-20_03-00-02.zip
+  Tamanho: 857.42 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-20_03-00-02.zip
+  Tamanho: 1.38 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+  - Removido: database_2025-11-10_14-05-21.sql.gz (9 dias)
+  - Removido: database_2025-11-10_14-08-15.sql.gz (9 dias)
+  - Removido: database_2025-11-10_16-18-39.sql.gz (9 dias)
+  - Removido: database_2025-11-10_18-00-01.sql.gz (9 dias)
+  - Removido: database_2025-11-11_00-00-01.sql.gz (9 dias)
+  - Removido: database_2025-11-11_03-00-02.sql.gz (9 dias)
+  - Removido: database_2025-11-11_06-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-11_12-00-01.sql.gz (8 dias)
+  - Removido: database_2025-11-11_18-00-01.sql.gz (8 dias)
+  - Removido: database_2025-11-12_00-00-02.sql.gz (8 dias)
+  - Removido: files_2025-11-10_14-08-15.zip (9 dias)
+  - Removido: files_2025-11-10_16-18-39.zip (9 dias)
+  - Removido: files_2025-11-11_03-00-02.zip (9 dias)
+  - Removido: sistema-completo_2025-11-10_14-08-15.zip (9 dias)
+  - Removido: sistema-completo_2025-11-10_16-18-39.zip (9 dias)
+  - Removido: sistema-completo_2025-11-11_03-00-02.zip (9 dias)
+✓ 16 backup(s) antigo(s) removido(s)
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-20_03-00-02.sql.gz
+Tamanho: 560.3 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-20_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-20_03-00-02.zip
+Tamanho: 857.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-20_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-20_03-00-02.zip
+Tamanho: 1.38 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-20_03-00-02.zip
+---
+Tamanho total: 2.77 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-20_06-00-02.sql.gz
+  Tamanho: 560.31 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-20_06-00-02.sql.gz
+Tamanho: 560.31 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-20_06-00-02.sql.gz
+---
+Tamanho total: 560.31 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+mysqldump falhou, tentando backup via Laravel...
+Erro durante o backup: SQLSTATE[HY000] [1698] Access denied for user 'root'@'localhost' (SQL: SHOW TABLES)
+#0 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Database/Connection.php(720): Illuminate\Database\Connection->runQueryCallback()
+#1 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Database/Connection.php(405): Illuminate\Database\Connection->run()
+#2 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(469): Illuminate\Database\Connection->select()
+#3 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(338): Illuminate\Database\DatabaseManager->__call()
+#4 /home/elber/sistema-de-chamados/app/Console/Commands/BackupSystem.php(163): Illuminate\Support\Facades\Facade::__callStatic()
+#5 /home/elber/sistema-de-chamados/app/Console/Commands/BackupSystem.php(141): App\Console\Commands\BackupSystem->backupDatabaseLaravel()
+#6 /home/elber/sistema-de-chamados/app/Console/Commands/BackupSystem.php(53): App\Console\Commands\BackupSystem->backupDatabase()
+#7 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App\Console\Commands\BackupSystem->handle()
+#8 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+#9 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\Container\Util::unwrapIfClosure()
+#10 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\Container\BoundMethod::callBoundMethod()
+#11 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\Container\BoundMethod::call()
+#12 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\Container\Container->call()
+#13 /home/elber/sistema-de-chamados/vendor/symfony/console/Command/Command.php(291): Illuminate\Console\Command->execute()
+#14 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\Component\Console\Command\Command->run()
+#15 /home/elber/sistema-de-chamados/vendor/symfony/console/Application.php(1014): Illuminate\Console\Command->run()
+#16 /home/elber/sistema-de-chamados/vendor/symfony/console/Application.php(301): Symfony\Component\Console\Application->doRunCommand()
+#17 /home/elber/sistema-de-chamados/vendor/symfony/console/Application.php(171): Symfony\Component\Console\Application->doRun()
+#18 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\Component\Console\Application->run()
+#19 /home/elber/sistema-de-chamados/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\Console\Application->run()
+#20 /home/elber/sistema-de-chamados/artisan(35): Illuminate\Foundation\Console\Kernel->handle()
+#21 {main}
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-20_18-00-01.sql.gz
+  Tamanho: 560.3 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-20_18-00-01.sql.gz
+Tamanho: 560.3 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-20_18-00-01.sql.gz
+---
+Tamanho total: 560.3 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-21_00-00-01.sql.gz
+  Tamanho: 571.35 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-21_00-00-01.sql.gz
+Tamanho: 571.35 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-21_00-00-01.sql.gz
+---
+Tamanho total: 571.35 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-21_03-00-01.sql.gz
+  Tamanho: 571.35 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-21_03-00-01.zip
+  Tamanho: 857.42 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-21_03-00-01.zip
+  Tamanho: 1.4 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+  - Removido: database_2025-11-12_03-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-12_06-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-12_12-00-01.sql.gz (8 dias)
+  - Removido: database_2025-11-12_18-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-13_00-00-02.sql.gz (8 dias)
+  - Removido: files_2025-11-12_03-00-02.zip (8 dias)
+  - Removido: sistema-completo_2025-11-12_03-00-02.zip (8 dias)
+✓ 7 backup(s) antigo(s) removido(s)
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-21_03-00-01.sql.gz
+Tamanho: 571.35 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-21_03-00-01.sql.gz
+---
+Arquivo: files_2025-11-21_03-00-01.zip
+Tamanho: 857.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-21_03-00-01.zip
+---
+Arquivo: sistema-completo_2025-11-21_03-00-01.zip
+Tamanho: 1.4 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-21_03-00-01.zip
+---
+Tamanho total: 2.79 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-21_06-00-01.sql.gz
+  Tamanho: 571.35 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-21_06-00-01.sql.gz
+Tamanho: 571.35 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-21_06-00-01.sql.gz
+---
+Tamanho total: 571.35 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-24_12-00-01.sql.gz
+  Tamanho: 571.42 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-24_12-00-01.sql.gz
+Tamanho: 571.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-24_12-00-01.sql.gz
+---
+Tamanho total: 571.42 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-24_18-00-02.sql.gz
+  Tamanho: 571.92 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-24_18-00-02.sql.gz
+Tamanho: 571.92 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-24_18-00-02.sql.gz
+---
+Tamanho total: 571.92 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-25_00-00-02.sql.gz
+  Tamanho: 571.91 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-25_00-00-02.sql.gz
+Tamanho: 571.91 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-25_00-00-02.sql.gz
+---
+Tamanho total: 571.91 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-25_03-00-02.sql.gz
+  Tamanho: 571.91 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-25_03-00-02.zip
+  Tamanho: 857.42 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-25_03-00-02.zip
+  Tamanho: 1.4 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+  - Removido: database_2025-11-14_00-00-01.sql.gz (11 dias)
+  - Removido: database_2025-11-14_03-00-02.sql.gz (10 dias)
+  - Removido: database_2025-11-14_06-00-03.sql.gz (10 dias)
+  - Removido: database_2025-11-14_12-00-05.sql.gz (10 dias)
+  - Removido: database_2025-11-14_18-00-02.sql.gz (10 dias)
+  - Removido: database_2025-11-15_00-00-02.sql.gz (10 dias)
+  - Removido: database_2025-11-15_03-00-02.sql.gz (9 dias)
+  - Removido: database_2025-11-15_06-00-01.sql.gz (9 dias)
+  - Removido: database_2025-11-15_12-00-02.sql.gz (9 dias)
+  - Removido: database_2025-11-15_18-00-01.sql.gz (9 dias)
+  - Removido: database_2025-11-16_00-00-02.sql.gz (9 dias)
+  - Removido: database_2025-11-16_03-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-16_06-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-16_12-00-03.sql.gz (8 dias)
+  - Removido: database_2025-11-16_18-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-17_00-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-17_03-00-02.sql.gz (8 dias)
+  - Removido: files_2025-11-14_03-00-02.zip (10 dias)
+  - Removido: files_2025-11-15_03-00-02.zip (9 dias)
+  - Removido: files_2025-11-16_03-00-02.zip (8 dias)
+  - Removido: files_2025-11-17_03-00-02.zip (8 dias)
+  - Removido: sistema-completo_2025-11-14_03-00-02.zip (10 dias)
+  - Removido: sistema-completo_2025-11-15_03-00-02.zip (9 dias)
+  - Removido: sistema-completo_2025-11-16_03-00-02.zip (8 dias)
+  - Removido: sistema-completo_2025-11-17_03-00-02.zip (8 dias)
+✓ 25 backup(s) antigo(s) removido(s)
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-25_03-00-02.sql.gz
+Tamanho: 571.91 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-25_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-25_03-00-02.zip
+Tamanho: 857.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-25_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-25_03-00-02.zip
+Tamanho: 1.4 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-25_03-00-02.zip
+---
+Tamanho total: 2.79 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-25_06-00-01.sql.gz
+  Tamanho: 571.91 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-25_06-00-01.sql.gz
+Tamanho: 571.91 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-25_06-00-01.sql.gz
+---
+Tamanho total: 571.91 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-25_12-00-01.sql.gz
+  Tamanho: 579.33 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-25_12-00-01.sql.gz
+Tamanho: 579.33 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-25_12-00-01.sql.gz
+---
+Tamanho total: 579.33 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-25_18-00-01.sql.gz
+  Tamanho: 616.49 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-25_18-00-01.sql.gz
+Tamanho: 616.49 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-25_18-00-01.sql.gz
+---
+Tamanho total: 616.49 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-26_00-00-01.sql.gz
+  Tamanho: 627.73 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-26_00-00-01.sql.gz
+Tamanho: 627.73 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-26_00-00-01.sql.gz
+---
+Tamanho total: 627.73 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-26_03-00-02.sql.gz
+  Tamanho: 627.73 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-26_03-00-02.zip
+  Tamanho: 857.42 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-26_03-00-02.zip
+  Tamanho: 1.45 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+  - Removido: database_2025-11-17_06-00-01.sql.gz (8 dias)
+  - Removido: database_2025-11-17_12-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-17_18-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-18_00-00-04.sql.gz (8 dias)
+  - Removido: database_2025-11-18_03-00-01.sql.gz (8 dias)
+  - Removido: files_2025-11-18_03-00-01.zip (8 dias)
+  - Removido: sistema-completo_2025-11-18_03-00-01.zip (8 dias)
+✓ 7 backup(s) antigo(s) removido(s)
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-26_03-00-02.sql.gz
+Tamanho: 627.73 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-26_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-26_03-00-02.zip
+Tamanho: 857.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-26_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-26_03-00-02.zip
+Tamanho: 1.45 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-26_03-00-02.zip
+---
+Tamanho total: 2.9 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-26_06-00-01.sql.gz
+  Tamanho: 627.73 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-26_06-00-01.sql.gz
+Tamanho: 627.73 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-26_06-00-01.sql.gz
+---
+Tamanho total: 627.73 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-26_12-00-03.sql.gz
+  Tamanho: 627.86 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-26_12-00-03.sql.gz
+Tamanho: 627.86 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-26_12-00-03.sql.gz
+---
+Tamanho total: 627.86 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-26_18-00-01.sql.gz
+  Tamanho: 647.42 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-26_18-00-01.sql.gz
+Tamanho: 647.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-26_18-00-01.sql.gz
+---
+Tamanho total: 647.42 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-27_00-00-02.sql.gz
+  Tamanho: 647.42 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-27_00-00-02.sql.gz
+Tamanho: 647.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-27_00-00-02.sql.gz
+---
+Tamanho total: 647.42 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-27_03-00-02.sql.gz
+  Tamanho: 647.42 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-27_03-00-02.zip
+  Tamanho: 857.42 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-27_03-00-02.zip
+  Tamanho: 1.47 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+  - Removido: database_2025-11-18_06-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-18_12-00-01.sql.gz (8 dias)
+  - Removido: database_2025-11-18_18-00-01.sql.gz (8 dias)
+✓ 3 backup(s) antigo(s) removido(s)
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-27_03-00-02.sql.gz
+Tamanho: 647.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-27_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-27_03-00-02.zip
+Tamanho: 857.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-27_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-27_03-00-02.zip
+Tamanho: 1.47 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-27_03-00-02.zip
+---
+Tamanho total: 2.94 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-27_06-00-02.sql.gz
+  Tamanho: 647.42 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-27_06-00-02.sql.gz
+Tamanho: 647.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-27_06-00-02.sql.gz
+---
+Tamanho total: 647.42 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-27_12-00-01.sql.gz
+  Tamanho: 647.62 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-27_12-00-01.sql.gz
+Tamanho: 647.62 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-27_12-00-01.sql.gz
+---
+Tamanho total: 647.62 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-27_18-00-01.sql.gz
+  Tamanho: 650.02 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-27_18-00-01.sql.gz
+Tamanho: 650.02 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-27_18-00-01.sql.gz
+---
+Tamanho total: 650.02 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-28_00-00-02.sql.gz
+  Tamanho: 650.02 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-28_00-00-02.sql.gz
+Tamanho: 650.02 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-28_00-00-02.sql.gz
+---
+Tamanho total: 650.02 KB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-28_03-00-02.sql.gz
+  Tamanho: 650.02 KB
+
+[2/3] Fazendo backup de arquivos importantes...
+  + Arquivos públicos: storage/app/public/
+  + Configurações: .env
+  + Dependências PHP: composer.json
+  + Dependências JS: package.json
+✓ Backup de arquivos concluído: files_2025-11-28_03-00-02.zip
+  Tamanho: 857.42 KB
+
+[3/3] Criando arquivo de backup completo...
+✓ Backup completo criado: sistema-completo_2025-11-28_03-00-02.zip
+  Tamanho: 1.47 MB
+
+Limpando backups antigos (mantendo últimos 7 dias)...
+  - Removido: database_2025-11-19_12-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-19_18-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-20_00-00-02.sql.gz (8 dias)
+  - Removido: database_2025-11-20_03-00-02.sql.gz (8 dias)
+  - Removido: files_2025-11-20_03-00-02.zip (8 dias)
+  - Removido: sistema-completo_2025-11-20_03-00-02.zip (8 dias)
+✓ 6 backup(s) antigo(s) removido(s)
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-28_03-00-02.sql.gz
+Tamanho: 650.02 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-28_03-00-02.sql.gz
+---
+Arquivo: files_2025-11-28_03-00-02.zip
+Tamanho: 857.42 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/files_2025-11-28_03-00-02.zip
+---
+Arquivo: sistema-completo_2025-11-28_03-00-02.zip
+Tamanho: 1.47 MB
+Localização: /home/elber/sistema-de-chamados/storage/backups/sistema-completo_2025-11-28_03-00-02.zip
+---
+Tamanho total: 2.94 MB
+========================================
+========================================
+INICIANDO BACKUP DO SISTEMA
+========================================
+
+[1/3] Fazendo backup do banco de dados...
+✓ Backup do banco de dados concluído: database_2025-11-28_06-00-01.sql.gz
+  Tamanho: 650.02 KB
+
+========================================
+BACKUP CONCLUÍDO COM SUCESSO!
+========================================
+Arquivo: database_2025-11-28_06-00-01.sql.gz
+Tamanho: 650.02 KB
+Localização: /home/elber/sistema-de-chamados/storage/backups/database_2025-11-28_06-00-01.sql.gz
+---
+Tamanho total: 650.02 KB
+========================================

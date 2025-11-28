@@ -20,7 +20,7 @@ class ModernDashboard {
         this.initializeCharts();
         this.setupAutoRefresh();
         this.createMiniCharts();
-        this.setupRealTimeUpdates();
+        // this.setupRealTimeUpdates(); - REMOVIDO: gerava notificações falsas
     }
 
     setupEventListeners() {
@@ -44,17 +44,9 @@ class ModernDashboard {
             this.refreshDashboard();
         });
 
-        // Export functions
-        document.getElementById('export-excel')?.addEventListener('click', () => {
-            this.exportData('excel');
-        });
-
+        // Export PDF (com preview)
         document.getElementById('export-pdf')?.addEventListener('click', () => {
-            this.exportData('pdf');
-        });
-
-        document.getElementById('export-csv')?.addEventListener('click', () => {
-            this.exportData('csv');
+            this.openPreview();
         });
 
         // Filter changes
@@ -72,7 +64,7 @@ class ModernDashboard {
     }
 
     setupFilterListeners() {
-        const filters = ['status', 'priority', 'category', 'date-start', 'date-end', 'search'];
+        const filters = ['status', 'priority', 'category', 'technician', 'date-start', 'date-end', 'search'];
         
         filters.forEach(filter => {
             const element = document.getElementById(`filter-${filter}`);
@@ -519,34 +511,8 @@ class ModernDashboard {
         }, 300000);
     }
 
-    setupRealTimeUpdates() {
-        // Simula updates em tempo real
-        setInterval(() => {
-            this.simulateRealTimeUpdate();
-        }, 30000); // A cada 30 segundos
-    }
-
-    simulateRealTimeUpdate() {
-        // Simula novo chamado
-        if (Math.random() > 0.7) {
-            const openTicketsElement = document.querySelector('.kpi-card-modern.warning .kpi-value');
-            if (openTicketsElement) {
-                const current = parseInt(openTicketsElement.textContent) || 0;
-                openTicketsElement.textContent = current + 1;
-                
-                this.showNotification('Novo chamado recebido!', 'info');
-                
-                // Adiciona efeito visual
-                const card = openTicketsElement.closest('.kpi-card-modern');
-                if (card) {
-                    card.style.animation = 'pulse 0.5s ease-in-out';
-                    setTimeout(() => {
-                        card.style.animation = '';
-                    }, 500);
-                }
-            }
-        }
-    }
+    // setupRealTimeUpdates() - REMOVIDO: estava gerando notificações falsas
+    // simulateRealTimeUpdate() - REMOVIDO: era apenas simulação para testes
 
     applyFilters() {
         const filters = {
@@ -570,14 +536,94 @@ class ModernDashboard {
         }
     }
 
-    exportData(format) {
-        this.showNotification(`Iniciando exportação em ${format.toUpperCase()}...`, 'info');
+    buildFilterParams() {
+        const params = new URLSearchParams();
+        const status = document.getElementById('filter-status')?.value || '';
+        const priority = document.getElementById('filter-priority')?.value || '';
+        const category = document.getElementById('filter-category')?.value || '';
+        const technician = document.getElementById('filter-technician')?.value || '';
+        const dateStart = document.getElementById('filter-date-start')?.value || '';
+        const dateEnd = document.getElementById('filter-date-end')?.value || '';
+        const search = document.getElementById('filter-search')?.value || '';
+
+        if (status) params.set('status', status);
+        if (priority) params.set('priority', priority);
+        if (category) params.set('category_id', category);
+        if (technician) params.set('assigned_to', technician);
+        if (dateStart) params.set('date_from', dateStart);
+        if (dateEnd) params.set('date_to', dateEnd);
+        if (search) params.set('search', search);
+        return params;
+    }
+
+    openPreview() {
+        const modal = document.getElementById('export-preview-modal');
+        const content = document.getElementById('export-preview-content');
         
-        // Simula processo de exportação
-        setTimeout(() => {
-            this.showNotification(`Arquivo ${format.toUpperCase()} gerado com sucesso!`, 'success');
-            // Aqui você faria o download real do arquivo
-        }, 2000);
+        // Debug: verifica se o modal existe
+        if (!modal || !content) {
+            console.error('Modal não encontrado no DOM. IDs:', {modal, content});
+            this.showNotification('Erro: Modal de pré-visualização não encontrado!', 'error');
+            return;
+        }
+        
+        const params = this.buildFilterParams();
+        
+        const previewUrl = (typeof window.DASHBOARD_EXPORT_PREVIEW_URL !== 'undefined' && window.DASHBOARD_EXPORT_PREVIEW_URL)
+            ? window.DASHBOARD_EXPORT_PREVIEW_URL
+            : `${window.location.origin}/dashboard/export/preview`;
+        
+        const downloadUrl = (typeof window.DASHBOARD_EXPORT_URL !== 'undefined' && window.DASHBOARD_EXPORT_URL)
+            ? window.DASHBOARD_EXPORT_URL
+            : `${window.location.origin}/dashboard/export`;
+
+        console.log('Abrindo modal preview. URL:', previewUrl + '?' + params.toString());
+
+        // Mostra o modal
+        modal.style.display = 'block';
+        content.innerHTML = '<div style="text-align:center; padding:60px 20px; color:#64748b;"><i class="bi bi-hourglass-split" style="font-size:48px; margin-bottom:16px;"></i><p>Carregando pré-visualização...</p></div>';
+
+        // Carrega conteúdo via fetch
+        fetch(`${previewUrl}?${params.toString()}`)
+            .then(response => response.text())
+            .then(html => {
+                // Extrai apenas o conteúdo do .report-container da resposta
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const reportContainer = doc.querySelector('.report-container');
+                if (reportContainer) {
+                    content.innerHTML = reportContainer.outerHTML;
+                } else {
+                    content.innerHTML = html;
+                }
+                
+                // Configura botão de download PDF
+                const downloadBtn = document.getElementById('export-modal-download-pdf');
+                if (downloadBtn) {
+                    downloadBtn.onclick = () => {
+                        window.open(`${downloadUrl}?${params.toString()}`, '_blank');
+                        this.showNotification('Download do PDF iniciado!', 'success');
+                    };
+                }
+            })
+            .catch(err => {
+                content.innerHTML = '<div style="text-align:center; padding:60px 20px; color:#ef4444;"><i class="bi bi-exclamation-triangle" style="font-size:48px; margin-bottom:16px;"></i><p>Erro ao carregar pré-visualização.</p></div>';
+                console.error('Erro ao carregar preview:', err);
+            });
+
+        // Fecha modal
+        document.getElementById('close-export-modal').onclick = () => {
+            modal.style.display = 'none';
+        };
+        
+        // Fecha ao clicar fora
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        this.showNotification('Abrindo pré-visualização...', 'info');
     }
 
     refreshWidgets() {

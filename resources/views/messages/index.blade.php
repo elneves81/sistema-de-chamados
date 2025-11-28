@@ -164,8 +164,8 @@
     </div>
 </div>
 
-<!-- Modal Nova Mensagem (apenas para administradores) -->
-@if(auth()->user()->hasPermission('users.manage'))
+        <!-- Modal Nova Mensagem (apenas para administradores) -->
+@if(in_array(auth()->user()->role, ['admin','technician']) || auth()->user()->hasPermission('users.manage'))
 <div class="modal fade" id="newMessageModal" tabindex="-1" aria-labelledby="newMessageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -178,11 +178,12 @@
             <div class="modal-body">
                 <form id="newMessageForm">
                     @csrf
-                    <div class="mb-3">
-                        <label for="to_user_id" class="form-label">Destinatário <span class="text-danger">*</span></label>
-                        <select class="form-select" id="to_user_id" name="to_user_id" required>
-                            <option value="">Selecione um usuário</option>
-                        </select>
+                    <div class="mb-3 position-relative">
+                        <label for="userSearchInput" class="form-label">Destinatário <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="userSearchInput" placeholder="Digite o primeiro nome, nome, email ou usuário..." autocomplete="off">
+                        <input type="hidden" id="to_user_id_hidden" name="to_user_id" required>
+                        <div id="userSearchResults" class="list-group position-absolute w-100 shadow" style="z-index: 2000; max-height: 240px; overflow-y: auto; display: none;"></div>
+                        <div class="form-text">Digite pelo menos 2 letras do primeiro nome para buscar.</div>
                     </div>
 
                     <div class="row">
@@ -269,9 +270,9 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Carregar usuários para o select de destinatários
-    loadUsers();
-    
+    // Init busca de usuários (5k+ usuários: busca sob demanda)
+    initUserSearch('userSearchInput', 'to_user_id_hidden', 'userSearchResults');
+
     // Event listeners
     document.getElementById('sendMessageBtn')?.addEventListener('click', sendMessage);
     document.getElementById('markAllAsRead').addEventListener('click', markAllAsRead);
@@ -280,30 +281,64 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateUnreadCount, 30000);
 });
 
-// Carregar lista de usuários
-function loadUsers() {
-    const userSelect = document.getElementById('to_user_id');
-    if (!userSelect) return;
-    
-    fetch('/ajax/messages/users', {
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            userSelect.innerHTML = '<option value="">Selecione um usuário</option>';
-            data.users.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.id;
-                option.textContent = `${user.name} (${user.email})`;
-                userSelect.appendChild(option);
-            });
+// Busca de usuários sob demanda com debounce
+function initUserSearch(inputId, hiddenId, resultsId) {
+    const input = document.getElementById(inputId);
+    const hidden = document.getElementById(hiddenId);
+    const results = document.getElementById(resultsId);
+    if (!input || !hidden || !results) return;
+
+    let debounceTimer;
+    let lastQuery = '';
+
+    const hideResults = () => { results.style.display = 'none'; };
+    const showResults = () => { results.style.display = 'block'; };
+    const clearResults = () => { results.innerHTML = ''; };
+
+    input.addEventListener('input', function() {
+        const q = this.value.trim();
+        hidden.value = '';
+        if (q.length < 2) { clearResults(); hideResults(); return; }
+        if (q === lastQuery) return;
+        lastQuery = q;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => searchUsers(q), 250);
+    });
+
+    input.addEventListener('focus', function() {
+        if (results.children.length > 0) showResults();
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!results.contains(e.target) && e.target !== input) hideResults();
+    });
+
+    function searchUsers(q) {
+        fetch(`/ajax/messages/users?q=${encodeURIComponent(q)}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
-        .catch(error => {
-            console.error('Erro ao carregar usuários:', error);
-        });
+        .then(r => r.json())
+        .then(data => {
+            clearResults();
+            if (!data.users || data.users.length === 0) { hideResults(); return; }
+            data.users.forEach(u => {
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'list-group-item list-group-item-action';
+                const username = u.username ? ` • ${u.username}` : '';
+                const email = u.email ? ` — ${u.email}` : '';
+                item.textContent = `${u.name}${username}${email}`;
+                item.addEventListener('click', () => {
+                    input.value = `${u.name} ${u.email ? '('+u.email+')' : ''}`;
+                    hidden.value = u.id;
+                    hideResults();
+                });
+                results.appendChild(item);
+            });
+            showResults();
+        })
+        .catch(err => { console.error('Busca de usuários falhou:', err); });
+    }
 }
 
 // Enviar nova mensagem
@@ -311,6 +346,10 @@ function sendMessage() {
     const form = document.getElementById('newMessageForm');
     const btn = document.getElementById('sendMessageBtn');
     const formData = new FormData(form);
+    if (!formData.get('to_user_id')) {
+        showAlert('Selecione um destinatário válido.', 'warning');
+        return;
+    }
     
     btn.disabled = true;
     btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';

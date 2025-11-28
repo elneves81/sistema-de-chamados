@@ -1,7 +1,10 @@
 <!-- Menu lateral -->
 <div class="sidebar bg-dark text-white">
     <div class="sidebar-header p-3">
-        <h5>Sistema de Chamados</h5>
+        <h5>
+            <span style="color:#10b981; font-weight:800; letter-spacing:0.2px;">Suporte+</span>
+            <span style="color:#f59e0b; font-weight:800; letter-spacing:0.2px;">Saúde</span>
+        </h5>
     </div>
     <ul class="nav flex-column">
         <li class="nav-item">
@@ -80,6 +83,22 @@
                     </a>
                 </li>
             </ul>
+        </li>
+
+        <!-- Inventário de Máquinas -->
+        @can('machines.view')
+        <li class="nav-item">
+            <a href="{{ route('machines.index') }}" class="nav-link text-white {{ Request::is('machines*') ? 'active' : '' }}">
+                <i class="fas fa-server"></i> Inventário
+            </a>
+        </li>
+        @endcan
+
+        <!-- Ramais -->
+        <li class="nav-item">
+            <a href="{{ route('ramais.index') }}" class="nav-link text-white {{ Request::is('ramais*') ? 'active' : '' }}">
+                <i class="fas fa-phone"></i> Ramais
+            </a>
         </li>
 
         <!-- Administração -->

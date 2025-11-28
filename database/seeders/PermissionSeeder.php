@@ -131,6 +131,20 @@ class PermissionSeeder extends Seeder
                 'module' => 'categories'
             ],
             
+            // Máquinas / Inventário
+            [
+                'name' => 'machines.view',
+                'display_name' => 'Ver inventário',
+                'description' => 'Permite visualizar o inventário de máquinas',
+                'module' => 'machines'
+            ],
+            [
+                'name' => 'machines.manage',
+                'display_name' => 'Gerenciar inventário',
+                'description' => 'Permite criar, editar e excluir máquinas do inventário',
+                'module' => 'machines'
+            ],
+            
             // Sistema
             [
                 'name' => 'system.ldap',

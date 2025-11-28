@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Models\Permission;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Define Gates dinamicamente baseado nas permissões
+        try {
+            Permission::all()->each(function ($permission) {
+                Gate::define($permission->name, function ($user) use ($permission) {
+                    return $user->hasPermission($permission->name);
+                });
+            });
+        } catch (\Exception $e) {
+            // Ignorar se a tabela de permissões não existe (durante migrations)
+        }
     }
 }

@@ -160,18 +160,18 @@
                         </div>
                         <div>
                             <strong>Suporte Geral</strong><br>
-                            <a href="tel:+554231421527" class="text-decoration-none">(42) 3142-1527</a>
+                            <a href="tel:+554231421512" class="text-decoration-none">(42) 3142-1512</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="contact-item mb-3">
                     <div class="d-flex align-items-center">
-                        <div class="contact-icon bg-danger text-white rounded-circle me-3">
-                            <i class="bi bi-exclamation-triangle"></i>
+                        <div class="contact-icon bg-primary text-white rounded-circle me-3">
+                            <i class="bi bi-telephone"></i>
                         </div>
                         <div>
-                            <strong>Emergência 24h</strong><br>
+                            <strong>Administrativo</strong><br>
                             <a href="tel:+554231421527" class="text-decoration-none">(42) 3142-1527</a>
                         </div>
                     </div>
@@ -196,7 +196,7 @@
                         </div>
                         <div>
                             <strong>Site Oficial</strong><br>
-                            <a href="https://suportesaudeguarapuava.com.br/" target="_blank" class="text-decoration-none">suportesaudeguarapuava.com.br</a>
+                            <a href="https://suportesaudeguarapuava.com.br" target="_blank" class="text-decoration-none">suportesaudeguarapuava.com.br</a>
                         </div>
                     </div>
                 </div>
@@ -207,8 +207,32 @@
                             <i class="bi bi-whatsapp"></i>
                         </div>
                         <div>
-                            <strong>WhatsApp</strong><br>
+                            <strong>WhatsApp Suporte</strong><br>
+                            <a href="https://wa.me/554231421512" target="_blank" class="text-decoration-none">(42) 3142-1512</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="contact-icon bg-success text-white rounded-circle me-3">
+                            <i class="bi bi-whatsapp"></i>
+                        </div>
+                        <div>
+                            <strong>WhatsApp Administrativo</strong><br>
                             <a href="https://wa.me/554231421527" target="_blank" class="text-decoration-none">(42) 3142-1527</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="contact-icon bg-success text-white rounded-circle me-3">
+                            <i class="bi bi-whatsapp"></i>
+                        </div>
+                        <div>
+                            <strong>WhatsApp CNES</strong><br>
+                            <a href="https://wa.me/5542991452300" target="_blank" class="text-decoration-none">(42) 99145-2300</a>
                         </div>
                     </div>
                 </div>
@@ -220,7 +244,7 @@
                         </div>
                         <div>
                             <strong>WhatsApp Sobreaviso</strong><br>
-                            <small class="text-muted">Fins de semana e feriados</small><br>
+                            <small class="text-muted">Atendimentos noturnos, fins de semana e feriados</small><br>
                             <a href="https://wa.me/5542991235068" target="_blank" class="text-decoration-none">(42) 99123-5068</a>
                         </div>
                     </div>
@@ -238,7 +262,7 @@
             <div class="card-body">
                 <div class="schedule-item mb-2">
                     <strong>Segunda a Sexta-feira</strong><br>
-                    <span class="text-muted">08:00 às 12:00 e 13:00 às 15:00</span>
+                    <span class="text-muted">08:00 às 12:00 e 13:00 às 17:00</span>
                 </div>
                 <div class="schedule-item mb-2">
                     <strong>Sábados e Domingos</strong><br>

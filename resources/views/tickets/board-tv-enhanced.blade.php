@@ -786,8 +786,8 @@
                                 </div>
                                 <div class="ticket-meta">
                                     <span><i class="bi bi-person"></i> {{ $ticket->user->name ?? 'N/A' }}</span>
-                                    @if($ticket->user && $ticket->user->location)
-                                        <span><i class="bi bi-geo-alt-fill"></i> {{ $ticket->user->location->name }}</span>
+                                    @if($ticket->location)
+                                        <span><i class="bi bi-geo-alt-fill"></i> {{ $ticket->location->name }}</span>
                                     @elseif($ticket->local)
                                         <span><i class="bi bi-geo-alt"></i> {{ $ticket->local }}</span>
                                     @else

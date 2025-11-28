@@ -34,6 +34,10 @@
                             <span>{{ $user->email }}</span>
                         </div>
                         <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Username:</span>
+                            <span>{{ $user->username }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
                             <span>Telefone:</span>
                             <span>{{ $user->phone ?: 'N/A' }}</span>
                         </div>

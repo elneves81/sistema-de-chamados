@@ -40,6 +40,9 @@ class LocationController extends Controller
             $query->where('country', $request->country);
         }
 
+        // Ordenar por nome em ordem alfabética
+        $query->orderBy('name', 'asc');
+
         $locations = $query->paginate(15);
 
         return view('admin.locations.index', compact('locations'));

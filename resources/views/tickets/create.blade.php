@@ -21,8 +21,37 @@
                 <h5 class="card-title mb-0">Informações do Chamado</h5>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('tickets.store') }}">
+                <form method="POST" action="{{ route('tickets.store') }}" enctype="multipart/form-data">
                     @csrf
+
+                    @if(auth()->user() && in_array(auth()->user()->role, ['admin', 'technician']))
+                    <!-- Campo para abrir chamado em nome de outro usuário (somente admin/técnico) -->
+                    <div class="mb-3">
+                        <label for="requester_user_id" class="form-label">
+                            <i class="bi bi-person-badge"></i> Abrir em nome de (opcional)
+                        </label>
+                        <select class="form-select @error('requester_user_id') is-invalid @enderror" 
+                                id="requester_user_id" 
+                                name="requester_user_id">
+                            <option value="">Eu mesmo ({{ auth()->user()->name }})</option>
+                            @if(isset($users))
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" 
+                                            {{ old('requester_user_id') == $user->id ? 'selected' : '' }}>
+                                        {{ $user->name }} ({{ $user->email }})
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('requester_user_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle"></i> 
+                            Use este campo quando o usuário não conseguir abrir o chamado sozinho
+                        </small>
+                    </div>
+                    @endif
 
                     <div class="mb-3">
                         <label for="title" class="form-label">Título <span class="text-danger">*</span></label>
@@ -138,6 +167,21 @@
                                   placeholder="Descreva detalhadamente o problema, incluindo:&#10;- O que você estava fazendo quando o problema ocorreu&#10;- Mensagens de erro (se houver)&#10;- Passos para reproduzir o problema&#10;- Qualquer informação adicional relevante"
                                   required>{{ old('description') }}</textarea>
                         @error('description')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Anexos -->
+                    <div class="mb-3">
+                        <label for="attachments" class="form-label">Anexos (opcional)</label>
+                        <input type="file" 
+                               class="form-control @error('attachments.*') is-invalid @enderror" 
+                               id="attachments" 
+                               name="attachments[]" 
+                               multiple
+                               accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar">
+                        <small class="text-muted">Você pode selecionar múltiplos arquivos. Tamanho máximo por arquivo: 10MB.</small>
+                        @error('attachments.*')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

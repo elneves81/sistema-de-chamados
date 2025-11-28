@@ -496,3 +496,71 @@ function saveUserLocation() {
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+// Corrigir backdrop dos modais
+document.addEventListener('DOMContentLoaded', function() {
+    const assignLocationModal = document.getElementById('assignLocationModal');
+    
+    if (assignLocationModal) {
+        assignLocationModal.addEventListener('show.bs.modal', function () {
+            // Garantir que backdrop fique atrás do modal
+            setTimeout(() => {
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.style.zIndex = '1400';
+                }
+                assignLocationModal.style.zIndex = '1500';
+            }, 10);
+        });
+        
+        assignLocationModal.addEventListener('shown.bs.modal', function () {
+            // Garantir que o select seja focável e clicável
+            const select = document.getElementById('assignLocationSelect');
+            if (select) {
+                select.focus();
+                select.style.position = 'relative';
+                select.style.zIndex = '1503';
+            }
+        });
+    }
+});
+</script>
+@endpush
+
+@push('styles')
+<style>
+/* Garantir que modais funcionem corretamente - PRIORIDADE MÁXIMA */
+.modal {
+    z-index: 1500 !important;
+}
+
+.modal-backdrop {
+    z-index: 1400 !important;
+}
+
+.modal-open .modal {
+    z-index: 1500 !important;
+}
+
+/* Garantir que o conteúdo do modal seja clicável */
+.modal-dialog {
+    z-index: 1501 !important;
+    position: relative;
+}
+
+.modal-content {
+    z-index: 1502 !important;
+    position: relative;
+}
+
+/* Garantir que selects e inputs sejam clicáveis */
+.modal select,
+.modal input,
+.modal button {
+    position: relative;
+    z-index: 1503 !important;
+}
+</style>
+@endpush

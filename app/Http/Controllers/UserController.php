@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'role:admin']);
+        $this->middleware(['auth', 'role:admin'])->except(['search']);
+        $this->middleware('auth')->only(['search']);
     }
 
     /**
@@ -85,8 +87,20 @@ class UserController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        // Gerar username a partir do email (parte antes do @)
+        $username = explode('@', $request->email)[0];
+        
+        // Garantir que o username seja único
+        $originalUsername = $username;
+        $counter = 1;
+        while (User::where('username', $username)->exists()) {
+            $username = $originalUsername . $counter;
+            $counter++;
+        }
+
         User::create([
             'name' => $request->name,
+            'username' => $username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
@@ -122,6 +136,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'username' => ['required','string','max:255', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|in:admin,technician,customer',
@@ -135,6 +150,7 @@ class UserController extends Controller
 
         $data = [
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'role' => $request->role,
             'phone' => $request->phone,
@@ -256,6 +272,36 @@ class UserController extends Controller
     }
 
     /**
+     * Export a single user's report to PDF
+     */
+    public function exportPdf(User $user)
+    {
+        // Carregar relacionamentos e métricas
+        $user->load(['location']);
+
+        $stats = [
+            'created_total' => $user->tickets()->count(),
+            'assigned_total' => $user->assignedTickets()->count(),
+            'in_progress' => $user->assignedTickets()->whereIn('status', ['open', 'in_progress'])->count(),
+            'resolved' => $user->assignedTickets()->where('status', 'resolved')->count(),
+        ];
+
+        $recentCreated = $user->tickets()->with('category')->latest()->limit(10)->get();
+        $recentAssigned = $user->assignedTickets()->with(['category','user'])->latest()->limit(10)->get();
+
+        $pdf = Pdf::loadView('admin.users.pdf', [
+            'user' => $user,
+            'stats' => $stats,
+            'recentCreated' => $recentCreated,
+            'recentAssigned' => $recentAssigned,
+            'generatedAt' => now(),
+        ])->setPaper('a4', 'portrait');
+
+        $filename = 'relatorio_usuario_' . str_replace(' ', '_', strtolower($user->name)) . '_' . now()->format('Ymd_His') . '.pdf';
+        return $pdf->download($filename);
+    }
+
+    /**
      * Bulk actions
      */
     public function bulkAction(Request $request)
@@ -301,4 +347,24 @@ class UserController extends Controller
         
         return back()->with('success', "Usuário {$user->name} foi vinculado à {$location->name}!");
     }
+
+    /**
+     * Buscar usuários (AJAX) - para autocomplete
+     */
+    public function search(Request $request)
+    {
+        $query = $request->get('q', '');
+        
+        if (strlen($query) < 2) {
+            return response()->json([]);
+        }
+
+        $users = User::where('name', 'LIKE', "%{$query}%")
+                    ->orWhere('email', 'LIKE', "%{$query}%")
+                    ->limit(10)
+                    ->get(['id', 'name', 'email', 'role']);
+
+        return response()->json($users);
+    }
 }
+

@@ -61,6 +61,20 @@
                                     @enderror
                                 </div>
                             </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('username') is-invalid @enderror" 
+                                           id="username" name="username" value="{{ old('username', $user->username) }}" required>
+                                    <div class="form-text">
+                                        Usado no login. Você pode corrigir aqui se o valor do LDAP vier incorreto/incompleto.
+                                    </div>
+                                    @error('username')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Senha -->

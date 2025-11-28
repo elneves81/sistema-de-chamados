@@ -210,7 +210,7 @@ class DashboardController extends Controller
     {
         try {
             // Buscar todos os tickets ativos com informações completas
-            $tickets = Ticket::with(['user.location', 'category', 'assignedUser'])
+            $tickets = Ticket::with(['user', 'location', 'category', 'assignedUser', 'supportTechnicians'])
                 ->whereNotIn('status', ['closed'])
                 ->orderByRaw("
                     CASE priority 
@@ -230,32 +230,38 @@ class DashboardController extends Controller
                 'high_tickets' => $tickets->where('priority', 'high')->count(),
                 'open_tickets' => $tickets->where('status', 'open')->count(),
                 'in_progress_tickets' => $tickets->where('status', 'in_progress')->count(),
-                'active_ubs' => $tickets->pluck('user.location.id')->filter()->unique()->count()
+                'active_ubs' => $tickets->pluck('location_id')->filter()->unique()->count()
             ];
 
-            // Estatísticas por UBS
-            $ubsStats = \App\Models\Location::with(['users.tickets' => function($query) {
+            // Estatísticas por UBS (baseadas na localização do chamado, não do usuário)
+            $ubsStats = \App\Models\Location::withCount(['tickets as total_tickets' => function($query) {
                     $query->whereNotIn('status', ['closed']);
+                }])
+                ->withCount(['tickets as urgent_tickets' => function($query) {
+                    $query->whereNotIn('status', ['closed'])
+                          ->where('priority', 'urgent');
+                }])
+                ->withCount(['tickets as open_tickets' => function($query) {
+                    $query->where('status', 'open');
+                }])
+                ->withCount(['tickets as in_progress_tickets' => function($query) {
+                    $query->where('status', 'in_progress');
                 }])
                 ->get()
                 ->map(function($location) {
-                    $allTickets = $location->users->flatMap->tickets;
-                    $urgentTickets = $allTickets->where('priority', 'urgent')->count();
-                    $openTickets = $allTickets->where('status', 'open')->count();
-                    
                     return [
                         'id' => $location->id,
                         'name' => $location->name,
-                        'total_tickets' => $allTickets->count(),
-                        'open_tickets' => $openTickets,
-                        'urgent_tickets' => $urgentTickets,
-                        'in_progress_tickets' => $allTickets->where('status', 'in_progress')->count(),
-                        'has_urgent' => $urgentTickets > 0,
-                        'has_tickets' => $allTickets->count() > 0
+                        'total_tickets' => $location->total_tickets ?? 0,
+                        'open_tickets' => $location->open_tickets ?? 0,
+                        'urgent_tickets' => $location->urgent_tickets ?? 0,
+                        'in_progress_tickets' => $location->in_progress_tickets ?? 0,
+                        'has_urgent' => ($location->urgent_tickets ?? 0) > 0,
+                        'has_tickets' => ($location->total_tickets ?? 0) > 0
                     ];
                 })
                 ->filter(function($ubs) {
-                    return $ubs['total_tickets'] > 0 || $ubs['has_tickets'];
+                    return $ubs['total_tickets'] > 0;
                 })
                 ->values();
 
@@ -264,13 +270,20 @@ class DashboardController extends Controller
                 return [
                     'id' => $ticket->id,
                     'title' => $ticket->title,
-                    'description' => substr($ticket->description, 0, 100) . '...',
+                    'description' => substr($ticket->description ?? '', 0, 100) . (strlen($ticket->description ?? '') > 100 ? '...' : ''),
                     'priority' => $ticket->priority,
                     'status' => $ticket->status,
                     'user_name' => $ticket->user->name ?? 'N/A',
-                    'ubs_name' => $ticket->user->location->name ?? null,
+                    'ubs_name' => $ticket->location->name ?? ($ticket->local ?? null),
                     'category_name' => $ticket->category->name ?? 'Sem categoria',
+                    'category_color' => $ticket->category->color ?? null, // disponibiliza cor da demanda para o painel TV
                     'assigned_to' => $ticket->assignedUser->name ?? null,
+                    'support_technicians' => $ticket->supportTechnicians->map(function($tech) {
+                        return [
+                            'id' => $tech->id,
+                            'name' => $tech->name
+                        ];
+                    })->toArray(),
                     'created_at' => $ticket->created_at->toISOString(),
                     'updated_at' => $ticket->updated_at->toISOString(),
                     'age_hours' => $ticket->created_at->diffInHours(now()),
@@ -301,6 +314,90 @@ class DashboardController extends Controller
                 'ubs_stats' => []
             ], 500);
         }
+    }
+
+    /**
+     * API para dados em tempo real do painel de monitoramento
+     */
+    public function monitoringRealtime(Request $request)
+    {
+        try {
+            $lastTicketId = $request->get('last_ticket_id', 0);
+            
+            // Buscar novos tickets desde o último ID
+            $newTickets = Ticket::with(['user', 'category', 'assignedUser'])
+                ->where('id', '>', $lastTicketId)
+                ->orderBy('id', 'desc')
+                ->get();
+
+            // Estatísticas atuais
+            $stats = [
+                'total' => Ticket::count(),
+                'open' => Ticket::where('status', 'open')->count(),
+                'urgent' => Ticket::where('priority', 'urgent')->count(),
+                'overdue' => Ticket::whereDate('due_date', '<', now())
+                                ->whereNotIn('status', ['resolved', 'closed'])
+                                ->count(),
+            ];
+
+            // Último ID de ticket
+            $lastId = Ticket::max('id') ?? 0;
+
+            // Formatar novos tickets
+            $formattedTickets = $newTickets->map(function($ticket) {
+                return [
+                    'id' => $ticket->id,
+                    'title' => $ticket->title,
+                    'priority' => $ticket->priority,
+                    'priority_label' => ucfirst($ticket->priority),
+                    'status' => $ticket->status,
+                    'status_label' => $this->getStatusLabel($ticket->status),
+                    'category' => $ticket->category->name ?? 'Sem categoria',
+                    'user_name' => $ticket->user->name ?? 'N/A',
+                    'created_at' => $ticket->created_at->format('d/m/Y H:i'),
+                    'url' => route('tickets.show', $ticket->id),
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'stats' => $stats,
+                'new_tickets' => $formattedTickets,
+                'last_ticket_id' => $lastId,
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Erro no monitoramento realtime: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'error' => 'Erro ao buscar dados',
+                'stats' => [
+                    'total' => 0,
+                    'open' => 0,
+                    'urgent' => 0,
+                    'overdue' => 0,
+                ],
+                'new_tickets' => [],
+                'last_ticket_id' => 0,
+            ], 500);
+        }
+    }
+
+    /**
+     * Retorna label do status
+     */
+    private function getStatusLabel($status)
+    {
+        $labels = [
+            'open' => 'Aberto',
+            'in_progress' => 'Em Andamento',
+            'waiting' => 'Aguardando',
+            'resolved' => 'Resolvido',
+            'closed' => 'Fechado',
+        ];
+
+        return $labels[$status] ?? ucfirst($status);
     }
 
     /**

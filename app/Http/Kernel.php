@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\CheckRole::class,
         'permission' => \App\Http\Middleware\CheckPermission::class,
         'force.json' => \App\Http\Middleware\ForceJsonResponse::class,
+        'admin' => \App\Http\Middleware\AdminOnly::class,
     ];
 }

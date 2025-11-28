@@ -324,7 +324,7 @@ class RealtimeMonitoring {
 
     async fetchNewData() {
         try {
-            const response = await fetch(`{{ route('admin.api.tickets.realtime') }}?last_ticket_id=${this.lastTicketId}`);
+            const response = await fetch(`{{ route('admin.api.monitoring.realtime') }}?last_ticket_id=${this.lastTicketId}`);
             const data = await response.json();
 
             this.updateStats(data.stats);

@@ -134,37 +134,192 @@ class AiService
         
         // Problemas de hardware
         if (preg_match('/(computador|pc|mouse|teclado|monitor|impressora|hardware).*(não funciona|quebrou|problema|defeito|parou|travou|não liga)/', $message)) {
+            // Buscar soluções na base de conhecimento
+            $knowledgeSuggestions = $this->suggestSolutions($message, $message);
+            
+            $response = '🔧 Identifiquei um problema de hardware!';
+            
+            if ($knowledgeSuggestions['found']) {
+                $response .= "\n\n📚 Encontrei artigos que podem ajudar:\n\n";
+                foreach ($knowledgeSuggestions['suggestions'] as $index => $article) {
+                    $response .= ($index + 1) . ". " . $article['title'] . "\n";
+                }
+                $response .= "\nVocê pode:\n1. Ver os artigos acima para resolver sozinho\n2. Criar um chamado técnico";
+            } else {
+                $response .= "\n\n1. Posso mostrar verificações básicas\n2. Ou criar um chamado técnico\n\nO que prefere?";
+            }
+            
+            $suggestions = [
+                ['text' => 'Criar chamado agora', 'action' => 'create_ticket']
+            ];
+            
+            // Adicionar links dos artigos como sugestões
+            if ($knowledgeSuggestions['found']) {
+                foreach (array_slice($knowledgeSuggestions['suggestions'], 0, 2) as $article) {
+                    $suggestions[] = [
+                        'text' => '📖 ' . $article['title'],
+                        'action' => 'view_article',
+                        'article_id' => $article['id']
+                    ];
+                }
+            }
+            
             return [
-                'response' => '🔧 Identifiquei um problema de hardware! Vou te ajudar a resolver:\n\n1. Primeiro, posso mostrar algumas verificações básicas\n2. Se não resolver, podemos criar um chamado técnico\n\nO que você prefere?',
-                'suggestions' => [
-                    ['text' => 'Ver guia de verificação', 'action' => 'help_guide', 'guide_type' => 'hardware'],
-                    ['text' => 'Criar chamado agora', 'action' => 'create_ticket']
-                ],
+                'response' => $response,
+                'suggestions' => $suggestions,
+                'knowledge_articles' => $knowledgeSuggestions['suggestions'] ?? [],
                 'action' => 'hardware_issue'
             ];
         }
         
         // Problemas de software
         if (preg_match('/(programa|sistema|aplicativo|software).*(erro|travou|não abre|falha|bug|lento|tela azul)/', $message)) {
+            $knowledgeSuggestions = $this->suggestSolutions($message, $message);
+            
+            $response = '💻 Problema de software detectado!';
+            
+            if ($knowledgeSuggestions['found']) {
+                $response .= "\n\n📚 Artigos relacionados:\n\n";
+                foreach ($knowledgeSuggestions['suggestions'] as $index => $article) {
+                    $response .= ($index + 1) . ". " . $article['title'] . "\n";
+                }
+                $response .= "\nEscolha uma opção abaixo:";
+            } else {
+                $response .= "\n\n1. Mostrar soluções rápidas\n2. Criar chamado para nossa equipe\n\nQual opção prefere?";
+            }
+            
+            $suggestions = [
+                ['text' => 'Criar chamado técnico', 'action' => 'create_ticket']
+            ];
+            
+            if ($knowledgeSuggestions['found']) {
+                foreach (array_slice($knowledgeSuggestions['suggestions'], 0, 2) as $article) {
+                    $suggestions[] = [
+                        'text' => '📖 ' . $article['title'],
+                        'action' => 'view_article',
+                        'article_id' => $article['id']
+                    ];
+                }
+            }
+            
             return [
-                'response' => '💻 Problema de software detectado! Posso te orientar:\n\n1. Mostrar soluções rápidas para tentar\n2. Ou criar um chamado direto para nossa equipe\n\nQual opção prefere?',
-                'suggestions' => [
-                    ['text' => 'Tentar soluções rápidas', 'action' => 'help_guide', 'guide_type' => 'software'],
-                    ['text' => 'Criar chamado técnico', 'action' => 'create_ticket']
-                ],
+                'response' => $response,
+                'suggestions' => $suggestions,
+                'knowledge_articles' => $knowledgeSuggestions['suggestions'] ?? [],
                 'action' => 'software_issue'
             ];
         }
         
         // Problemas de rede/internet
         if (preg_match('/(internet|rede|wifi|wi-fi|conexão).*(lenta|não funciona|caiu|problema|sem acesso)/', $message)) {
+            $knowledgeSuggestions = $this->suggestSolutions($message, $message);
+            
+            $response = '🌐 Problema de rede identificado!';
+            
+            if ($knowledgeSuggestions['found']) {
+                $response .= "\n\n📚 Soluções disponíveis:\n\n";
+                foreach ($knowledgeSuggestions['suggestions'] as $index => $article) {
+                    $response .= ($index + 1) . ". " . $article['title'] . "\n";
+                }
+            } else {
+                $response .= "\n\n1. Verificações básicas de conectividade\n2. Abrir chamado para infraestrutura";
+            }
+            
+            $suggestions = [
+                ['text' => 'Chamar suporte de rede', 'action' => 'create_ticket']
+            ];
+            
+            if ($knowledgeSuggestions['found']) {
+                foreach (array_slice($knowledgeSuggestions['suggestions'], 0, 2) as $article) {
+                    $suggestions[] = [
+                        'text' => '📖 ' . $article['title'],
+                        'action' => 'view_article',
+                        'article_id' => $article['id']
+                    ];
+                }
+            }
+            
             return [
-                'response' => '🌐 Problema de rede identificado! Vamos resolver:\n\n1. Posso mostrar verificações básicas de conectividade\n2. Ou abrir chamado para nossa equipe de infraestrutura\n\nComo prefere proceder?',
-                'suggestions' => [
-                    ['text' => 'Verificações básicas', 'action' => 'help_guide', 'guide_type' => 'network'],
-                    ['text' => 'Chamar suporte de rede', 'action' => 'create_ticket']
-                ],
+                'response' => $response,
+                'suggestions' => $suggestions,
+                'knowledge_articles' => $knowledgeSuggestions['suggestions'] ?? [],
                 'action' => 'network_issue'
+            ];
+        }
+        
+        // Problemas de senha/login
+        if (preg_match('/(senha|password|login|acesso|bloqueado|esqueci)/', $message) && 
+            preg_match('/(esqueci|perdi|não sei|recuperar|resetar|trocar|bloqueado)/', $message)) {
+            $knowledgeSuggestions = $this->suggestSolutions($message, $message);
+            
+            $response = '🔐 Problema de acesso detectado!';
+            
+            if ($knowledgeSuggestions['found']) {
+                $response .= "\n\n📚 Veja como resolver:\n\n";
+                foreach ($knowledgeSuggestions['suggestions'] as $index => $article) {
+                    $response .= ($index + 1) . ". " . $article['title'] . "\n";
+                }
+                $response .= "\n⚠️ Por segurança, nunca compartilhe sua senha!";
+            } else {
+                $response .= "\n\n1. Ver procedimento de recuperação\n2. Chamar suporte para reset";
+            }
+            
+            $suggestions = [
+                ['text' => 'Chamar suporte', 'action' => 'create_ticket']
+            ];
+            
+            if ($knowledgeSuggestions['found']) {
+                foreach (array_slice($knowledgeSuggestions['suggestions'], 0, 2) as $article) {
+                    $suggestions[] = [
+                        'text' => '📖 ' . $article['title'],
+                        'action' => 'view_article',
+                        'article_id' => $article['id']
+                    ];
+                }
+            }
+            
+            return [
+                'response' => $response,
+                'suggestions' => $suggestions,
+                'knowledge_articles' => $knowledgeSuggestions['suggestions'] ?? [],
+                'action' => 'password_issue'
+            ];
+        }
+        
+        // Problemas com email/Outlook
+        if (preg_match('/(email|e-mail|outlook|mensagem).*(não envia|não recebe|erro|problema|travou)/', $message)) {
+            $knowledgeSuggestions = $this->suggestSolutions($message, $message);
+            
+            $response = '📧 Problema com email identificado!';
+            
+            if ($knowledgeSuggestions['found']) {
+                $response .= "\n\n📚 Soluções para email:\n\n";
+                foreach ($knowledgeSuggestions['suggestions'] as $index => $article) {
+                    $response .= ($index + 1) . ". " . $article['title'] . "\n";
+                }
+            } else {
+                $response .= "\n\n1. Verificações básicas\n2. Criar chamado para suporte";
+            }
+            
+            $suggestions = [
+                ['text' => 'Criar chamado', 'action' => 'create_ticket']
+            ];
+            
+            if ($knowledgeSuggestions['found']) {
+                foreach (array_slice($knowledgeSuggestions['suggestions'], 0, 2) as $article) {
+                    $suggestions[] = [
+                        'text' => '📖 ' . $article['title'],
+                        'action' => 'view_article',
+                        'article_id' => $article['id']
+                    ];
+                }
+            }
+            
+            return [
+                'response' => $response,
+                'suggestions' => $suggestions,
+                'knowledge_articles' => $knowledgeSuggestions['suggestions'] ?? [],
+                'action' => 'email_issue'
             ];
         }
         
@@ -299,5 +454,108 @@ class AiService
         $excerptMatches = substr_count(strtolower($article->excerpt), strtolower($keyword));
         
         return ($titleMatches * 3) + ($excerptMatches * 2) + $contentMatches;
+    }
+
+    /**
+     * Sugere soluções da base de conhecimento
+     */
+    public function suggestSolutions($title, $description)
+    {
+        try {
+            $text = strtolower($title . ' ' . $description);
+            
+            // Buscar artigos publicados da base de conhecimento
+            $articles = KnowledgeArticle::where('status', 'published')
+                ->where('is_public', true)
+                ->get();
+            
+            if ($articles->isEmpty()) {
+                return [
+                    'found' => false,
+                    'message' => 'Nenhum artigo disponível na base de conhecimento',
+                    'suggestions' => []
+                ];
+            }
+            
+            $scoredArticles = [];
+            
+            // Palavras-chave específicas por tipo de problema
+            $problemKeywords = [
+                'impressora' => ['impressora', 'imprimir', 'papel', 'toner', 'cartucho', 'spooler'],
+                'computador' => ['computador', 'pc', 'desktop', 'notebook', 'liga', 'boot', 'tela'],
+                'rede' => ['rede', 'internet', 'wifi', 'wi-fi', 'conexão', 'cabo', 'lan'],
+                'software' => ['programa', 'sistema', 'aplicativo', 'office', 'windows', 'instalar'],
+                'senha' => ['senha', 'password', 'login', 'acesso', 'autenticação', 'bloqueado'],
+                'email' => ['email', 'e-mail', 'outlook', 'mensagem', 'correio']
+            ];
+            
+            // Calcular score para cada artigo
+            foreach ($articles as $article) {
+                $score = 0;
+                
+                // Match direto no título (peso maior)
+                foreach ($problemKeywords as $category => $keywords) {
+                    foreach ($keywords as $keyword) {
+                        if (stripos($text, $keyword) !== false) {
+                            if (stripos($article->title, $keyword) !== false) {
+                                $score += 5;
+                            }
+                            if (stripos($article->excerpt, $keyword) !== false) {
+                                $score += 3;
+                            }
+                            if (stripos($article->content, $keyword) !== false) {
+                                $score += 1;
+                            }
+                        }
+                    }
+                }
+                
+                // Pontuação extra para artigos em destaque
+                if ($article->is_featured) {
+                    $score += 2;
+                }
+                
+                if ($score > 0) {
+                    $scoredArticles[] = [
+                        'id' => $article->id,
+                        'title' => $article->title,
+                        'excerpt' => $article->excerpt,
+                        'views' => $article->views,
+                        'score' => $score,
+                        'category' => $article->category->name ?? 'Geral'
+                    ];
+                }
+            }
+            
+            // Ordenar por relevância
+            usort($scoredArticles, function($a, $b) {
+                return $b['score'] - $a['score'];
+            });
+            
+            $topSuggestions = array_slice($scoredArticles, 0, 3);
+            
+            if (empty($topSuggestions)) {
+                return [
+                    'found' => false,
+                    'message' => 'Não encontramos artigos relacionados ao seu problema',
+                    'suggestions' => []
+                ];
+            }
+            
+            return [
+                'found' => true,
+                'count' => count($topSuggestions),
+                'message' => 'Encontramos ' . count($topSuggestions) . ' artigo(s) que podem ajudar:',
+                'suggestions' => $topSuggestions
+            ];
+            
+        } catch (\Exception $e) {
+            Log::error('Erro ao sugerir soluções: ' . $e->getMessage());
+            return [
+                'found' => false,
+                'message' => 'Erro ao buscar soluções',
+                'suggestions' => []
+            ];
+        }
     }
 }

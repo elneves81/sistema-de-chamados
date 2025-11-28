@@ -1,0 +1,11 @@
+nome,nome_curto,endereco,cidade,estado,pais,cep,telefone,email,observacao,ativo
+Secretaria Municipal de Saúde,SMS,Rua XV de Novembro 5150,Guarapuava,PR,Brasil,85010-000,(42) 3142-1512,saude@guarapuava.pr.gov.br,Sede administrativa,sim
+Hospital Municipal São Vicente de Paulo,Hospital Municipal,Rua Brigadeiro Rocha 2253,Guarapuava,PR,Brasil,85015-040,(42) 3142-1500,hospital@guarapuava.pr.gov.br,Hospital Municipal,sim
+UBS Centro,UBS Centro,Rua Barão do Rio Branco 1234,Guarapuava,PR,Brasil,85010-020,(42) 3142-1520,ubs.centro@guarapuava.pr.gov.br,Unidade Básica de Saúde,sim
+UBS Primavera,UBS Primavera,Rua das Flores 500,Guarapuava,PR,Brasil,85025-000,(42) 3142-1525,ubs.primavera@guarapuava.pr.gov.br,Unidade Básica de Saúde,sim
+UBS Paz e Bem,UBS Paz e Bem,Rua da Paz 123,Guarapuava,PR,Brasil,85030-000,(42) 3142-1530,ubs.pazebem@guarapuava.pr.gov.br,Unidade Básica de Saúde,sim
+CAPS,CAPS,Avenida Santos Dumont 2000,Guarapuava,PR,Brasil,85012-000,(42) 3142-1540,caps@guarapuava.pr.gov.br,Centro de Atenção Psicossocial,sim
+Laboratório Municipal,Lab Municipal,Rua Coronel Pires 789,Guarapuava,PR,Brasil,85015-000,(42) 3142-1550,lab@guarapuava.pr.gov.br,Laboratório de análises,sim
+Farmácia Central,Farm Central,Rua XV de Novembro 5150,Guarapuava,PR,Brasil,85010-000,(42) 3142-1515,farmacia@guarapuava.pr.gov.br,Farmácia central de distribuição,sim
+SAMU,SAMU,Avenida Manoel Ribas 3000,Guarapuava,PR,Brasil,85020-000,192,samu@guarapuava.pr.gov.br,Serviço de Atendimento Móvel de Urgência,sim
+Vigilância Sanitária,Visa,Rua Frei Caneca 456,Guarapuava,PR,Brasil,85010-050,(42) 3142-1560,visa@guarapuava.pr.gov.br,Vigilância Sanitária Municipal,sim

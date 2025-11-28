@@ -15,7 +15,32 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Backup automático do sistema
+        // Executa todos os dias às 3h da manhã (backup completo)
+        $schedule->command('backup:create --full')
+                 ->daily()
+                 ->at('03:00')
+                 ->withoutOverlapping()
+                 ->onOneServer()
+                 ->runInBackground()
+                 ->appendOutputTo(storage_path('backups/backup.log'));
+        
+        // Backup do banco de dados a cada 6 horas
+        $schedule->command('backup:create --database-only')
+                 ->everySixHours()
+                 ->withoutOverlapping()
+                 ->onOneServer()
+                 ->runInBackground()
+                 ->appendOutputTo(storage_path('backups/backup.log'));
+        
+        // Importação automática de usuários do LDAP
+        // Executa todos os dias às 2h da manhã
+        $schedule->command('ldap:import-users --limit=1000')
+                 ->daily()
+                 ->at('02:00')
+                 ->withoutOverlapping()
+                 ->onOneServer()
+                 ->runInBackground();
     }
 
     /**

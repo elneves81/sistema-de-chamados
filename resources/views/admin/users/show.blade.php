@@ -13,6 +13,9 @@
                     <p class="text-muted">Detalhes completos do usuário</p>
                 </div>
                 <div class="btn-group">
+                    <a href="{{ route('admin.users.export-pdf', $user) }}" class="btn btn-outline-success">
+                        <i class="bi bi-filetype-pdf"></i> Exportar PDF
+                    </a>
                     <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary">
                         <i class="bi bi-pencil"></i> Editar
                     </a>
@@ -55,6 +58,10 @@
                     
                     <!-- Contact Info -->
                     <div class="mt-3">
+                        <p class="mb-1">
+                            <i class="bi bi-person-badge text-primary"></i>
+                            <strong>Username:</strong> {{ $user->username }}
+                        </p>
                         @if($user->phone)
                         <p class="mb-1">
                             <i class="bi bi-telephone text-primary"></i> 

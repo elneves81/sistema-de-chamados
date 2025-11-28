@@ -9,6 +9,11 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -128,6 +133,213 @@
             position: relative;
             height: 300px;
         }
+        
+        /* Melhorias responsivas para dropdown de usuário */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            z-index: 1060 !important;
+            background: white;
+            border: 1px solid rgba(0,0,0,.15);
+            border-radius: 0.375rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
+        }
+        
+        .dropdown-menu.show {
+            display: block !important;
+        }
+        
+        .dropdown-toggle {
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Remove highlight azul no iOS */
+        }
+        
+        .dropdown-item {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .dropdown-item:hover,
+        .dropdown-item:active {
+            background-color: #f8f9fa;
+        }
+        
+        /* Menu hambúrguer mobile */
+        .menu-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1100;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            width: 50px;
+            height: 50px;
+            display: none; /* Escondido por padrão */
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            padding: 0;
+        }
+        
+        /* Mostrar apenas em telas pequenas */
+        @media (max-width: 767.98px) {
+            .menu-toggle {
+                display: flex !important;
+            }
+        }
+        
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .hamburger span {
+            display: block;
+            height: 3px;
+            background-color: #667eea;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7.5px) rotate(45deg);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7.5px) rotate(-45deg);
+        }
+        
+        /* Botão fechar dentro da sidebar */
+        .btn-close-sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-close-sidebar:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Sidebar mobile */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1050;
+            display: none;
+        }
+        
+        .sidebar-backdrop.show {
+            display: block;
+        }
+        
+        @media (max-width: 767.98px) {
+            .sidebar-responsive {
+                position: fixed !important;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 280px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1060; /* ACIMA do backdrop */
+                overflow-y: auto;
+            }
+            
+            .sidebar-responsive.open {
+                transform: translateX(0) !important;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            }
+            
+            .dropdown-menu {
+                max-width: 90vw;
+                right: 0 !important;
+                left: auto !important;
+            }
+            
+            #userDropdown {
+                font-size: 0.9rem;
+            }
+            
+            .dropdown-item {
+                padding: 0.65rem 1rem;
+                font-size: 0.95rem;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .menu-toggle {
+                display: none !important;
+            }
+            
+            .sidebar-backdrop {
+                display: none !important;
+            }
+            
+            .sidebar-responsive {
+                position: static !important;
+                transform: none !important;
+            }
+            
+            .btn-close-sidebar {
+                display: none !important;
+            }
+            
+            /* Layout colapsado (desktop): encolhe a sidebar e expande conteúdo */
+            .layout-collapsed .sidebar-responsive {
+                flex: 0 0 64px !important;
+                max-width: 64px !important;
+            }
+            .layout-collapsed .content-wrapper {
+                flex: 1 1 auto !important;
+                max-width: calc(100% - 64px) !important;
+            }
+            .layout-collapsed .sidebar-responsive .nav-link {
+                font-size: 0 !important; /* esconde texto sem quebrar ícones */
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+                text-align: center;
+            }
+            .layout-collapsed .sidebar-responsive .nav-link i {
+                margin-right: 0 !important;
+                font-size: 1.2rem;
+            }
+            .layout-collapsed .sidebar-responsive h5,
+            .layout-collapsed .sidebar-responsive small,
+            .layout-collapsed .sidebar-responsive .badge,
+            .layout-collapsed .sidebar-responsive .collapse,
+            .layout-collapsed .sidebar-responsive .bi-chevron-down,
+            .layout-collapsed .sidebar-responsive .text-white-50 {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -139,7 +351,7 @@
         <div class="container-fluid">
             <div class="row">
                 <!-- Botão Toggle Menu Mobile -->
-                <button class="menu-toggle d-md-none" aria-label="Abrir menu de navegação" aria-expanded="false">
+                <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" type="button">
                     <div class="hamburger">
                         <span></span>
                         <span></span>
@@ -151,10 +363,15 @@
                 <div class="sidebar-backdrop" aria-hidden="true"></div>
                 
                 <!-- Sidebar -->
-                <nav class="col-md-3 col-lg-2 d-md-block sidebar-responsive collapse px-0" 
+                <nav class="col-md-3 col-lg-2 d-md-block sidebar-responsive px-0" 
                      role="navigation" 
                      aria-label="Menu principal"
                      aria-hidden="false">
+                    <!-- Botão fechar para mobile -->
+                    <button class="btn-close-sidebar d-md-none" aria-label="Fechar menu">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                    
                     <div class="position-sticky pt-3">
                         <div class="text-center mb-4">
                             <h5 class="text-white">{{ config('app.name') }}</h5>
@@ -171,9 +388,17 @@
                                 </a>
                             </li>
                             @endif
+                            @if(in_array(auth()->user()->role, ['technician', 'admin']))
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('technician.dashboard') ? 'active' : '' }}" href="{{ route('technician.dashboard') }}">
+                                    <i class="bi bi-kanban"></i>
+                                    Central de Atendimentos
+                                </a>
+                            </li>
+                            @endif
                             @if(auth()->user()->hasPermission('tickets.view.own') || auth()->user()->hasPermission('tickets.view.all'))
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('tickets.*') ? 'active' : '' }}" href="{{ route('tickets.index') }}">
+                                <a class="nav-link {{ request()->routeIs('tickets.*') && !request()->routeIs('tickets.boardTv*') ? 'active' : '' }}" href="{{ route('tickets.index') }}">
                                     <i class="bi bi-ticket-perforated"></i>
                                     Chamados
                                 </a>
@@ -227,6 +452,22 @@
                             </li>
                             @endif
                             
+                            @if(auth()->user()->hasPermission('machines.view'))
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('machines.*') ? 'active' : '' }}" href="{{ route('machines.index') }}">
+                                    <i class="bi bi-pc-display-horizontal"></i>
+                                    Inventário
+                                </a>
+                            </li>
+                            @endif
+                            
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('ramais.*') ? 'active' : '' }}" href="{{ route('ramais.index') }}">
+                                    <i class="bi bi-telephone"></i>
+                                    Ramais
+                                </a>
+                            </li>
+                            
                             @if(auth()->user()->role === 'admin')
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="#" data-bs-toggle="collapse" data-bs-target="#adminMenu">
@@ -258,7 +499,10 @@
                                                 <i class="bi bi-chat-dots"></i>
                                                 Mensagens de Contato
                                                 @php
-                                                    $pendingCount = \App\Models\ContactMessage::where('status', 'pendente')->count();
+                                                    // Contar apenas mensagens pendentes (não respondidas)
+                                                    $pendingCount = \App\Models\ContactMessage::where('status', 'pendente')
+                                                        ->whereNull('responded_at')
+                                                        ->count();
                                                 @endphp
                                                 @if($pendingCount > 0)
                                                     <span class="badge bg-danger ms-1">{{ $pendingCount }}</span>
@@ -271,6 +515,14 @@
                                             <a class="nav-link {{ request()->routeIs('admin.locations.*') ? 'active' : '' }}" href="{{ route('admin.locations.index') }}">
                                                 <i class="bi bi-geo-alt"></i>
                                                 Localizações
+                                            </a>
+                                        </li>
+                                        @endif
+                                        @if(auth()->user()->hasPermission('users.view'))
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.backup.*') ? 'active' : '' }}" href="{{ route('admin.backup.index') }}">
+                                                <i class="bi bi-shield-check"></i>
+                                                Backups
                                             </a>
                                         </li>
                                         @endif
@@ -316,6 +568,16 @@
                                 </a>
                             </li>
                             
+                            @if(auth()->user()->role === 'admin')
+                            <!-- Preferências de Notificação - Apenas admin -->
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('notifications.preferences*') ? 'active' : '' }}" href="{{ route('notifications.preferences') }}">
+                                    <i class="bi bi-bell"></i>
+                                    Notificações
+                                </a>
+                            </li>
+                            @endif
+                            
                             <!-- Fale Conosco - Disponível para todos -->
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('contact.*') ? 'active' : '' }}" href="{{ route('contact.index') }}">
@@ -345,7 +607,11 @@
                       aria-label="Conteúdo principal">
                     <!-- Top Navigation Bar -->
                     <div class="d-flex justify-content-between align-items-center py-2 border-bottom mb-3">
-                        <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <!-- Botão de encolher/expandir a sidebar (desktop) -->
+                            <button id="sidebarCollapseBtn" class="btn btn-outline-secondary d-none d-md-inline-flex" type="button" aria-label="Encolher ou expandir menu lateral" title="Encolher/expandir menu">
+                                <i class="bi bi-layout-sidebar-inset"></i>
+                            </button>
                             <!-- Breadcrumb ou título da página pode ficar aqui -->
                         </div>
                         <div class="d-flex align-items-center gap-2">
@@ -354,17 +620,23 @@
                             
                             <!-- Dropdown do usuário -->
                             <div class="dropdown">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-person-circle"></i> {{ auth()->user()->name }}
+                                <button class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="min-height: 44px; padding: 0.5rem 1rem;">
+                                    <i class="bi bi-person-circle" style="font-size: 1.3rem;"></i> 
+                                    <span class="d-none d-md-inline">{{ auth()->user()->name }}</span>
+                                    <span class="d-md-none">{{ Str::limit(auth()->user()->name, 15) }}</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Perfil</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Configurações</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown" style="min-width: 200px; z-index: 1060;">
+                                    <li class="px-3 py-2 border-bottom d-md-none">
+                                        <small class="text-muted d-block">Logado como:</small>
+                                        <strong class="d-block text-truncate">{{ auth()->user()->name }}</strong>
+                                    </li>
+                                    <li><a class="dropdown-item py-2" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i> Perfil</a></li>
+                                    <li><a class="dropdown-item py-2" href="{{ route('profile.edit') }}"><i class="bi bi-gear me-2"></i> Configurações</a></li>
+                                    <li><hr class="dropdown-divider my-1"></li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                        <a class="dropdown-item text-danger py-2 fw-semibold" href="{{ route('logout') }}"
                                            onclick="event.preventDefault(); document.getElementById('top-logout-form').submit();">
-                                            <i class="bi bi-box-arrow-right"></i> Sair
+                                            <i class="bi bi-box-arrow-right me-2"></i> Sair
                                         </a>
                                         <form id="top-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                             @csrf
@@ -403,6 +675,14 @@
 
                         @yield('content')
                     </div>
+                    
+                    <!-- Footer com marca d'água -->
+                    <footer class="text-center py-3 mt-4 border-top">
+                        <small class="text-muted" style="font-size: 0.75rem; opacity: 0.6;">
+                            <span style="color: #10b981; font-weight: 700;">HUBI</span> 
+                            <span style="color: #f97316; font-weight: 700;">SOFTWARE</span>
+                        </small>
+                    </footer>
                 </main>
             </div>
         </div>
@@ -485,7 +765,200 @@
     <!-- Script para logout seguro -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Logout forms
+            console.log('Inicializando dropdowns...');
+            
+            // ========================================
+            // TOGGLE SIDEBAR (DESKTOP)
+            // ========================================
+            const collapseBtn = document.getElementById('sidebarCollapseBtn');
+            const BODY = document.body;
+            const STORAGE_KEY = 'layoutCollapsed';
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved === '1') {
+                    BODY.classList.add('layout-collapsed');
+                }
+            } catch (e) { /* ignore storage errors */ }
+            
+            if (collapseBtn) {
+                collapseBtn.addEventListener('click', function() {
+                    BODY.classList.toggle('layout-collapsed');
+                    try {
+                        localStorage.setItem(STORAGE_KEY, BODY.classList.contains('layout-collapsed') ? '1' : '0');
+                    } catch (e) { /* ignore */ }
+                });
+            }
+            
+            // SEMPRE usar fallback manual para garantir funcionamento
+            const toggles = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+            console.log('Dropdowns encontrados:', toggles.length);
+            
+            toggles.forEach((toggle, index) => {
+                const dropdown = toggle.closest('.dropdown');
+                const menu = dropdown?.querySelector('.dropdown-menu');
+                
+                if (!menu) {
+                    console.warn('Menu não encontrado para dropdown', index);
+                    return;
+                }
+                
+                console.log('Configurando dropdown', index, toggle.id);
+
+                // Abrir/fechar no clique do botão
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isOpen = menu.classList.contains('show');
+                    console.log('Clique no dropdown', this.id, 'aberto:', isOpen);
+
+                    // Fechar todos os outros dropdowns
+                    document.querySelectorAll('.dropdown-menu.show').forEach(m => {
+                        if (m !== menu) {
+                            m.classList.remove('show');
+                            m.previousElementSibling?.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+
+                    // Toggle do dropdown atual
+                    if (!isOpen) {
+                        menu.classList.add('show');
+                        toggle.setAttribute('aria-expanded', 'true');
+                        console.log('Dropdown aberto');
+                    } else {
+                        menu.classList.remove('show');
+                        toggle.setAttribute('aria-expanded', 'false');
+                        console.log('Dropdown fechado');
+                    }
+                });
+
+                // Fechar ao clicar fora
+                document.addEventListener('click', function(e) {
+                    if (!dropdown.contains(e.target)) {
+                        menu.classList.remove('show');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                
+                // Não fechar ao clicar dentro do menu (exceto em links)
+                menu.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'A' || e.target.closest('a')) {
+                        // Se for um link, deixar o comportamento padrão
+                        return;
+                    }
+                    e.stopPropagation();
+                });
+            });
+
+            // ========================================
+            // MENU MOBILE (HAMBÚRGUER)
+            // ========================================
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar-responsive');
+            const sidebarBackdrop = document.querySelector('.sidebar-backdrop');
+            
+            if (menuToggle && sidebar) {
+                console.log('Menu mobile configurado');
+                
+                let isMenuOpen = false;
+                
+                // Função para abrir menu
+                const openMenu = () => {
+                    isMenuOpen = true;
+                    sidebar.classList.add('open');
+                    sidebar.setAttribute('aria-hidden', 'false');
+                    if (sidebarBackdrop) {
+                        sidebarBackdrop.classList.add('show');
+                    }
+                    menuToggle.setAttribute('aria-expanded', 'true');
+                    const hamburger = menuToggle.querySelector('.hamburger');
+                    if (hamburger) hamburger.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevenir scroll
+                    console.log('Menu aberto');
+                };
+                
+                // Função para fechar menu
+                const closeMenu = () => {
+                    isMenuOpen = false;
+                    sidebar.classList.remove('open');
+                    sidebar.setAttribute('aria-hidden', 'true');
+                    if (sidebarBackdrop) {
+                        sidebarBackdrop.classList.remove('show');
+                    }
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    const hamburger = menuToggle.querySelector('.hamburger');
+                    if (hamburger) hamburger.classList.remove('active');
+                    document.body.style.overflow = ''; // Restaurar scroll
+                    console.log('Menu fechado');
+                };
+                
+                // Abrir/fechar menu ao clicar no hambúrguer
+                menuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    
+                    console.log('Menu toggle clicado, isMenuOpen:', isMenuOpen);
+                    
+                    if (!isMenuOpen) {
+                        openMenu();
+                    } else {
+                        closeMenu();
+                    }
+                });
+                
+                // Suporte para touch (mobile)
+                menuToggle.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    
+                    console.log('Menu toggle touched, isMenuOpen:', isMenuOpen);
+                    
+                    if (!isMenuOpen) {
+                        openMenu();
+                    } else {
+                        closeMenu();
+                    }
+                }, { passive: false });
+                
+                // Prevenir fechamento ao clicar na própria sidebar
+                sidebar.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                
+                // Fechar menu ao clicar no backdrop
+                if (sidebarBackdrop) {
+                    sidebarBackdrop.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        closeMenu();
+                    });
+                }
+                
+                // Fechar menu ao clicar em qualquer link da sidebar
+                const sidebarLinks = sidebar.querySelectorAll('a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        setTimeout(closeMenu, 200);
+                    });
+                });
+                
+                // Botão fechar dentro da sidebar
+                const btnCloseSidebar = sidebar.querySelector('.btn-close-sidebar');
+                if (btnCloseSidebar) {
+                    btnCloseSidebar.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        closeMenu();
+                    });
+                }
+            } else {
+                console.warn('Menu mobile não encontrado');
+            }
+
+            // ========================================
+            // LOGOUT FORMS
+            // ========================================
             const logoutForms = ['logout-form', 'top-logout-form'];
             
             logoutForms.forEach(formId => {

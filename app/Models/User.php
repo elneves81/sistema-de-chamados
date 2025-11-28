@@ -20,12 +20,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'email_verified_at',
         'password',
         'role',
         'is_super_admin',
         'phone',
+        'telegram_id',
+        'whatsapp',
+        'notification_preferences',
         'department',
         'location_id', // Localização do usuário
         'employee_id', // ID do funcionário (para integração com AD)
@@ -56,7 +60,8 @@ class User extends Authenticatable
         'is_active' => 'boolean',
         'is_super_admin' => 'boolean',
         'auth_via_ldap' => 'boolean',
-        'last_login_at' => 'datetime'
+        'last_login_at' => 'datetime',
+        'notification_preferences' => 'array'
     ];
 
     // Relacionamentos
@@ -189,4 +194,55 @@ class User extends Authenticatable
     {
         return $this->is_super_admin;
     }
+
+    /**
+     * Obtém as preferências de notificação do usuário
+     */
+    public function getNotificationPreferences(): array
+    {
+        $default = [
+            'channels' => ['email'], // Canais padrão
+            'events' => [
+                'ticket.created' => ['enabled' => true, 'channels' => ['email']],
+                'ticket.assigned' => ['enabled' => true, 'channels' => ['email', 'sms']],
+                'ticket.status_changed' => ['enabled' => true, 'channels' => ['email']],
+                'ticket.commented' => ['enabled' => true, 'channels' => ['email']],
+                'ticket.sla_warning' => ['enabled' => true, 'channels' => ['email', 'sms', 'telegram', 'whatsapp']],
+            ]
+        ];
+
+        if (!$this->notification_preferences) {
+            return $default;
+        }
+
+        return array_merge($default, $this->notification_preferences);
+    }
+
+    /**
+     * Atualiza as preferências de notificação
+     */
+    public function updateNotificationPreferences(array $preferences): void
+    {
+        $this->notification_preferences = $preferences;
+        $this->save();
+    }
+
+    /**
+     * Verifica se um canal de notificação está configurado e válido
+     */
+    public function hasValidChannel(string $channel): bool
+    {
+        switch ($channel) {
+            case 'email':
+                return !empty($this->email);
+            case 'sms':
+            case 'whatsapp':
+                return !empty($this->phone) || !empty($this->whatsapp);
+            case 'telegram':
+                return !empty($this->telegram_id);
+            default:
+                return false;
+        }
+    }
 }
+

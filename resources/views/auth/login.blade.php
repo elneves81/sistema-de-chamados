@@ -26,6 +26,18 @@ body.login-page {
     position: relative;
 }
 
+/* Wrapper para layout lado a lado */
+.login-wrapper {
+    width: 100%;
+    max-width: 980px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 24px;
+    position: relative;
+    z-index: 1; /* acima do background decorativo */
+}
+
 /* Efeito de fundo animado */
 .login-container::before {
     content: '';
@@ -54,6 +66,20 @@ body.login-page {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Card de informações de contato (ao lado do login) */
+.contact-info-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.3);
+    padding: 28px;
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    animation: slideInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
 /* Header do card */
 .login-header {
     text-align: center;
@@ -75,6 +101,12 @@ body.login-page {
 .login-logo i {
     font-size: 28px;
     color: white;
+}
+
+.login-logo img {
+    width: 34px;
+    height: 34px;
+    display: block;
 }
 
 .login-title {
@@ -286,6 +318,10 @@ body.login-page {
         padding: 15px;
     }
     
+    .login-wrapper {
+        gap: 16px;
+    }
+    
     .login-card {
         padding: 30px 25px;
         border-radius: 16px;
@@ -312,6 +348,17 @@ body.login-page {
 @media (max-width: 360px) {
     .login-card {
         padding: 25px 20px;
+    }
+}
+
+/* Quebra para empilhar em telas menores */
+@media (max-width: 900px) {
+    .login-wrapper {
+        flex-direction: column;
+        max-width: 520px;
+    }
+    .contact-info-card {
+        max-width: 100%;
     }
 }
 
@@ -360,6 +407,75 @@ body.login-page {
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
 }
+
+/* Card de informações de contato - estilos detalhados */
+
+.contact-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #667eea;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.contact-header i {
+    font-size: 18px;
+}
+
+.contact-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #4a5568;
+}
+
+.contact-item i {
+    font-size: 16px;
+    color: #667eea;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.contact-item strong {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.contact-item a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .contact-info-card {
+        padding: 14px;
+    }
+    
+    .contact-item {
+        font-size: 12px;
+    }
+    
+    .contact-header {
+        font-size: 14px;
+    }
+}
 </style>
 
 <script>
@@ -399,13 +515,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @section('content')
 <div class="login-container">
-    <div class="login-card">
+    <div class="login-wrapper">
+        <div class="login-card">
         <div class="login-header">
             <div class="login-logo">
-                <i class="bi bi-shield-lock"></i>
+                <img src="{{ asset('favicon.svg') }}" alt="Ícone Suporte+ Saúde" />
             </div>
-            <h1 class="login-title">Bem-vindo</h1>
-            <p class="login-subtitle">Faça login para acessar o sistema</p>
+            <h1 class="login-title">
+                <span style="color:#10b981; font-weight:800; letter-spacing:0.2px;">Suporte+</span>
+                <span style="color:#f59e0b; font-weight:800; letter-spacing:0.2px;">Saúde</span>
+            </h1>
+            <p class="login-subtitle">Saúde - Guarapuava PR</p>
         </div>
 
         @if(session('error'))
@@ -428,17 +548,17 @@ document.addEventListener('DOMContentLoaded', function() {
             @csrf
             
             <div class="form-group">
-                <label for="email" class="form-label">E-mail</label>
+                <label for="login" class="form-label">E-mail ou Usuário</label>
                 <input 
-                    type="email" 
-                    class="form-control @error('email') is-invalid @enderror" 
-                    id="email" 
-                    name="email" 
-                    value="{{ old('email') }}"
-                    placeholder="seu@email.com"
+                    type="text" 
+                    class="form-control @error('login') is-invalid @enderror" 
+                    id="login" 
+                    name="login" 
+                    value="{{ old('login') }}"
+                    placeholder="Digite seu e-mail ou usuário"
                     required 
                     autofocus
-                    autocomplete="email"
+                    autocomplete="username"
                 >
             </div>
 
@@ -473,13 +593,57 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         </form>
 
-        @if (Route::has('password.request'))
-            <div class="forgot-password">
-                <a href="{{ route('password.request') }}" class="forgot-link">
-                    Esqueceu sua senha?
-                </a>
+        <div class="text-center mt-4">
+            <small class="text-muted" style="font-size: 0.875rem;">
+                <strong style="color: #667eea;">Ditis-Saúde</strong>
+            </small>
+        </div>
+        </div>
+
+        <!-- Informações de Contato ao lado do login -->
+        <div class="contact-info-card">
+            <div class="contact-header">
+                <i class="bi bi-headset"></i>
+                <span>Precisa de Ajuda?</span>
             </div>
-        @endif
+            <div class="contact-items">
+                <div class="contact-item">
+                    <i class="bi bi-telephone-fill"></i>
+                    <div>
+                        <strong>Suporte:</strong> <a href="tel:+554231421512" aria-label="Ligar para Suporte (42) 3142-1512">(42) 3142-1512</a><br>
+                        <strong>Administrativo:</strong> <a href="tel:+554231421527" aria-label="Ligar para Administrativo (42) 3142-1527">(42) 3142-1527</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="bi bi-whatsapp"></i>
+                    <div>
+                        <strong>WhatsApp Suporte:</strong> <a href="https://wa.me/554231421512" target="_blank" rel="noopener" aria-label="Abrir WhatsApp Suporte (42) 3142-1512">(42) 3142-1512</a><br>
+                        <strong>WhatsApp Admin:</strong> <a href="https://wa.me/554231421527" target="_blank" rel="noopener" aria-label="Abrir WhatsApp Admin (42) 3142-1527">(42) 3142-1527</a><br>
+                        <strong>WhatsApp CNES:</strong> <a href="https://wa.me/5542991452300" target="_blank" rel="noopener" aria-label="Abrir WhatsApp CNES (42) 99145-2300">(42) 99145-2300</a><br>
+                        <strong>Sobreaviso:</strong> <a href="https://wa.me/5542991235068" target="_blank" rel="noopener" aria-label="Abrir WhatsApp Sobreaviso (42) 99123-5068">(42) 99123-5068</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="bi bi-envelope-fill"></i>
+                    <div>
+                        <strong>E-mail:</strong> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dtisaude@guarapuava.pr.gov.br" target="_blank" rel="noopener" aria-label="Enviar e-mail para dtisaude@guarapuava.pr.gov.br no Gmail">dtisaude@guarapuava.pr.gov.br</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="bi bi-globe2"></i>
+                    <div>
+                        <strong>Site Oficial:</strong> <a href="https://suportesaudeguarapuava.com.br" target="_blank" rel="noopener" aria-label="Abrir site oficial suportesaudeguarapuava.com.br">suportesaudeguarapuava.com.br</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="bi bi-clock-fill"></i>
+                    <div>
+                        <strong>Horário:</strong><br>
+                        Segunda-Sexta: 08:00-12:00 e 13:00-17:00
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

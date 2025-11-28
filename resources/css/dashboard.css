@@ -67,6 +67,7 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
 /* Container Principal */
@@ -75,6 +76,14 @@ body {
     padding: var(--spacing-lg);
     max-width: 1600px;
     margin: 0 auto;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Previne overflow em todos os containers */
+.modern-dashboard > * {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 /* ===========================================
@@ -261,9 +270,10 @@ body {
 
 .filter-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
+    width: 100%;
 }
 
 .filter-group {
@@ -437,8 +447,9 @@ body {
 
 .kpi-grid-modern {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: var(--spacing-lg);
+    width: 100%;
 }
 
 .kpi-card-modern {
@@ -548,8 +559,9 @@ body {
 
 .secondary-kpi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
     gap: var(--spacing-md);
+    width: 100%;
 }
 
 .secondary-kpi-card {
@@ -621,8 +633,9 @@ body {
 
 .charts-grid-modern {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
     gap: var(--spacing-lg);
+    width: 100%;
 }
 
 .chart-card-modern {
@@ -709,8 +722,9 @@ body {
 
 .widgets-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
     gap: var(--spacing-lg);
+    width: 100%;
 }
 
 .widget-card-modern {
@@ -938,8 +952,9 @@ body {
 
 .satisfaction-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: var(--spacing-lg);
+    width: 100%;
 }
 
 .satisfaction-card-modern {
@@ -1069,12 +1084,27 @@ body {
         grid-template-columns: 1fr;
     }
     
+    .charts-grid-modern {
+        grid-template-columns: 1fr;
+    }
+    
+    .widgets-grid {
+        grid-template-columns: 1fr;
+    }
+    
     .secondary-kpi-grid {
         grid-template-columns: repeat(2, 1fr);
     }
     
     .filter-group.span-2 {
         grid-column: span 1;
+    }
+    
+    /* Previne overflow em mobile */
+    .modern-dashboard,
+    .modern-dashboard > * {
+        max-width: 100vw;
+        overflow-x: hidden;
     }
 }
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verificação do Servidor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #667eea;
+            margin: 0 0 20px 0;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .success {
+            color: #10b981;
+            font-size: 48px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="success">✓</div>
+        <h1>Servidor Correto!</h1>
+        <p><strong>Sistema de Chamados Saúde - Guarapuava PR</strong></p>
+        <div class="info">
+            <p><strong>Servidor:</strong> Laravel 9 + Nginx</p>
+            <p><strong>IP:</strong> 10.0.134.98</p>
+            <p><strong>Porta 80:</strong> Ativa</p>
+            <p><strong>Porta 8083:</strong> Ativa</p>
+        </div>
+        <p style="margin-top: 30px;">
+            <a href="/login" style="color: #667eea; text-decoration: none; font-weight: bold;">→ Ir para Login</a>
+        </p>
+    </div>
+</body>
+</html>

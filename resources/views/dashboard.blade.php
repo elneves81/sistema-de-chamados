@@ -102,6 +102,19 @@
                 
                 <div class="filter-group">
                     <label class="filter-label">
+                        <i class="bi bi-person-check"></i>
+                        Técnico
+                    </label>
+                    <select class="filter-select" id="filter-technician">
+                        <option value="">Todos os Técnicos</option>
+                        @foreach(\App\Models\User::where('role', 'technician')->where('is_active', true)->orderBy('name')->get() as $tech)
+                        <option value="{{ $tech->id }}">{{ $tech->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">
                         <i class="bi bi-calendar"></i>
                         Período
                     </label>
@@ -151,19 +164,37 @@
                 <div class="action-group">
                     <h4 class="action-title">Exportação</h4>
                     <div class="export-actions-modern">
-                        <button class="export-btn-modern excel" id="export-excel">
-                            <i class="bi bi-file-earmark-excel"></i>
-                            <span>Excel</span>
-                        </button>
                         <button class="export-btn-modern pdf" id="export-pdf">
                             <i class="bi bi-file-earmark-pdf"></i>
                             <span>PDF</span>
                         </button>
-                        <button class="export-btn-modern csv" id="export-csv">
-                            <i class="bi bi-filetype-csv"></i>
-                            <span>CSV</span>
-                        </button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Pré-visualização de Exportação -->
+    <div id="export-preview-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; overflow:auto;">
+        <div style="position:relative; max-width:1200px; margin:40px auto; background:#fff; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            <div style="position:sticky; top:0; z-index:10; display:flex; justify-content:space-between; align-items:center; padding:16px 24px; background:#111827; color:#fff; border-radius:12px 12px 0 0;">
+                <h3 style="margin:0; font-size:18px;"><i class="bi bi-eye"></i> Pré-visualização do Relatório</h3>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="window.print()" style="padding:8px 16px; background:#10b981; color:#fff; border:none; border-radius:8px; font-weight:600; cursor:pointer;">
+                        <i class="bi bi-printer"></i> Imprimir
+                    </button>
+                    <button id="export-modal-download-pdf" style="padding:8px 16px; background:#3b82f6; color:#fff; border:none; border-radius:8px; font-weight:600; cursor:pointer;">
+                        <i class="bi bi-download"></i> Baixar PDF
+                    </button>
+                    <button id="close-export-modal" style="padding:8px 16px; background:#ef4444; color:#fff; border:none; border-radius:8px; font-weight:600; cursor:pointer;">
+                        <i class="bi bi-x-lg"></i> Fechar
+                    </button>
+                </div>
+            </div>
+            <div id="export-preview-content" style="padding:24px; min-height:400px; background:#fafafa;">
+                <div style="text-align:center; padding:60px 20px; color:#64748b;">
+                    <i class="bi bi-hourglass-split" style="font-size:48px; margin-bottom:16px;"></i>
+                    <p>Carregando pré-visualização...</p>
                 </div>
             </div>
         </div>
@@ -183,7 +214,7 @@
         </div>
         
         <div class="kpi-grid-modern">
-            <div class="kpi-card-modern primary">
+            <a href="{{ route('tickets.index') }}" class="kpi-card-modern primary" style="text-decoration: none; color: inherit;">
                 <div class="kpi-header">
                     <div class="kpi-icon-wrapper">
                         <i class="bi bi-collection"></i>
@@ -201,9 +232,9 @@
                 <div class="kpi-chart">
                     <canvas id="totalChart" width="100" height="30"></canvas>
                 </div>
-            </div>
+            </a>
             
-            <div class="kpi-card-modern warning">
+            <a href="{{ route('tickets.index', ['status' => 'open']) }}" class="kpi-card-modern warning" style="text-decoration: none; color: inherit;">
                 <div class="kpi-header">
                     <div class="kpi-icon-wrapper">
                         <i class="bi bi-lightning-charge"></i>
@@ -221,9 +252,9 @@
                 <div class="kpi-chart">
                     <canvas id="openChart" width="100" height="30"></canvas>
                 </div>
-            </div>
+            </a>
             
-            <div class="kpi-card-modern info">
+            <a href="{{ route('tickets.index', ['status' => 'in_progress']) }}" class="kpi-card-modern info" style="text-decoration: none; color: inherit;">
                 <div class="kpi-header">
                     <div class="kpi-icon-wrapper">
                         <i class="bi bi-arrow-repeat"></i>
@@ -241,9 +272,9 @@
                 <div class="kpi-chart">
                     <canvas id="progressChart" width="100" height="30"></canvas>
                 </div>
-            </div>
+            </a>
             
-            <div class="kpi-card-modern success">
+            <a href="{{ route('tickets.index', ['status' => 'resolved']) }}" class="kpi-card-modern success" style="text-decoration: none; color: inherit;">
                 <div class="kpi-header">
                     <div class="kpi-icon-wrapper">
                         <i class="bi bi-check-circle"></i>
@@ -261,14 +292,14 @@
                 <div class="kpi-chart">
                     <canvas id="resolvedChart" width="100" height="30"></canvas>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 
     <!-- KPIs Secundários -->
     <div class="secondary-kpi-section">
         <div class="secondary-kpi-grid">
-            <div class="secondary-kpi-card danger">
+            <a href="{{ route('tickets.index', ['overdue' => 'true']) }}" class="secondary-kpi-card danger" style="text-decoration: none; color: inherit;">
                 <div class="secondary-kpi-icon">
                     <i class="bi bi-exclamation-triangle"></i>
                 </div>
@@ -276,9 +307,9 @@
                     <div class="secondary-kpi-value">{{ $overdueTickets ?? 0 }}</div>
                     <div class="secondary-kpi-label">Vencidos</div>
                 </div>
-            </div>
+            </a>
             
-            <div class="secondary-kpi-card primary">
+            <a href="{{ route('tickets.index', ['sla' => 'ok']) }}" class="secondary-kpi-card primary" style="text-decoration: none; color: inherit;">
                 <div class="secondary-kpi-icon">
                     <i class="bi bi-clock-history"></i>
                 </div>
@@ -286,9 +317,9 @@
                     <div class="secondary-kpi-value">94.5%</div>
                     <div class="secondary-kpi-label">SLA Cumprido</div>
                 </div>
-            </div>
+            </a>
             
-            <div class="secondary-kpi-card warning">
+            <a href="{{ route('tickets.index', ['reopened' => 'true']) }}" class="secondary-kpi-card warning" style="text-decoration: none; color: inherit;">
                 <div class="secondary-kpi-icon">
                     <i class="bi bi-arrow-counterclockwise"></i>
                 </div>
@@ -296,9 +327,9 @@
                     <div class="secondary-kpi-value">{{ $reopenedTickets ?? 0 }}</div>
                     <div class="secondary-kpi-label">Reabertos</div>
                 </div>
-            </div>
+            </a>
             
-            <div class="secondary-kpi-card info">
+            <a href="{{ route('tickets.index') }}" class="secondary-kpi-card info" style="text-decoration: none; color: inherit;">
                 <div class="secondary-kpi-icon">
                     <i class="bi bi-speedometer2"></i>
                 </div>
@@ -306,7 +337,7 @@
                     <div class="secondary-kpi-value">2.3h</div>
                     <div class="secondary-kpi-label">Tempo Médio</div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <!-- Gráficos Modernizados -->
@@ -407,32 +438,6 @@
     <!-- Seção de Widgets Avançados -->
     <div class="widgets-section-modern">
         <div class="widgets-grid">
-            <!-- Mapa de Chamados -->
-            <div class="widget-card-modern map-widget">
-                <div class="widget-header">
-                    <div class="widget-title">
-                        <i class="bi bi-geo-alt"></i>
-                        <span>Mapa de Chamados</span>
-                    </div>
-                    <div class="widget-actions">
-                        <button class="widget-btn" title="Atualizar">
-                            <i class="bi bi-arrow-clockwise"></i>
-                        </button>
-                        <button class="widget-btn" title="Configurações">
-                            <i class="bi bi-gear"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="widget-body">
-                    <div class="map-container-modern" id="map">
-                        <div class="map-placeholder">
-                            <i class="bi bi-geo-alt-fill"></i>
-                            <p>Mapa será carregado aqui</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Ranking de Técnicos -->
             <div class="widget-card-modern ranking-widget">
                 <div class="widget-header">
@@ -540,10 +545,27 @@
                 </div>
                 <div class="satisfaction-content">
                     <div class="satisfaction-value">{{ $satisfaction ?? '9.2' }}</div>
-                    <div class="satisfaction-label">Net Promoter Score</div>
+                    <div class="satisfaction-label" 
+                         title="Calculado com base na taxa de resolução, tempo médio e taxa de retrabalho">
+                        Net Promoter Score
+                        <i class="bi bi-info-circle-fill text-muted" style="font-size: 0.875rem; cursor: help;"></i>
+                    </div>
                     <div class="satisfaction-trend">
-                        <i class="bi bi-arrow-up text-success"></i>
-                        <span>+0.8 desde o mês passado</span>
+                        @php
+                            $currentNPS = floatval($satisfaction ?? 9.2);
+                            $previousNPS = 8.4; // Valor do mês anterior (pode ser armazenado)
+                            $npsChange = $currentNPS - $previousNPS;
+                        @endphp
+                        @if($npsChange > 0)
+                            <i class="bi bi-arrow-up text-success"></i>
+                            <span>+{{ number_format($npsChange, 1) }} desde o mês passado</span>
+                        @elseif($npsChange < 0)
+                            <i class="bi bi-arrow-down text-danger"></i>
+                            <span>{{ number_format($npsChange, 1) }} desde o mês passado</span>
+                        @else
+                            <i class="bi bi-dash text-muted"></i>
+                            <span>Sem mudança desde o mês passado</span>
+                        @endif
                     </div>
                 </div>
                 <div class="satisfaction-chart">
@@ -556,21 +578,47 @@
                     <i class="bi bi-chat-dots-fill"></i>
                 </div>
                 <div class="satisfaction-content">
-                    <div class="satisfaction-value">{{ $feedbacks ?? 147 }}</div>
-                    <div class="satisfaction-label">Avaliações Recebidas</div>
+                    <div class="satisfaction-value">{{ $feedbacks ?? 0 }}</div>
+                    <div class="satisfaction-label"
+                         title="Total de comentários/interações recebidas este mês">
+                        Interações Este Mês
+                        <i class="bi bi-info-circle-fill text-muted" style="font-size: 0.875rem; cursor: help;"></i>
+                    </div>
                     <div class="satisfaction-trend">
-                        <i class="bi bi-arrow-up text-success"></i>
-                        <span>+23 este mês</span>
+                        @php
+                            $currentFeedbacks = intval($feedbacks ?? 0);
+                            $feedbackChange = intval($feedbackChange ?? 0);
+                        @endphp
+                        @if($feedbackChange > 0)
+                            <i class="bi bi-arrow-up text-success"></i>
+                            <span>+{{ $feedbackChange }} desde o mês passado</span>
+                        @elseif($feedbackChange < 0)
+                            <i class="bi bi-arrow-down text-danger"></i>
+                            <span>{{ $feedbackChange }} desde o mês passado</span>
+                        @else
+                            <i class="bi bi-dash text-muted"></i>
+                            <span>Sem mudança</span>
+                        @endif
                     </div>
                 </div>
                 <div class="satisfaction-breakdown">
                     <div class="rating-stars">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i>
-                        <span class="rating-value">4.6</span>
+                        @php
+                            $rating = floatval($averageRating ?? 4.6);
+                            $fullStars = floor($rating);
+                            $hasHalfStar = ($rating - $fullStars) >= 0.5;
+                            $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
+                        @endphp
+                        @for($i = 0; $i < $fullStars; $i++)
+                            <i class="bi bi-star-fill"></i>
+                        @endfor
+                        @if($hasHalfStar)
+                            <i class="bi bi-star-half"></i>
+                        @endif
+                        @for($i = 0; $i < $emptyStars; $i++)
+                            <i class="bi bi-star"></i>
+                        @endfor
+                        <span class="rating-value">{{ $averageRating ?? '4.6' }}</span>
                     </div>
                 </div>
             </div>
@@ -579,6 +627,141 @@
 </div>
 @endsection
 
+@push('styles')
+<style>
+/* Efeitos de hover para cards clicáveis */
+.kpi-card-modern {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.kpi-card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.secondary-kpi-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.secondary-kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Garantir que o texto não mude de cor ao clicar */
+.kpi-card-modern:active,
+.kpi-card-modern:visited,
+.secondary-kpi-card:active,
+.secondary-kpi-card:visited {
+    color: inherit !important;
+}
+</style>
+@endpush
+
 @push('scripts')
+<script>
+        window.DASHBOARD_EXPORT_URL = @json(route('dashboard.export'));
+        window.DASHBOARD_METRICS_EXPORT_URL = @json(route('dashboard.metrics.export'));
+        window.DASHBOARD_EXPORT_PREVIEW_URL = @json(route('dashboard.export.preview'));
+    </script>
+@endpush
+
+@push('scripts')
+<script>
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    const bgColors = {
+        'success': 'bg-success',
+        'info': 'bg-info',
+        'warning': 'bg-warning',
+        'danger': 'bg-danger'
+    };
+    
+    toast.className = `toast align-items-center text-white ${bgColors[type]} border-0 position-fixed top-0 end-0 m-3`;
+    toast.style.cssText = 'z-index: 9999;';
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>${message}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
+    bsToast.show();
+    
+    toast.addEventListener('hidden.bs.toast', () => {
+        toast.remove();
+    });
+}
+</script>
+@endpush
+
+@push('scripts')
+<script>
+// Remover função antiga do mapa de localizações
+function refreshLocationMap() {
+    const btn = event.currentTarget;
+    const icon = btn.querySelector('i');
+    
+    // Adicionar animação de rotação
+    icon.style.animation = 'spin 1s linear';
+    
+    // Simular atualização (recarregar página por enquanto)
+    setTimeout(() => {
+        window.location.reload();
+    }, 500);
+}
+
+// Adicionar interatividade aos itens de localização
+document.addEventListener('DOMContentLoaded', function() {
+    const locationItems = document.querySelectorAll('.location-item-modern');
+    
+    locationItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const locationName = this.dataset.location;
+            const title = this.getAttribute('title');
+            
+            // Mostrar detalhes em um toast/alert
+            showLocationDetails(locationName, title);
+        });
+    });
+});
+
+function showLocationDetails(name, details) {
+    // Criar toast de notificação
+    const toast = document.createElement('div');
+    toast.className = 'alert alert-info alert-dismissible fade show position-fixed';
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 350px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
+    toast.innerHTML = `
+        <strong><i class="bi bi-info-circle me-2"></i>${name}</strong><br>
+        <small>${details}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Remover após 5 segundos
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 5000);
+}
+
+// Adicionar animação de spin
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
+</script>
 @vite(['resources/js/app.js', 'resources/js/dashboard-modern.js'])
 @endpush

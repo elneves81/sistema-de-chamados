@@ -108,7 +108,13 @@ class LdapBulkImportJob implements ShouldQueue
                     $this->totalPages,
                     $this->jobId,
                     $this->filter
-                )->delay(now()->addSeconds(5)); // Pequeno delay entre lotes
+                )->onQueue('ldap'); // Sem delay, processar imediatamente
+                
+                Log::info("LDAP Bulk Import - Próximo lote despachado", [
+                    'job_id' => $this->jobId,
+                    'next_page' => $this->currentPage + 1,
+                    'total_pages' => $this->totalPages
+                ]);
             }
 
         } catch (Exception $e) {
@@ -320,21 +326,33 @@ class LdapBulkImportJob implements ShouldQueue
                     return 'skipped'; // Email já existe
                 }
 
-                // Gerar email único se não tiver
-                $finalEmail = $email;
-                if (empty($finalEmail) && !empty($login)) {
-                    $finalEmail = $login . '@ldap.local';
+                // Email pode ser null agora - apenas usar se tiver
+                $finalEmail = !empty($email) ? $email : null;
+                
+                // Gerar username obrigatório a partir do login, email ou nome
+                $username = $login;
+                if (empty($username) && !empty($finalEmail)) {
+                    $username = strpos($finalEmail, '@') !== false ? substr($finalEmail, 0, strpos($finalEmail, '@')) : $finalEmail;
                 }
-                if (empty($finalEmail) && !empty($name)) {
-                    $finalEmail = Str::slug($name) . '@ldap.local';
+                if (empty($username) && !empty($name)) {
+                    $username = Str::slug($name);
                 }
-                if (empty($finalEmail)) {
-                    $finalEmail = 'user_' . Str::random(8) . '@ldap.local';
+                if (empty($username)) {
+                    $username = 'user_' . Str::random(8);
+                }
+                
+                // Garantir username único
+                $baseUsername = $username;
+                $counter = 1;
+                while (DB::table('users')->where('username', $username)->exists()) {
+                    $username = $baseUsername . '_' . $counter;
+                    $counter++;
                 }
 
                 $newUser = User::create([
                     'name' => $name ?: ($login ?: 'Usuário LDAP'),
-                    'email' => $finalEmail,
+                    'username' => $username,
+                    'email' => $finalEmail, // Pode ser null
                     'password' => bcrypt(Str::random(40)),
                     'role' => 'customer',
                     'is_active' => true,

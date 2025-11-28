@@ -1,3 +1,4 @@
+
 # Sistema de Chamados
 
 Este é um sistema completo para gestão de chamados, com integração LDAP/Active Directory, painel TV, dashboard moderno, autenticação, e recursos avançados para equipes de suporte.
@@ -62,8 +63,32 @@ Pull requests são bem-vindos! Para grandes mudanças, abra uma issue primeiro.
 
 Para mais detalhes, consulte os arquivos:
 - `DOCUMENTACAO.md` - Documentação completa do sistema
+- `NOTIFICACOES_README.md` - **Guia completo do sistema de notificações multi-canal**
+- `TESTE_NOTIFICACOES.md` - **Guia de testes para notificações**
 - `DESIGN_RESPONSIVIDADE_ACESSIBILIDADE.md` - Guia completo de melhorias de UI/UX
 - `GUIA_RAPIDO_MELHORIAS.md` - Guia rápido de uso das melhorias
+
+## 🔔 Sistema de Notificações
+
+### Multi-Canal
+- 📧 **Email** via SMTP
+- 📱 **SMS** via Twilio
+- 💬 **Telegram** via Bot API
+- 📲 **WhatsApp** via Twilio
+
+### Recursos
+- ✅ Preferências configuráveis por usuário
+- ✅ Seleção de canais por tipo de evento
+- ✅ Notificações automáticas para:
+  - Criação de ticket
+  - Atribuição de técnico
+  - Mudança de status
+  - Alerta de SLA
+- ✅ Sistema de eventos Laravel integrado
+- ✅ Templates HTML responsivos para emails
+- ✅ Testes individuais por canal
+
+**Configuração:** Acesse o menu "Notificações" após login
 
 ## 🎨 Melhorias Recentes
 
