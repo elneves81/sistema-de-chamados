@@ -17,6 +17,10 @@ use App\Listeners\SendTicketAssignedNotification;
 use App\Listeners\SendTicketStatusChangedNotification;
 use App\Listeners\SendSupportTechnicianNotification;
 
+// Model Observers
+use App\Models\User;
+use App\Observers\UserObserver;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -51,7 +55,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Registrar observers
+        User::observe(UserObserver::class);
     }
 
     /**

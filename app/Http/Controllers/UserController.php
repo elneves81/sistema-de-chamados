@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +14,8 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'role:admin'])->except(['search']);
+        // Permite admins e técnicos acessarem gestão de usuários
+        $this->middleware(['auth', 'role:admin,technician'])->except(['search']);
         $this->middleware('auth')->only(['search']);
     }
 
@@ -98,7 +100,7 @@ class UserController extends Controller
             $counter++;
         }
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'username' => $username,
             'email' => $request->email,
@@ -107,6 +109,9 @@ class UserController extends Controller
             'phone' => $request->phone,
             'department' => $request->department,
         ]);
+
+        // Sincronizar permissões de inventário se for técnico
+        $this->syncTechnicianInventoryPermissions($user);
 
         return redirect()->route('admin.users.index')
                         ->with('success', 'Usuário criado com sucesso!');
@@ -161,7 +166,15 @@ class UserController extends Controller
             $data['password'] = Hash::make($request->password);
         }
 
+        // Verificar se o role mudou
+        $roleChanged = $user->role !== $request->role;
+
         $user->update($data);
+
+        // Sincronizar permissões de inventário se o role mudou
+        if ($roleChanged) {
+            $this->syncTechnicianInventoryPermissions($user);
+        }
 
         return redirect()->route('admin.users.index')
                         ->with('success', 'Usuário atualizado com sucesso!');
@@ -325,6 +338,13 @@ class UserController extends Controller
 
             case 'change_role':
                 User::whereIn('id', $request->user_ids)->update(['role' => $request->role]);
+                
+                // Sincronizar permissões de inventário para todos os usuários atualizados
+                foreach ($users as $user) {
+                    $user->refresh(); // Recarregar para pegar o novo role
+                    $this->syncTechnicianInventoryPermissions($user);
+                }
+                
                 $message = count($users) . ' usuários atualizados com sucesso!';
                 break;
         }
@@ -365,6 +385,57 @@ class UserController extends Controller
                     ->get(['id', 'name', 'email', 'role']);
 
         return response()->json($users);
+    }
+
+    /**
+     * Search users for API (AJAX)
+     */
+    public function searchApi(Request $request)
+    {
+        $query = $request->input('q', '');
+
+        if (strlen($query) < 2) {
+            return response()->json([]);
+        }
+
+        $users = User::where('name', 'LIKE', "%{$query}%")
+                    ->orWhere('email', 'LIKE', "%{$query}%")
+                    ->orWhere('username', 'LIKE', "%{$query}%")
+                    ->limit(15)
+                    ->get(['id', 'name', 'email', 'department', 'username']);
+
+        return response()->json($users);
+    }
+
+    /**
+     * Sincroniza as permissões de inventário e almoxarifado para técnicos
+     * 
+     * @param User $user
+     * @return void
+     */
+    private function syncTechnicianInventoryPermissions(User $user)
+    {
+        // Buscar todas as permissões de inventário (machines, inventory) e almoxarifado (stock)
+        $inventoryPermissions = Permission::whereIn('module', ['machines', 'inventory', 'stock'])->get();
+        
+        if ($inventoryPermissions->isEmpty()) {
+            return;
+        }
+        
+        if ($user->role === 'technician' || $user->role === 'admin') {
+            // Usuário é técnico ou admin: garantir que tem todas as permissões de inventário
+            foreach ($inventoryPermissions as $permission) {
+                $user->grantPermission($permission->name);
+            }
+        } else {
+            // Usuário não é mais técnico: remover permissões de inventário
+            // (apenas se não for admin ou super admin)
+            if (!$user->is_super_admin) {
+                foreach ($inventoryPermissions as $permission) {
+                    $user->revokePermission($permission->name);
+                }
+            }
+        }
     }
 }
 
