@@ -32,7 +32,7 @@
     <div class="card-body">
         <form method="GET" action="{{ route('tickets.index') }}" class="row g-3">
             <!-- Busca Textual -->
-            <div class="col-md-6">
+            <div class="col-12 col-lg-6">
                 <label for="search" class="form-label">Buscar</label>
                 <input type="text" 
                        name="search" 
@@ -43,7 +43,7 @@
             </div>
             
             <!-- Status -->
-            <div class="col-md-3">
+            <div class="col-12 col-md-6 col-lg-3">
                 <label for="status" class="form-label">Status</label>
                 <select name="status" id="status" class="form-select">
                     <option value="">Todos os Status</option>
@@ -56,7 +56,7 @@
             </div>
             
             <!-- Prioridade -->
-            <div class="col-md-3">
+            <div class="col-12 col-md-6 col-lg-3">
                 <label for="priority" class="form-label">Prioridade</label>
                 <select name="priority" id="priority" class="form-select">
                     <option value="">Todas as Prioridades</option>
@@ -68,7 +68,7 @@
             </div>
             
             <!-- Categoria -->
-            <div class="col-md-4">
+            <div class="col-12 col-md-6 col-xl-4">
                 <label for="category_id" class="form-label">Categoria</label>
                 <select name="category_id" id="category_id" class="form-select">
                     <option value="">Todas as Categorias</option>
@@ -106,7 +106,7 @@
             </div>
             
             <!-- Botões -->
-            <div class="col-12 d-flex justify-content-between align-items-center">
+            <div class="col-12 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
                 <div class="btn-group">
                     <button type="submit" class="btn btn-outline-primary">
                         <i class="bi bi-search"></i> Filtrar

@@ -45,6 +45,25 @@
     @yield('styles')
 
     <style>
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar-responsive {
+            width: 260px;
+            flex-shrink: 0;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            overflow-x: hidden;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
         .sidebar, .sidebar-responsive {
             min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -106,7 +125,8 @@
         }
         
         .content-wrapper {
-            min-height: 100vh;
+           min-height: 100vh;
+
         }
         .status-badge {
             font-size: 0.75rem;
@@ -348,8 +368,8 @@
     
     <div id="app">
         @auth
-        <div class="container-fluid">
-            <div class="row">
+        <div class="dashboard-layout">
+            
                 <!-- Botão Toggle Menu Mobile -->
                 <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" type="button">
                     <div class="hamburger">
@@ -363,7 +383,7 @@
                 <div class="sidebar-backdrop" aria-hidden="true"></div>
                 
                 <!-- Sidebar -->
-                <nav class="col-md-3 col-lg-2 d-md-block sidebar-responsive px-0" 
+                <nav class="sidebar-responsive" 
                      role="navigation" 
                      aria-label="Menu principal"
                      aria-hidden="false">
@@ -601,7 +621,7 @@
                 </nav>
 
                 <!-- Main content -->
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 content-wrapper" 
+                <main class="content-wrapper px-md-4" 
                       id="main-content" 
                       role="main"
                       aria-label="Conteúdo principal">
@@ -684,7 +704,6 @@
                         </small>
                     </footer>
                 </main>
-            </div>
         </div>
         @else
         <!-- Layout para páginas de login/registro -->
